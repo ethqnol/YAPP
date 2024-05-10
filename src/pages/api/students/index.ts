@@ -4,7 +4,6 @@ import { getFirestore } from "firebase-admin/firestore";
 
 
 export const POST: APIRoute = async ({ request, redirect }) => {
-  console.log(request)
   const formData = await request.formData();
   const first_name = formData.get("first_name")?.toString();
   const last_name = formData.get("last_name")?.toString();
