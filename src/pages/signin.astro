@@ -3,7 +3,6 @@ import { app } from "../firebase/server";
 import { getAuth } from "firebase-admin/auth";
 import Layout from "../layouts/Layout.astro";
 
-/* Check if the user is authenticated */
 const auth = getAuth(app);
 if (Astro.cookies.has("__session")) {
   const sessionCookie = Astro.cookies.get("__session").value;
@@ -23,7 +22,6 @@ if (Astro.cookies.has("__session")) {
   import {
     getAuth,
     inMemoryPersistence,
-    signInWithEmailAndPassword,
     GoogleAuthProvider,
     signInWithPopup,
   } from "firebase/auth";
