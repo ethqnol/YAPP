@@ -1,0 +1,113 @@
+---
+import { app } from "../firebase/server";
+import { getAuth } from "firebase-admin/auth";
+import Layout from "../layouts/Layout.astro";
+
+const auth = getAuth(app);
+
+/* Check current session */
+if (!Astro.cookies.has("__session")) {
+  return Astro.redirect("/signin");
+}
+const sessionCookie = Astro.cookies.get("__session").value;
+const decodedCookie = await auth.verifySessionCookie(sessionCookie);
+const user = await auth.getUser(decodedCookie.uid);
+
+if (!user) {
+  return Astro.redirect("/signin");
+}
+---
+
+<Layout title="dashboard">
+  <div id = "BGImage"></div>
+  <div id = "board">
+    <h1>Signed in as <span>
+      {user.displayName}</span></h1>
+    <p>Thanks for stopping by.</p>
+    <form action="/api/auth/signout">
+      <button type="submit">Sign out</button>
+    </form>
+  </div>
+</Layout>
+
+<style>
+  html {
+    color: white;
+    background-size: cover;
+  }
+
+  #BGImage {
+    background-image: url('https://www.wallpapertip.com/wmimgs/77-774233_huge-panoramic-foto-of-usa-cities-high-resolution.jpg');
+    height: 100vh;
+    width: 100vw;
+    z-index: -1;
+    filter: blur(0rem);
+    background-size: 300%;
+    background-position-y: center;
+
+    animation-name: pan;
+    animation-duration: 270s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+  }
+
+  button {
+    transition: 0.2s;
+    cursor: pointer;
+    background-color: lightgrey;
+    border-radius: 10px;
+    width: 5rem;
+    height: 3rem;
+    border: none;
+    font-size: 0.9rem;
+  }
+
+  button:hover {
+    scale: 1.1;
+    background-color: white;
+    font-weight: 700;
+  }
+
+  @keyframes pan {
+    from {background-position: 30%;}
+    to {background-position: 80%;}
+  }
+
+  span {
+    color: lightgrey;
+    font-weight: 900;
+    text-decoration: underline;
+    transition: 0.3s;
+    cursor: pointer;
+    display: inline-block;
+  }
+
+  span:hover {
+    color: white;
+    scale: 1.05;
+  }
+
+  h1 {
+    margin: 0;
+    font-weight: 300;
+  }
+
+  p {
+    margin-top: 0.2rem;
+  }
+
+  #board {
+    background-color: rgba(0,0,0,0.8);
+    backdrop-filter: blur(1.5rem);
+    border: solid 3px lightgrey;
+    padding: 1rem;
+
+    display: inline-block;
+    border-radius: 10px;
+    text-align: center;
+
+    position: absolute;
+    top: 40vh;
+    left: 37.5vw;
+  }
