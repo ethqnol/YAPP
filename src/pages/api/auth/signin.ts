@@ -1,6 +1,7 @@
 import type { APIRoute } from "astro";
 import { app } from "../../../firebase/server";
 import { getAuth } from "firebase-admin/auth";
+import { getFirestore } from "firebase-admin/firestore";
 
 export const GET: APIRoute = async ({ request, cookies, redirect }) => {
   const auth = getAuth(app);
@@ -26,8 +27,22 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
   const sessionCookie = await auth.createSessionCookie(idToken, {
     expiresIn: sessionLen,
   });
-  
-  
+  const decodedCookie = await auth.verifySessionCookie(sessionCookie);
+  const user = await auth.getUser(decodedCookie.uid);
+  const db = getFirestore(app);
+  db.collection("Students")
+    .where("email", "==", user.email)
+    .get()
+    .then(querySnapshot => {
+          if(!querySnapshot.empty) {
+            querySnapshot.docs[0].ref.update({
+              google_id: user.uid,
+              google_photo: user.photoURL,
+              display_name: user.displayName
+            })
+          }
+      
+    })
 
   cookies.set("__session", sessionCookie, {
     path: "/",
