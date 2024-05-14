@@ -37,30 +37,26 @@ if (!user) {
 <style>
   html {
     color: white;
-    background-size: cover;
+    
   }
 
   #BGImage {
-    background-image: url('https://www.wallpapertip.com/wmimgs/77-774233_huge-panoramic-foto-of-usa-cities-high-resolution.jpg');
-    height: 100vh;
-    width: 100vw;
+    background-image: url('/boston_account_signin.png');
+    height: calc(100vh - var(--navbar-height));
+    background-size: cover;
+    width: calc(100vw - 2rem);
     z-index: -1;
     filter: blur(0rem);
-    background-size: 300%;
+    background-size: 150%;
     background-position-y: center;
-
-    animation-name: pan;
-    animation-duration: 270s;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-    animation-direction: alternate;
+    filter:blur(1rem);
   }
 
   button {
     transition: 0.2s;
     cursor: pointer;
     background-color: lightgrey;
-    border-radius: 10px;
+    border-radius: 0.3rem;
     width: 5rem;
     height: 3rem;
     border: none;
@@ -70,12 +66,6 @@ if (!user) {
   button:hover {
     scale: 1.1;
     background-color: white;
-    font-weight: 700;
-  }
-
-  @keyframes pan {
-    from {background-position: 30%;}
-    to {background-position: 80%;}
   }
 
   span {
@@ -102,16 +92,14 @@ if (!user) {
   }
 
   #board {
-    background-color: rgba(0,0,0,0.8);
+    background-color: rgba(0,0,0,0.2);
     backdrop-filter: blur(1.5rem);
     border: solid 3px lightgrey;
     padding: 1rem;
-
-    display: inline-block;
-    border-radius: 10px;
+    
+    border-radius: 0.4rem;
     text-align: center;
-
-    position: absolute;
     top: 40vh;
-    left: 37.5vw;
+    left: 50%;
   }
+</style>
