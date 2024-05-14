@@ -1,7 +1,111 @@
 ---
-import Layout from "../layouts/Layout.astro";
+/*import Layout from "../layouts/Layout.astro";
 ---
 
+<<<<<<< HEAD
+<Layout title="Add a new friend">
+  <div id = "side">
+    <div id = "Content">
+    <h1>Search Students</h1>
+    <form method="post" action="/api/students">
+      <label for="first_name">First Name</label>
+      <input placeholder="John" type="text" id="first_name" name="first_name" />
+      <label for="first_name">Last Name</label>
+      <input placeholder="Doe" type="text" id="last_name" name="last_name" />
+      <label for="first_name">Email</label>
+      <input placeholder="jdoe@commschool.org" type="text" id="email" name="email" />
+      <button type="submit">🔍</button>
+    </form>
+    </div>
+  </div>
+</Layout>
+
+<style>
+
+  html {
+    background-color: #000000;
+    opacity: 0.8;
+    background-image:  radial-gradient(#7da5ff 1.05px, transparent 1.05px), radial-gradient(#7da5ff 1.05px, #000000 1.05px);
+    background-size: 42px 42px;
+    background-position: 0 0,21px 21px;
+  }
+  h1 {
+    color: white;
+    margin-bottom: 3rem;
+  }
+  label {
+    color: white;
+    display: block;
+    text-align: center;
+  }
+
+  #Content {
+    position: absolute;
+    top: 25vh;
+  }
+
+  input[type="text"] {
+    margin-bottom: 1rem;
+    width: 95%;
+    height: 3rem;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    box-sizing: border-box;
+    padding: 0.2rem;
+    border: none;
+    margin-top: 0.4rem;
+    background-color: lightgrey;
+
+    transition: 0.3s;
+
+    text-align: center;
+    font-weight: 600;
+  }
+
+  input[type="text"]:focus {
+    scale: 1.05;
+    background-color: white;
+    font-weight: 400;
+  }
+
+  button[type="submit"] {
+    position: relative;
+    left: 36%;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border-radius: 10px;
+    background-color: lightgrey;
+    border: none;
+    cursor: pointer;
+    margin-top: 1.5rem;
+    transition: 0.3s;
+  }
+    button[type="submit"]:hover {
+      scale: 1.1;
+      background-color: white;
+    }
+  #side {
+    background-color: rgba(0,0,0,0.3);
+    backdrop-filter: blur(1.2rem);
+    display: flex;
+    flex-direction: column;
+
+    width: 14.5vw;
+    height: 100vh;
+    
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 0.5rem;
+
+    border-right: solid 2px lightgrey;
+  }
+
+  form * {
+    display: block;
+  }
+</style>
+=======
 <Layout title="Add A Student">
   <h1>Add a new friend</h1>
   <form method="post" action="/api/students">
@@ -14,3 +118,8 @@ import Layout from "../layouts/Layout.astro";
     <button type="submit">Add Students</button>
   </form>
 </Layout>
+<<<<<<< HEAD
+>>>>>>> 5c9fd17aa5f8a05249d86d578bf0025800e671d7
+*/
+=======
+>>>>>>> aca41fc344f7226c6f26989f31c460e73c8d828a
