@@ -20,17 +20,24 @@ if (!user) {
   return Astro.redirect("/signin");
 }
 ---
-
 <Layout title="dashboard">
-  <div id = "BGImage"></div>
-  <div id = "board">
-    <h1>Signed in as <span>
-       <img src={user.photoURL}/>
-      {user.displayName}</span></h1>
-    <p>Thanks for stopping by.</p>
-    <form action="/api/auth/signout">
-      <button type="submit">Sign out</button>
-    </form>
+  <div id="container">
+    <div id = "board">
+      <h1>Signed in as<span>
+        <img src={user.photoURL} style="width: 10%"/>
+        {user.displayName}</span></h1>
+      <p>Thanks for stopping by.</p>
+      <form action="/api/auth/signout">
+        <button type="submit">Sign out</button>
+      </form>
+      <br>
+      <form action="/">
+        <button type="submit">Back to home</button>
+      </form>
+    </div>
+
+    <div id = "BGImage">
+    </div>
   </div>
 </Layout>
 
@@ -39,7 +46,13 @@ if (!user) {
     color: white;
     
   }
-
+  #container {
+    position: relative; /* Set container for positioning */
+    height: calc(100vh - var(--navbar-height));
+  }
+  #pfp {
+    transform: scale(0.4); 
+  }
   #BGImage {
     background-image: url('/boston_account_signin.png');
     height: calc(100vh - var(--navbar-height));
@@ -50,6 +63,11 @@ if (!user) {
     background-size: 150%;
     background-position-y: center;
     filter:blur(1rem);
+    overflow: hidden;
+
+    position: absolute;
+    top: 0;
+    left: 0;
   }
 
   button {
@@ -96,10 +114,13 @@ if (!user) {
     backdrop-filter: blur(1.5rem);
     border: solid 3px lightgrey;
     padding: 1rem;
-    
+    z-index: 1;
     border-radius: 0.4rem;
     text-align: center;
-    top: 40vh;
-    left: 50%;
+    align-items: center;
+    position: absolute;
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%);
   }
 </style>
