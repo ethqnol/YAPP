@@ -11,26 +11,9 @@ import Card from '../components/Card.astro';
 		  <strong>Pending:</strong> Due May 12th, Research Paper Final Draft
 		</p>
 		<ul role="list" class="link-card-grid">
-			<Card
-				href="/documentation"
-				title="Documentation"
-				body="Learn how to use YAPP or how to contribute!"
-			/>
-			<Card
-				href="/project"
-				title="Project"
-				body="View your current paper, and related notecards/sources."
-			/>
-			<Card
-				href="/syllabus"
-				title="Syllabus"
-				body="See what's due when!"
-			/>
-			<Card
-				href="/account"
-				title="User Profile"
-				body="Configure your settings or see your streaks."
-			/>
+			<div><a href="/documentation" > Documentation </a></div>
+			<div><a href="/project/sources"> Go To Project <strong>→</strong> </a></div>
+			<div><a href="/account" > User Profile </a></div>
 		</ul>
 	</main>
 </Layout>
@@ -90,10 +73,56 @@ import Card from '../components/Card.astro';
 	.instructions strong {
 		color: rgb(var(--accent-light));
 	}
+	
 	.link-card-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
-		gap: 2rem;
+       	display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+		gap: 3rem;
 		padding: 0;
+		
+	}
+	
+	.link-card-grid div{
+	   border-radius: 0.4rem;
+	   background-color: var(--color-surface-mixed-300);
+	   color: white;
+	   text-decoration: none;
+	   padding: 0.8rem;		
+	}
+	
+	.link-card-grid a {
+    	width: 100%;
+    	text-decoration: none;
+    	line-height: 1.4;
+    	padding: calc(0.9rem - 1px);
+    	border-radius: 0.4rem;
+    	color: white;
+    	background-color: #23262d;
+    	opacity: 0.8;	
+	}
+	
+	.link-card-grid div {
+		display: flex;
+		background-position: 100%;
+        transition: background-position 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+        border-radius: 0.4rem;
+        background-color: var(--color-surface-mixed-500);
+        padding: 2px;
+		background-image: none;
+		background-size: 400%;
+		border-radius: 7px;
+		background-position: 100%
+	}
+	
+	
+	.link-card-grid div:is(:hover, :focus-within) {
+		background-position: 0;
+		background-image: var(--accent-gradient);
+	}
+	.link-card-grid div:is(:hover, :focus-within) h2 {
+		color: rgb(var(--accent-light));
 	}
 </style>
