@@ -1,14 +1,50 @@
 ---
-import Layout from '../layouts/Layout.astro';
-
+import Layout from '../../layouts/Layout.astro';
+import Card from '../../components/Card.astro';
 ---
 
 
 <Layout title="Sources">
 
 <!-- A place to add/import sources (work on this first) -->
-
+<form action="/submit" method="POST">
+    <label for="type of source" id="form">Type of Source:</label>
+    <div class="dropdown">
+        <button class="dropdown-toggle">Dropdown Menu</button>
+        <ul class="dropdown-menu">
+          <li><a href="#">Menu Item 1</a></li>
+          <li><a href="#">Menu Item 2</a></li>
+          <li><a href="#">Menu Item 3</a></li>
+        </ul>
+    </div>
+    <br>
+    <label for="last name" id="form">Author Last Name:</label>
+    <input type="text" name="last name" required>
+    <br>
+    <label for="first name" id="form">Author First Name:</label>
+    <input type="text" name="first name" required>
+    <br>
+    <label for="title" id="form">Title:</label>
+    <input type="text" name="title" required>
+    <br>
+    <label for="place of publication" id="form">Place of Publication:</label>
+    <input type="text" name="place of publication" required>
+    <br>
+    <label for="publisher" id="form">Publisher:</label>
+    <input type="text" name="publisher" required>
+    <br>
+    <label for="year" id="form">Publication Year:</label>
+    <input type="text" name="year" required>
+    <br>
+    <button type="submit">Submit</button>
+</form>
 <!-- list of sources (do not do until the database is fully synced) -->
 
 
 </Layout>
+
+<style>
+    #form {
+        color: white;
+    }
+</style>
