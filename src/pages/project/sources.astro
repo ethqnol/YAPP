@@ -1,6 +1,6 @@
 ---
-import Layout from '../layouts/Layout.astro';
-
+import Layout from '../../layouts/Layout.astro';
+import Card from '../../components/Card.astro';
 ---
 
 
@@ -10,5 +10,185 @@ import Layout from '../layouts/Layout.astro';
 
 <!-- list of sources (do not do until the database is fully synced) -->
 
+    <form>
+
+        <div class="form-element">
+            <label for="ItemType">Item Type</label>
+            <div id = "custom-selectg">
+                <select name="ItemType" id = "ItemType">
+                    <option value="Artwork">Artwork</option>
+                    <option value="Audio">Audio Recording</option>
+                    <option value="Bill">Bill</option>
+                    <option value="Blog">Blog Post</option>
+                    <option value="Book">Book</option>
+                    <option value="BookSec">Book Section</option>
+                    <option value="Case">Case</option>
+                    <option value="Software">Software</option>
+                    <option value="ConPaper">Conference Paper</option>
+                    <option value="Dataset">Dataset</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-element">
+            <label for="Title">Title</label>
+            <input id="Title"></input>
+        </div>
+
+        <div class="form-element">
+            <label for = "AuthorFirstName">Author Name</label>
+            <input type="text" id = "AuthorFirstName" placeholder="First Name"></input>
+            <input type="text" id = "AuthorMiddleName" placeholder="M. I." maxlength="1"></input>
+            <input type="text" id = "AuthorLastName" placeholder="Last Name"></input>
+        </div>
+
+        <div class="form-element">
+            <label for="Series">Series</label>
+            <input type="text"  id="Series"></input>
+        </div>
+
+        <div class="form-element">
+            <label for="SeriesNum">Series Number</label>
+            <input type="text"  id="SeriesNum"></input>
+        </div>
+
+        <div class="form-element">
+            <label for="Volume">Volume</label>
+            <input type="text"  id="Volume"></input>
+        </div>
+
+        <div class="form-element">
+            <label for="NumVolumes">Number of Volumes</label>
+            <input type="text" id="NumVolumes"></input>
+        </div>
+        
+        <div class="form-element">
+            <label for="Edition">Edition</label>
+            <input type="text"  id="Edition"></input>
+        </div>
+
+        <div class="form-element">
+            <label for="Place">Number of Volumes</label>
+            <input type="text" id="Place"></input>    
+        </div>
+
+        <div class="form-element">
+            <label for="Publisher">Publisher</label>
+            <input type="text"  id="Publisher"></input>
+        </div>
+
+        <div class="form-element">
+            <label for="Date">Date</label>
+            <input type="text" id="Date"></input>
+        </div>
+
+        <div class="form-element">
+            <label for="OriginalDate">Original Date</label>
+            <input type="text"  id="OriginalDate"></input>
+        </div>
+
+        <div class="form-element">
+            <label for="NumPages">Number of Pages</label>
+            <input type="text" id="NumPages"></input>
+        </div>
+
+        <div class="form-element">
+            <label for="Language">Language</label>
+            <input type="text"  id="Language"></input>
+        </div>
+        <div class="form-element">
+            <label for="ISBN">ISBN</label>
+            <input type="text" id="ISBN"></input>
+        </div>
+        <div class="form-element">
+            <label for="URL">URL</label>
+            <input type="text"  id="URL"></input>
+        </div>
+        <div class="form-element">
+            <label for="Accessed">Accessed</label>
+            <input type="text" id="Accessed"></input>
+        </div>
+
+        <div class="form-element">
+            <label for="Archive">Archive</label>
+            <input type="text"  id="Archive"></input>
+        </div>
+
+        <div class="form-element">
+            <label for="LocInArchive">Loc. in Archive</label>
+            <input type="text" id="LocInArchive"></input>
+        </div>
+
+        <div class="form-element">
+            <label for="LibCatalog">Library Catalog</label>
+            <input type="text"  id="LibCatalog"></input>
+        </div>
+
+        <div class="form-element">
+            <label for="CallNum">Call Number</label>
+            <input type="text" id="CallNum"></input>    
+        </div>
+
+        <div class="form-element">
+            <label for="Abstract">Abstract</label>
+            <input type="text"  id="Edition"></input>
+        </div>
+
+        <div class="form-element">
+            <label for="Extra">Extra</label>
+            <input type="text" id="Extra"></input>
+        </div>
+    </form>
 
 </Layout>
+
+<style>
+    form {
+        display: flex;
+        color: white;
+        flex-direction: column;
+        flex-wrap: wrap;
+        width: 100vw;
+        overflow-y: scroll;
+
+        height: 70vh;
+    }
+
+    #ItemType {
+        width: 200px
+    }
+
+    label {
+        display: inline-block;
+        width: 20%;
+        height: 3rem;
+        position: relative;
+        top: 1rem;
+    }
+
+    input {
+        border-radius: 5px;
+        border: solid 1px lightgrey;
+        width: 25%;
+        text-align: center;
+    }
+
+    .form-element {
+        display: flex;
+        width: 100vw;
+        height: 3rem;
+        flex-direction: row;
+        align-self: center;
+    }
+
+    #AuthorLastName {
+        width: 11%;
+    }
+    #AuthorMiddleName {
+        width: 2.5%;
+    }
+    #AuthorFirstName {
+        width: 11%;
+    }
+
+</style>
