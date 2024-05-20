@@ -20,23 +20,19 @@ if (!user) {
   return Astro.redirect("/signin");
 }
 ---
-<Layout title="dashboard">
+<Layout title="Dashboard">
   <div id="container">
-    <div id = "board">
-      <h1>Signed in as<span>
-        <img src={user.photoURL} style="width: 10%"/>
-        {user.displayName}</span></h1>
-      <p>Thanks for stopping by.</p>
+    <div id="board">
+      <h1>Welcome, <span>{user.displayName}</span></h1>
+      <img src={user.photoURL} id="profile-pic" alt="Profile Picture"/>
+      <p>Have a great day!</p>
       <form action="/api/auth/signout">
-        <button type="submit">Sign out</button>
+        <button type="submit">Sign Out</button>
       </form>
       <br>
       <form action="/">
-        <button type="submit">Back to home</button>
+        <button type="submit">Back to Home</button>
       </form>
-    </div>
-
-    <div id = "BGImage">
     </div>
   </div>
 </Layout>
@@ -44,83 +40,54 @@ if (!user) {
 <style>
   html {
     color: white;
-    
+    font-family: Arial, sans-serif;
+    height: 100%;
   }
   #container {
-    position: relative; /* Set container for positioning */
+    display: flex;
+    justify-content: center;
+    align-items: center;
     height: calc(100vh - var(--navbar-height));
   }
-  #pfp {
-    transform: scale(0.4); 
+  #board {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: solid 2px rgba(255, 255, 255, 0.2);
+    padding: 2rem;
+    border-radius: 10px;
+    text-align: center;
+    width: 80%;
+    max-width: 500px;
   }
-  #BGImage {
-    background-image: url('/boston_account_signin.png');
-    height: calc(100vh - var(--navbar-height));
-    background-size: cover;
-    width: calc(100vw - 2rem);
-    z-index: -1;
-    filter: blur(0rem);
-    background-size: 150%;
-    background-position-y: center;
-    filter:blur(1rem);
-    overflow: hidden;
-
-    position: absolute;
-    top: 0;
-    left: 0;
+  h1 {
+    font-weight: 700;
+    font-size: 2rem;
+    margin-bottom: 1rem;
   }
-
+  #profile-pic {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin: 1rem 0;
+  }
   button {
     transition: 0.2s;
     cursor: pointer;
-    background-color: lightgrey;
-    border-radius: 0.3rem;
-    width: 5rem;
-    height: 3rem;
+    background-color: var(--color-surface-mixed-400);
+    border-radius: 0.5rem;
+    width: 100%;
+    padding: 0.8rem;
     border: none;
-    font-size: 0.9rem;
+    font-size: 1rem;
+    color: white;
+    margin-top: 0.5rem;
   }
-
   button:hover {
-    scale: 1.1;
-    background-color: white;
+    transform: scale(1.05);
+    background-color: #5460E0;
   }
-
   span {
-    color: green;
-    font-weight: 900;
-    text-decoration: underline;
-    transition: 0.3s;
-    cursor: pointer;
-    display: inline-block;
-  }
-
-  span:hover {
-    color: lightgreen;
-    scale: 1.05;
-  }
-
-  h1 {
-    margin: 0;
-    font-weight: 300;
-  }
-
-  p {
-    margin-top: 0.2rem;
-  }
-
-  #board {
-    background-color: rgba(0,0,0,0.2);
-    backdrop-filter: blur(1.5rem);
-    border: solid 3px lightgrey;
-    padding: 1rem;
-    z-index: 1;
-    border-radius: 0.4rem;
-    text-align: center;
-    align-items: center;
-    position: absolute;
-    top: 50%; /* Center vertically */
-    left: 50%; /* Center horizontally */
-    transform: translate(-50%, -50%);
+    color: #00FF7F;
+    font-weight: 700;
   }
 </style>
