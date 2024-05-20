@@ -1,17 +1,19 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import Card from '../../components/Card.astro';
+import Sidebar from '../../components/Sidebar.astro';
 ---
 
 
 <Layout title="Sources">
-
+<Sidebar />
 <!-- list of sources (do not do until the database is fully synced) -->
+<div class="container">
+
 
     <form>
         <div class="form-element">
             <label for="ItemType">Item Type</label>
-            <div id = "custom-selectg">
+            <div id = "custom-select">
                 <select name="ItemType" id = "ItemType">
                     <option value="Artwork">Artwork</option>
                     <option value="Audio">Audio Recording</option>
@@ -29,7 +31,7 @@ import Card from '../../components/Card.astro';
 
         <div class="form-element">
             <label for="Title">Title</label>
-            <input id="Title"></input>
+            <input type="text" placeholder="" id="Title"></input>
         </div>
 
         <div class="form-element">
@@ -95,7 +97,7 @@ import Card from '../../components/Card.astro';
         </div>
         <div class="form-element">
             <label for="ISBN">ISBN</label>
-            <input type="text" id="ISBN"></input>
+            <input type="text" placeholder="I.E. 978-1507205334" id="ISBN"></input>
         </div>
         <div class="form-element">
             <label for="URL">URL</label>
@@ -136,7 +138,7 @@ import Card from '../../components/Card.astro';
             <input type="text" id="Extra"></input>
         </div>
     </form>
-
+</div>
 </Layout>
 
 <style>
@@ -144,19 +146,30 @@ import Card from '../../components/Card.astro';
         display: flex;
         color: white;
         flex-direction: column;
-        flex-wrap: wrap;
-        width: 100vw;
+        width: 50vw;
         overflow-y: scroll;
+        height: 75vh;
+        align-items: center;
 
-        height: 70vh;
+        position: absolute;
+        left: 25vw;
     }
 
     #ItemType {
-        width: 200px
+        width: 200px;
+        display: none;
+    }
+
+    #custom-select {
+        position: relative;
+        width: 60.5%;
+        height: 3rem;
+        background-color: white;
+        border-radius: 5px;
+        cursor:text;
     }
 
     label {
-        display: inline-block;
         width: 20%;
         height: 3rem;
         position: relative;
@@ -166,26 +179,27 @@ import Card from '../../components/Card.astro';
     input {
         border-radius: 5px;
         border: solid 1px lightgrey;
-        width: 25%;
+        width: 60%;
         text-align: center;
     }
 
     .form-element {
         display: flex;
-        width: 100vw;
-        height: 3rem;
+        max-width: 100vw;
+        width: 100%;
+        margin-bottom: 0.3rem;
         flex-direction: row;
         align-self: center;
     }
 
     #AuthorLastName {
-        width: 11%;
+        width: 27%;
     }
     #AuthorMiddleName {
-        width: 2.5%;
+        width: 4.6%;
     }
     #AuthorFirstName {
-        width: 11%;
+        width: 27%;
     }
 
 </style>
