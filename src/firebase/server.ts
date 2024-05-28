@@ -35,6 +35,7 @@ export async function getSessionUser(wrapped_cookie: AstroCookies) {
     const user = await auth.getUser(decodedIdToken.uid);
     return user;
   } catch (error) {
+    console.log(error)
     return null;
   }
 }

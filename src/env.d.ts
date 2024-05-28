@@ -1,5 +1,7 @@
 /// <reference types="astro/client" />
 
+import type { UserRecord } from "firebase-functions/v1/auth";
+
 interface ImportMetaEnv {
   readonly FIREBASE_PRIVATE_KEY_ID: string;
   readonly FIREBASE_PRIVATE_KEY: string;
@@ -14,4 +16,12 @@ interface ImportMetaEnv {
 
 interface ImportMeta {
   readonly env: ImportMetaEnv;
+}
+
+/// <reference types="astro/client" />
+declare namespace App {
+    interface Locals {
+        user: UserRecord;
+        path: string;
+    }
 }
