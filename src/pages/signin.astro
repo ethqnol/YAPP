@@ -1,15 +1,20 @@
 ---
 import { app } from "../firebase/server";
-import { getAuth } from "firebase-admin/auth";
+import { getAuth, type DecodedIdToken } from "firebase-admin/auth";
 import Layout from "../layouts/Layout.astro";
 
 const auth = getAuth(app);
 if (Astro.cookies.has("__session")) {
   const sessionCookie = Astro.cookies.get("__session")?.value;
-  const decodedCookie = await auth.verifySessionCookie(sessionCookie);
-  if (decodedCookie) {
-    return Astro.redirect("/account");
-  }
+  const decodedCookie: Response | DecodedIdToken= await auth.verifySessionCookie(sessionCookie, true)
+        .then((decodedToken) => {
+          return decodedToken;
+        })
+        .catch((error) => {
+          console.log(error)
+          Astro.cookies.delete("__session");
+          return Astro.redirect("/signin");
+        });
 }
 ---
 
