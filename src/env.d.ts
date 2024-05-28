@@ -17,11 +17,3 @@ interface ImportMetaEnv {
 interface ImportMeta {
   readonly env: ImportMetaEnv;
 }
-
-/// <reference types="astro/client" />
-declare namespace App {
-    interface Locals {
-        user: UserRecord;
-        path: string;
-    }
-}

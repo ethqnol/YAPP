@@ -1,4 +1,10 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Card from '../components/Card.astro';
+import { getSessionUser } from '../../firebase/server';
+
+const user = await getSessionUser(Astro.cookies);
+if(!user) {
+  return Astro.redirect("/signin");
+}
 ---

@@ -3,12 +3,10 @@ import Layout from '../../../layouts/Layout.astro';
 import Sidebar from '../../../components/Sidebar.astro';
 import { getSessionUser } from '../../../firebase/server';
 
-//const { user } = Astro.locals;
 const user = await getSessionUser(Astro.cookies);
-// console.log(Astro.cookies)
-// if(!user) {
-//   return Astro.redirect("/signin");
-// }
+if(!user) {
+  return Astro.redirect("/signin");
+}
 
 ---
 

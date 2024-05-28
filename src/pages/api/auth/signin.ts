@@ -31,20 +31,20 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
   const decodedCookie = await auth.verifySessionCookie(sessionCookie);
   const user = await auth.getUser(decodedCookie.uid);
   if(Date.parse(user.metadata.creationTime) - Date.parse(user.metadata.lastSignInTime) < 6000) {
-    const db = getFirestore(app);
-    db.collection("Students")
-      .where("email", "==", user.email)
-      .get()
-      .then(querySnapshot => {
-            if(!querySnapshot.empty) {
-              querySnapshot.docs[0].ref.update({
-                google_id: user.uid,
-                google_photo: user.photoURL,
-                display_name: user.displayName
-              })
-            }
+    // const db = getFirestore(app);
+    // db.collection("Students")
+    //   .where("email", "==", user.email)
+    //   .get()
+    //   .then(querySnapshot => {
+    //         if(!querySnapshot.empty) {
+    //           querySnapshot.docs[0].ref.update({
+    //             google_id: user.uid,
+    //             google_photo: user.photoURL,
+    //             display_name: user.displayName
+    //           })
+    //         }
         
-      })
+    //   })
   }
 
 
