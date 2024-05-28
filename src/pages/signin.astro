@@ -6,6 +6,12 @@ import Layout from "../layouts/Layout.astro";
 const auth = getAuth(app);
 if (Astro.cookies.has("__session")) {
   const sessionCookie = Astro.cookies.get("__session")?.value;
+  
+  if(!sessionCookie) {
+    Astro.cookies.delete("__session");
+    return Astro.redirect("/signin");
+  }
+  
   const decodedCookie: Response | DecodedIdToken= await auth.verifySessionCookie(sessionCookie, true)
         .then((decodedToken) => {
           return decodedToken;
@@ -15,6 +21,7 @@ if (Astro.cookies.has("__session")) {
           Astro.cookies.delete("__session");
           return Astro.redirect("/signin");
         });
+  return Astro.redirect("/account");
 }
 ---
 

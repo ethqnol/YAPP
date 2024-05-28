@@ -1,5 +1,6 @@
 import type { ServiceAccount } from "firebase-admin";
 import { initializeApp, cert, getApps } from "firebase-admin/app";
+import { getFirestore } from "firebase-admin/firestore";
 
 const activeApps = getApps();
 const serviceAccount = {
@@ -18,3 +19,22 @@ const serviceAccount = {
 export const app = activeApps.length === 0 ? initializeApp({
   credential: cert(serviceAccount as ServiceAccount),
 }) : activeApps[0];
+
+export const db = getFirestore(app);
+
+import type { AstroCookies } from 'astro'
+import { getAuth } from 'firebase-admin/auth'
+
+export async function getSessionUser(wrapped_cookie: AstroCookies) {
+  if(!wrapped_cookie) return null;
+  const cookie : string |undefined = wrapped_cookie.get('__session')?.value;
+  if(!cookie) return null;
+  const auth = getAuth(app);
+  try {
+    const decodedIdToken = await auth.verifySessionCookie(cookie, true);
+    const user = await auth.getUser(decodedIdToken.uid);
+    return user;
+  } catch (error) {
+    return null;
+  }
+}

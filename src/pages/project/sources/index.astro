@@ -1,6 +1,12 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
 import Sidebar from '../../../components/Sidebar.astro';
+import { getSessionUser } from '../../../firebase/server';
+
+const user = await getSessionUser(Astro.cookies);
+if(!user) {
+  return Astro.redirect("/signin");
+}
 ---
 
 
@@ -13,7 +19,7 @@ import Sidebar from '../../../components/Sidebar.astro';
                 <input type="text" placeholder="Enter a URL, ISBN, DOI, PMID, arXiv ID, or title">
                 <input type="submit" value="Cite">
             </div>
-            <button id = "ToggleManual">Manual Citation</button>
+            <a id = "ToggleManual" href="./sources/manual/">Manual Citation</button>
         </div>
     </div>
 </Layout>
@@ -22,14 +28,14 @@ import Sidebar from '../../../components/Sidebar.astro';
     #Page {
         position: absolute;
         right: 0;
-        width: 90vw;
+        width: calc(100vw - 2rem);
         text-align: center;
     }
 
     .FormGroup {
         height: 3em;
         margin: 1em;
-        width: 90vw;
+        width: calc(100vw - 2rem);
         text-align: center;
     }
 
@@ -95,7 +101,9 @@ import Sidebar from '../../../components/Sidebar.astro';
         height: 45%;
         width: 10%;
         border: none;
-        border-radius: 5px;
+        border-radius: 0.4rem;
+        text-decoration: none;
+        padding: 0.2rem;
     }
 
     #ToggleManual:hover {
