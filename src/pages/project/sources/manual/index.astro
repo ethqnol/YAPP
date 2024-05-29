@@ -1,12 +1,10 @@
 ---
-import Layout from '../../../../layouts/Layout.astro';
+import ProjectLayout from '../../../../layouts/ProjectLayout.astro';
 import Sidebar from '../../../../components/Sidebar.astro';
 ---
 
 
-<Layout title="Sources">
-<Sidebar />
-    <div id = "Page">
+<ProjectLayout title="Sources">
         <h1>Manual Search</h1>
         <form>
             <div class = "FormGroup">
@@ -32,8 +30,7 @@ import Sidebar from '../../../../components/Sidebar.astro';
             </div>
             <button id = "ToggleManual">Auto-citation</button>
         </form>
-    </div>
-</Layout>
+</ProjectLayout>
 <style>
     #Page {
         position: absolute;

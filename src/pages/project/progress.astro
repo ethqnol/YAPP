@@ -1,5 +1,5 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import ProjectLayout from '../../layouts/ProjectLayout.astro';
 import Card from '../../components/Card.astro';
 import { getSessionUser } from '../../firebase/server';
 
@@ -8,7 +8,3 @@ if(!user) {
   return Astro.redirect("/signin");
 }
 ---
-
-<Layout title="Progress">
-
-</Layout>
