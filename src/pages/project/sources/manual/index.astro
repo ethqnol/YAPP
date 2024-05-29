@@ -7,33 +7,79 @@ import Sidebar from '../../../../components/Sidebar.astro';
 <Layout title="Sources">
 <Sidebar />
     <div id = "Page">
-        <div id = "search">
-            <h1>Source Search</h1>
+        <h1>Manual Search</h1>
+        <form>
             <div class = "FormGroup" id="SearchBar">
-                <input type="text" placeholder="Enter a URL, ISBN, DOI, PMID, arXiv ID, or title">
-                <input type="submit" value="Cite">
+                <label>Source Type</label>
+                <div id = "CustomSelect"> <!-- This is necesarry for styling the select menu. -->
+                     <select id = "SourceType">
+                        <option value = "0">Artwork</option>
+                        <option value = "1">Audio Recording</option>
+                        <option value = "2">Bill</option>
+                        <option value = "3">Blogpost</option>
+                        <option value = "4">Book</option>
+                        <option value = "5">Book Section</option>
+                        <option value = "6">Case</option>
+                        <option value = "7">Software</option>
+                        <option value = "8">Conference Paper</option>
+                        <option value = "9">Dataset</option>
+                    </select>
+                </div>
             </div>
-            <button id = "ToggleManual">Manual Citation</button>
-        </div>
+            <button id = "ToggleManual">Auto-citation</button>
+            </div>
+        </form>
         <div id = "manual">
 
         </div>
     </div>
 </Layout>
-
 <style>
     #Page {
         position: absolute;
         right: 0;
         width: 90vw;
         text-align: center;
+        color: white;
+    }
+
+    form {
+        position: relative;
+        left: 25vw;
     }
 
     .FormGroup {
-        height: 3em;
-        margin: 1em;
-        width: 90vw;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
         text-align: center;
+    }
+
+    #CustomSelect {
+        display: flex;
+        justify-self: center;
+        position: relative;
+        min-width: 250px;
+        height: 50px;
+    }
+
+    select {
+        border: none;
+        appearance: none;
+        padding: 0 30px 0 15px;
+        width: 100%;
+        color: black;
+        font-size: medium;
+        background-color: white;
+        transition: 0.2s;
+    }
+
+    
+
+    label {
+        color: white;
+        margin: 1.5rem;
     }
 
     h1 {
