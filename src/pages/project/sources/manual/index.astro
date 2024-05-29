@@ -9,10 +9,10 @@ import Sidebar from '../../../../components/Sidebar.astro';
     <div id = "Page">
         <h1>Manual Search</h1>
         <form>
-            <div class = "FormGroup" id="SearchBar">
+            <div class = "FormGroup">
                 <label>Source Type</label>
                 <div id = "CustomSelect"> <!-- This is necesarry for styling the select menu. -->
-                     <select id = "SourceType">
+                    <select id = "SourceType">
                         <option value = "0">Artwork</option>
                         <option value = "1">Audio Recording</option>
                         <option value = "2">Bill</option>
@@ -26,12 +26,12 @@ import Sidebar from '../../../../components/Sidebar.astro';
                     </select>
                 </div>
             </div>
-            <button id = "ToggleManual">Auto-citation</button>
+            <div>
+                <label for = "Title"></label>
+                <input id = "Title" type = "text" placeholder="Source Title">
             </div>
+            <button id = "ToggleManual">Auto-citation</button>
         </form>
-        <div id = "manual">
-
-        </div>
     </div>
 </Layout>
 <style>
@@ -44,8 +44,10 @@ import Sidebar from '../../../../components/Sidebar.astro';
     }
 
     form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         position: relative;
-        left: 25vw;
     }
 
     .FormGroup {
