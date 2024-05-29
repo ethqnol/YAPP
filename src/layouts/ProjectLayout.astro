@@ -1,0 +1,75 @@
+---
+import Sidebar from '../components/Sidebar.astro';
+interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content="Astro description" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+		<meta name="generator" content={Astro.generator} />
+		
+		<title>{title}</title>
+	</head>
+	<body>
+	<Sidebar />
+	<div id="Page">   
+        <slot />
+	</div>
+
+	</body>
+</html>
+<style>
+    #Page {
+        position: absolute;
+        right: 0;
+        width: calc(100vw - 2rem - 15vw);
+        max-width: calc(100vw - 2rem - 15vw);
+        text-align: center;
+    }
+    
+   	html {
+		font-family: system-ui, sans-serif;
+		background: #13151a;
+		background-size: 224px;
+	}
+	
+	:root {
+		--accent: 136, 58, 234;
+		--accent-light: 224, 204, 250;
+		--accent-dark: 49, 10, 101;
+		--accent-gradient: linear-gradient(90deg, rgba(46,126,133,1) 13%, rgba(0,0,121,1) 61%, rgba(160,239,255,1) 100%);
+        --navbar-height: 8vh;
+        --sidebar-width: 10vw;
+        
+        --color-primary-100: #127dff;
+        --color-primary-200: #4e8aff;
+        --color-primary-300: #6d98ff;
+        --color-primary-400: #87a6ff;
+        --color-primary-500: #9db4ff;
+        --color-primary-600: #b3c2ff;
+        /** CSS DARK THEME SURFACE COLORS */
+        --color-surface-100: #121212;
+        --color-surface-200: #282828;
+        --color-surface-300: #3f3f3f;
+        --color-surface-400: #575757;
+        --color-surface-500: #717171;
+        --color-surface-600: #8b8b8b;
+        /** CSS DARK THEME MIXED SURFACE COLORS */
+        --color-surface-mixed-100: #191c26;
+        --color-surface-mixed-200: #2e313a;
+        --color-surface-mixed-300: #454750;
+        --color-surface-mixed-400: #5d5f67;
+        --color-surface-mixed-500: #76777e;
+        --color-surface-mixed-600: #8f9197;
+
+	}
+
+</style>

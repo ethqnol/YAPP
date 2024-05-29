@@ -1,5 +1,5 @@
 ---
-import Layout from '../../../layouts/Layout.astro';
+import ProjectLayout from '../../../layouts/ProjectLayout.astro';
 import Sidebar from '../../../components/Sidebar.astro';
 import { getSessionUser } from '../../../firebase/server';
 
@@ -11,32 +11,31 @@ if(!user) {
 ---
 
 
-<Layout title="Sources">
-<Sidebar />
-    <div id = "Page">
-        <div id = "search">
-            <h1>Source Search</h1>
-            <div class = "FormGroup" id="SearchBar">
-                <input type="text" placeholder="Enter a URL, ISBN, DOI, PMID, arXiv ID, or title">
-                <input type="submit" value="Cite">
-            </div>
-            <a id = "ToggleManual" href="./sources/manual/">Manual Citation</button>
+<ProjectLayout title="Sources">
+    <div id = "search">
+        <h1>Source Search</h1>
+        <div class = "FormGroup" id="SearchBar">
+            <input type="text" placeholder="Enter a URL, ISBN, DOI, PMID, arXiv ID, or title">
+            <input type="submit" value="Cite">
         </div>
+        <a id = "ToggleManual" href="./sources/manual/">Manual Citation</a>
     </div>
-</Layout>
+</ProjectLayout>
 
 <style>
     #Page {
         position: absolute;
         right: 0;
-        width: calc(100vw - 2rem);
+        width: calc(100vw - 2rem - 15vw);
+        max-width: calc(100vw - 2rem - 15vw);
         text-align: center;
     }
 
     .FormGroup {
         height: 3em;
-        margin: 1em;
-        width: calc(100vw - 2rem);
+        padding: 1rem 0rem;
+        width: calc(100vw - 2rem - 15vw);
+        max-width: calc(100vw - 2rem - 15vw);
         text-align: center;
     }
 
@@ -53,7 +52,7 @@ if(!user) {
         border-radius: 5px;
         transition: 0.2s;
         color: grey;
-        padding: 0.4em;
+        padding: 0.5em;
         width: 30%;
         font-size: medium;
         position: relative;
@@ -95,12 +94,9 @@ if(!user) {
     #ToggleManual {
         position: relative;
         top: 39vh;
-        right: 0.15rem;
         background-color: var(--color-primary-400);
         transition: 0.2s;
         cursor: pointer;
-        height: 45%;
-        width: 10%;
         border: none;
         border-radius: 0.4rem;
         text-decoration: none;
