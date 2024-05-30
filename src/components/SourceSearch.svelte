@@ -1,20 +1,50 @@
----
-import ProjectLayout from '../../../layouts/ProjectLayout.astro';
-import { getSessionUser } from '../../../firebase/server';
-import SourceSearch from '../../../components/SourceSearch.svelte';
-const user = await getSessionUser(Astro.cookies);
-if(!user) {
-  return Astro.redirect("/signin");
-}
+<script>
+    import PossibleSources from "./PossibleSources.svelte";
+    let bookInput = "";
+    let book_data = [];
 
-var $data = [];
----
+    async function searchBook(query) {
+        const response = await fetch(`https://openlibrary.org/search.json?q=${encodeURIComponent(query)}`);
+        const unwrapped = await response.json();
+        let data = unwrapped.docs;
+        //console.log(data)
+        return data;
+    }
 
+    async function handleSearch() {
+        book_data = await searchBook(bookInput);
+    }
+</script>
 
-<ProjectLayout title="Sources">
-    <SourceSearch client:visible />
-</ProjectLayout>
+<svelte:head>
+    <meta name="injected" content="true" />
+</svelte:head>
 
+<div id="Page">
+    <div id="search">
+        <h1>Source Search</h1>
+        <div class="FormGroup" id="SearchBar">
+            <input type="text" id="bookInput" placeholder="Enter an ISBN, DOI, or arXiv ID" bind:value={bookInput} />
+            <button on:click={handleSearch}> Search </button>
+        </div>
+        <a id="ToggleManual" href="./sources/manual/">Manual Citation</a>
+        <div id="searchResults"></div>
+    </div>
+    <!-- {#each book_data as book}
+        <p> "hi" </p>
+    {/each} -->
+    {#await book_data}
+        <p>Loading...</p>
+    {:then book_data}
+        {#if book_data.length > 0}
+            {#each book_data as book}
+                <PossibleSources data={book} />
+            {/each}
+        {/if}
+    {:catch error}
+        <p>{error.message}</p>
+    {/await} -->
+</div>
 
 <style>
     #Page {
@@ -51,7 +81,6 @@ var $data = [];
         font-size: medium;
         position: relative;
         top: 0.3vh;
-
         box-sizing: border-box;
         padding: 0.3rem;
     }
@@ -63,7 +92,7 @@ var $data = [];
         margin-right: 0.7rem;
     }
 
-    input[type="submit"] {
+    button {
         background-color: var(--color-primary-400);
         transition: 0.2s;
         cursor: pointer;
@@ -73,8 +102,15 @@ var $data = [];
         border-radius: 5px;
     }
 
-    input[type="submit"]:hover {
+    button:hover {
         background-color: var(--color-primary-100);
+        scale: 1.1;
+        color: white;
+        margin-left: 0.3rem;
+    }
+
+    button:active {
+        background-color: var(--color-primary-200);
         scale: 1.1;
         color: white;
         margin-left: 0.3rem;
@@ -103,11 +139,9 @@ var $data = [];
         color: white;
     }
 
-    
     #searchResults {
         position: relative;
         top: 40vh;
         color: white;
     }
 </style>
-<!-- list of sources (do not do until the database is fully synced) -->
