@@ -11,9 +11,6 @@
         <h2>
             {data.author_name}
         </h2>
-        <p>
-            {data.isbn[0]}
-        </p>
     </a>
 </li>
 

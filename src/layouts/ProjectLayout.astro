@@ -27,19 +27,19 @@ const { title } = Astro.props;
 	</body>
 </html>
 <style>
-    #Page {
-        position: absolute;
-        right: 0;
-        width: calc(100vw - 2rem - 15vw);
-        max-width: calc(100vw - 2rem - 15vw);
-        text-align: center;
-    }
-    
    	html {
 		font-family: system-ui, sans-serif;
 		background: #13151a;
 		background-size: 224px;
 	}
+	
+    #Page {
+        width: calc(100vw - 1rem - 15vw);
+        max-width: calc(100vw - 1rem - 15vw);
+        text-align: center;
+        align-items: center;
+        color: white;
+    }
 	
 	:root {
 		--accent: 136, 58, 234;

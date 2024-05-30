@@ -2,17 +2,22 @@
     import PossibleSources from "./PossibleSources.svelte";
     let bookInput = "";
     let book_data = [];
-
+    let loading = false;
+    let querySent = false;
     async function searchBook(query) {
+        
         const response = await fetch(`https://openlibrary.org/search.json?q=${encodeURIComponent(query)}`);
         const unwrapped = await response.json();
         let data = unwrapped.docs;
-        //console.log(data)
+        console.log(data)
         return data;
     }
 
     async function handleSearch() {
+        loading = true;
+        querySent = true;
         book_data = await searchBook(bookInput);
+        loading = false;
     }
 </script>
 
@@ -20,53 +25,70 @@
     <meta name="injected" content="true" />
 </svelte:head>
 
-<div id="Page">
-    <div id="search">
+<div id="search">
+    <div id="search-area">
         <h1>Source Search</h1>
         <div class="FormGroup" id="SearchBar">
             <input type="text" id="bookInput" placeholder="Enter an ISBN, DOI, or arXiv ID" bind:value={bookInput} />
             <button on:click={handleSearch}> Search </button>
         </div>
         <a id="ToggleManual" href="./sources/manual/">Manual Citation</a>
-        <div id="searchResults"></div>
     </div>
-    <!-- {#each book_data as book}
-        <p> "hi" </p>
-    {/each} -->
-    {#await book_data}
-        <p>Loading...</p>
-    {:then book_data}
-        {#if book_data.length > 0}
-            {#each book_data as book}
-                <PossibleSources data={book} />
-            {/each}
+
+    
+    <div id="searchResults">
+        {#if loading}
+            <p id="loading">Loading...</p>
+            
+        {:else if querySent == false}
+            <p> Nothing Here Yet... Search Books Above</p>
+        {:else}
+            {#if book_data.length > 0}
+                {#each book_data as book}
+                    <PossibleSources data={book} />
+                {/each}
+            {/if}
         {/if}
-    {:catch error}
-        <p>{error.message}</p>
-    {/await} -->
+    </div>
 </div>
 
 <style>
-    #Page {
-        position: absolute;
-        right: 0;
-        width: calc(100vw - 2rem - 15vw);
-        max-width: calc(100vw - 2rem - 15vw);
-        text-align: center;
+    #loading {
+        color: white;
+        position: relative;
     }
 
+    #search-area{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 5rem;
+    }
+    
+    #search {
+        margin-left: 15vw;
+        width: 100%;
+        
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+    
     .FormGroup {
         height: 3em;
         padding: 1rem 0rem;
         width: calc(100vw - 2rem - 15vw);
         max-width: calc(100vw - 2rem - 15vw);
         text-align: center;
+        align-self: center;
     }
 
     h1 {
         color: white;
         position: relative;
-        top: 33.5vh;
     }
 
     input[type="text"] {
@@ -80,7 +102,6 @@
         width: 30%;
         font-size: medium;
         position: relative;
-        top: 0.3vh;
         box-sizing: border-box;
         padding: 0.3rem;
     }
@@ -118,12 +139,10 @@
 
     #SearchBar {
         position: absolute;
-        top: 40vh;
     }
 
     #ToggleManual {
         position: relative;
-        top: 39vh;
         background-color: var(--color-primary-400);
         transition: 0.2s;
         cursor: pointer;
@@ -140,8 +159,7 @@
     }
 
     #searchResults {
-        position: relative;
-        top: 40vh;
+        width: 95%;  
         color: white;
     }
 </style>
