@@ -4,14 +4,14 @@
 </script>
 
 <li class="link-card">
-    <a href="">
+    <button>
         <h2>
             {data.title}
         </h2>
         <h2>
             {data.author_name}
         </h2>
-    </a>
+    </button>
 </li>
 
 <style>
@@ -27,7 +27,7 @@
         transition: background-position 0.6s cubic-bezier(0.22, 1, 0.36, 1);
         box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
     }
-    .link-card > a {
+    .link-card > button {
         width: 100%;
         text-decoration: none;
         line-height: 1.4;
@@ -36,6 +36,7 @@
         color: white;
         background-color: #23262d;
         opacity: 0.8;
+        border:none;
     }
     h2 {
         margin: 0;

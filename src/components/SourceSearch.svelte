@@ -5,11 +5,12 @@
     let loading = false;
     let querySent = false;
     async function searchBook(query) {
-        
-        const response = await fetch(`https://openlibrary.org/search.json?q=${encodeURIComponent(query)}`);
+        const response = await fetch(
+            `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}`,
+        );
         const unwrapped = await response.json();
         let data = unwrapped.docs;
-        console.log(data)
+        console.log(data);
         return data;
     }
 
@@ -29,66 +30,116 @@
     <div id="search-area">
         <h1>Source Search</h1>
         <div class="FormGroup" id="SearchBar">
-            <input type="text" id="bookInput" placeholder="Enter an ISBN, DOI, or arXiv ID" bind:value={bookInput} />
+            <input
+                type="text"
+                id="bookInput"
+                placeholder="Enter an ISBN, DOI, or arXiv ID"
+                bind:value={bookInput}
+            />
             <button on:click={handleSearch}> Search </button>
         </div>
-        <a id="ToggleManual" href="./sources/manual/">Manual Citation</a>
     </div>
 
-    
     <div id="searchResults">
         {#if loading}
-            <p id="loading">Loading...</p>
-            
+            <p id="loading">
+                Loading
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </p>
         {:else if querySent == false}
-            <p> Nothing Here Yet... Search Books Above</p>
+            <p>
+                Nothing to see here... yet. Find books and sources in the search
+                bar above!
+            </p>
+        {:else if book_data.length > 0}
+            {#each book_data as book}
+                <PossibleSources data={book} />
+            {/each}
         {:else}
-            {#if book_data.length > 0}
-                {#each book_data as book}
-                    <PossibleSources data={book} />
-                {/each}
-            {/if}
+            <p>No Books Found!</p>
         {/if}
     </div>
 </div>
 
 <style>
     #loading {
-        color: white;
-        position: relative;
+        font-size: 24px;
+        font-weight: bold;
+        text-align: center;
     }
 
-    #search-area{
+    @keyframes dotFlashing {
+        0% {
+            opacity: 1;
+        }
+        50% {
+            opacity: 0.5;
+        }
+        100% {
+            opacity: 0;
+        }
+    }
+
+    .dot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        margin: 0 4px;
+        border-radius: 50%;
+        background-color: white;
+        animation: dotFlashing 1.8s infinite both;
+        color: white;
+    }
+
+    .dot:nth-child(1) {
+        animation-delay: 0s;
+    }
+
+    .dot:nth-child(2) {
+        animation-delay: 0.1s;
+    }
+
+    .dot:nth-child(3) {
+        animation-delay: 0.2s;
+    }
+
+    #search-area {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: 5rem;
+        background-color: var(--color-surface-200);
+        border-radius: 0.4rem;
+        width: 95%;
+        padding: 1rem;
     }
-    
+
     #search {
         margin-left: 15vw;
         width: 100%;
-        
+        margin-top: 5vh;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         gap: 0.5rem;
+        overflow-x: hidden;
+        max-width: calc(100vw - 15vw - 2rem);
     }
-    
+
     .FormGroup {
         height: 3em;
         padding: 1rem 0rem;
-        width: calc(100vw - 2rem - 15vw);
-        max-width: calc(100vw - 2rem - 15vw);
+        width: 100%;
+        max-width: 100%;
         text-align: center;
         align-self: center;
     }
 
     h1 {
         color: white;
-        position: relative;
     }
 
     input[type="text"] {
@@ -101,7 +152,6 @@
         padding: 0.5em;
         width: 30%;
         font-size: medium;
-        position: relative;
         box-sizing: border-box;
         padding: 0.3rem;
     }
@@ -137,29 +187,21 @@
         margin-left: 0.3rem;
     }
 
-    #SearchBar {
-        position: absolute;
-    }
 
-    #ToggleManual {
-        position: relative;
-        background-color: var(--color-primary-400);
-        transition: 0.2s;
-        cursor: pointer;
-        border: none;
-        border-radius: 0.4rem;
-        text-decoration: none;
-        padding: 0.2rem;
-    }
-
-    #ToggleManual:hover {
-        background-color: var(--color-primary-100);
-        scale: 1.1;
-        color: white;
-    }
 
     #searchResults {
-        width: 95%;  
+        width: 95%;
         color: white;
+        padding: 1rem;
+        border-radius: 0.4rem;
+        background-color: var(--color-surface-mixed-200);
+        height: 100%;
+        gap: 1rem;
+    }
+    
+    p {
+        color: white;
+        font-weight: 900;
+        font-size: 1.5rem;
     }
 </style>
