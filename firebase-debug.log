@@ -1,0 +1,29 @@
+[debug] [2024-06-02T13:54:08.714Z] ----------------------------------------------------------------------
+[debug] [2024-06-02T13:54:08.716Z] Command:       /usr/local/bin/node /Users/ewu/Git-Repos/YAPP/node_modules/.bin/firebase deploy --only hosting
+[debug] [2024-06-02T13:54:08.716Z] CLI Version:   13.10.2
+[debug] [2024-06-02T13:54:08.716Z] Platform:      darwin
+[debug] [2024-06-02T13:54:08.716Z] Node Version:  v20.13.1
+[debug] [2024-06-02T13:54:08.717Z] Time:          Sun Jun 02 2024 09:54:08 GMT-0400 (Eastern Daylight Time)
+[debug] [2024-06-02T13:54:08.717Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-06-02T13:54:08.759Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-06-02T13:54:08.760Z] > authorizing via signed-in user (drinkfood.exe@gmail.com)
+[debug] [2024-06-02T13:54:08.760Z] [iam] checking project yapp-6e048 for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2024-06-02T13:54:08.762Z] > refreshing access token with scopes: []
+[debug] [2024-06-02T13:54:08.764Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2024-06-02T13:54:08.764Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2024-06-02T13:54:08.976Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2024-06-02T13:54:08.977Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2024-06-02T13:54:08.993Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/yapp-6e048:testIamPermissions [none]
+[debug] [2024-06-02T13:54:08.993Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/yapp-6e048:testIamPermissions x-goog-quota-user=projects/yapp-6e048
+[debug] [2024-06-02T13:54:08.993Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/yapp-6e048:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2024-06-02T13:54:09.309Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/yapp-6e048:testIamPermissions 200
+[debug] [2024-06-02T13:54:09.309Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/yapp-6e048:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2024-06-02T13:54:09.310Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/yapp-6e048 [none]
+[debug] [2024-06-02T13:54:09.671Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/yapp-6e048 200
+[debug] [2024-06-02T13:54:09.671Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/yapp-6e048 {"projectId":"yapp-6e048","projectNumber":"288729703549","displayName":"Yapp","name":"projects/yapp-6e048","resources":{"hostingSite":"yapp-6e048","realtimeDatabaseInstance":"yapp-6e048-default-rtdb"},"state":"ACTIVE","etag":"1_3df40339-ad80-44ca-9f31-55f0967850dc"}
+[debug] [2024-06-02T13:54:10.669Z] defaultcredentials: writing to file /Users/ewu/.config/firebase/drinkfood_exe_gmail.com_application_default_credentials.json
+[debug] [2024-06-02T13:54:10.670Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/yapp-6e048/sites pageToken=&pageSize=10
+[debug] [2024-06-02T13:54:11.577Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/yapp-6e048/sites 200
+[debug] [2024-06-02T13:54:11.577Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/yapp-6e048/sites {"sites":[{"name":"projects/yapp-6e048/sites/yapp-6e048","defaultUrl":"https://yapp-6e048.web.app","appId":"1:288729703549:web:fda9af208e0f3c84693d14","type":"DEFAULT_SITE"}]}
+[debug] [2024-06-02T13:54:11.578Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/-/webApps/1:288729703549:web:fda9af208e0f3c84693d14/config [none]

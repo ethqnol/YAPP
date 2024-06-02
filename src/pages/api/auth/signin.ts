@@ -22,8 +22,7 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
     );
   }
   
-  const sessionLen = 1000 * 60 * 5
-    // 60 * 60 * 24 * 3 * 1000;
+  const sessionLen = 60 * 60 * 24 * 7 * 1000;
   const sessionCookie = await auth.createSessionCookie(idToken, {
     expiresIn: sessionLen,
   });
