@@ -1,7 +1,6 @@
 import type { APIRoute } from "astro";
 import { app } from "../../../firebase/server";
 import { getAuth } from "firebase-admin/auth";
-import { getFirestore } from "firebase-admin/firestore";
 
 export const GET: APIRoute = async ({ request, cookies, redirect }) => {
   const auth = getAuth(app);
@@ -51,6 +50,5 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
   cookies.set("__session", sessionCookie, {
     path: "/",
   });
-  
   return redirect("/account");
 };

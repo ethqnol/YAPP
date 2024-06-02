@@ -6,7 +6,7 @@
     let querySent = false;
     async function searchBook(query) {
         const response = await fetch(
-            `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}`,
+            `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&fields=*&limit=8`,
         );
         const unwrapped = await response.json();
         let data = unwrapped.docs;
@@ -29,7 +29,7 @@
 <div id="search">
     <div id="search-area">
         <h1>Source Search</h1>
-        <div class="FormGroup" id="SearchBar">
+        <form class="FormGroup" id="SearchBar" on:submit|preventDefault={handleSearch}>
             <input
                 type="text"
                 id="bookInput"
@@ -37,7 +37,7 @@
                 bind:value={bookInput}
             />
             <button on:click={handleSearch}> Search </button>
-        </div>
+        </form>
     </div>
 
     <div id="searchResults">

@@ -1,20 +1,44 @@
 <script>
     export let data;
-    console.log(data);
+    
+    let author;
+    
+    if(data.author_name){
+        author = data.author_name.join(' ');
+    } else {
+        author = "Unknown";
+    }
+    
+    
 </script>
 
 <li class="link-card">
     <button>
-        <h2>
-            {data.title}
-        </h2>
-        <h2>
-            {data.author_name}
-        </h2>
+        <div class="container">
+            <img src={`https://covers.openlibrary.org/b/id/${data.cover_i}.jpg`} alt="book cover" />
+            <div class="info-container">
+                <h2>
+                    {data.title}
+                </h2>
+                <h2>
+                    {#if author && author.length > 20}
+                        {author.slice(0, 50) + "..."}
+                    {:else}
+                        {author}
+                    {/if}
+                </h2>
+            </div>
+
+        </div>
+
     </button>
 </li>
 
 <style>
+    img {
+        max-height: 10vh;
+        border-radius: 8px 8px 0 0;
+    }
     .link-card {
         list-style: none;
         display: flex;
@@ -37,6 +61,21 @@
         background-color: #23262d;
         opacity: 0.8;
         border:none;
+    }
+    
+    .container {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .info-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin-left: 1rem;
+        padding: 0rem 1rem;
     }
     h2 {
         margin: 0;
