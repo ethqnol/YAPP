@@ -50,15 +50,14 @@
             </p>
         {:else if querySent == false}
             <p>
-                Nothing to see here... yet. Find books and sources in the search
-                bar above!
+                Nothing to see here... yet.
             </p>
         {:else if book_data.length > 0}
             {#each book_data as book}
                 <PossibleSources data={book} />
             {/each}
         {:else}
-            <p>No Books Found!</p>
+            <p>No Books Found</p>
         {/if}
     </div>
 </div>
@@ -117,16 +116,17 @@
     }
 
     #search {
-        margin-left: 15vw;
-        width: 100%;
+        width: calc(100vw - 2rem - 5vw);
+        max-width: calc(100vw - 2rem - var(--sidebar-width));
         margin-top: 5vh;
         display: flex;
+        position: absolute;
+        right: 0;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         gap: 0.5rem;
         overflow-x: hidden;
-        max-width: calc(100vw - 15vw - 2rem);
     }
 
     .FormGroup {
@@ -154,6 +154,8 @@
         font-size: medium;
         box-sizing: border-box;
         padding: 0.3rem;
+        position: relative;
+        top: 0.3vh;
     }
 
     input[type="text"]:focus {
@@ -194,7 +196,6 @@
         color: white;
         padding: 1rem;
         border-radius: 0.4rem;
-        background-color: var(--color-surface-mixed-200);
         height: 100%;
         gap: 1rem;
     }
