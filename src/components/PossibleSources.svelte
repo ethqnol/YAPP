@@ -1,6 +1,6 @@
 <script>
     export let data;
-    
+
     let author;
     let ISBN;
     let publisher;
@@ -9,25 +9,25 @@
 
     let expanded = false;
 
-    if(data.author_name){
-        author = data.author_name.join(' ');
+    if (data.author_name) {
+        author = data.author_name.join(" ");
     } else {
         author = "Unknown";
     }
 
-    if(data.isbn){
+    if (data.isbn) {
         ISBN = data.isbn[0];
     } else {
         ISBN = "Unknown";
     }
 
-    if(data.publish_place){
+    if (data.publish_place) {
         PublishingCity = data.publish_place[0];
     } else {
         PublishingCity = "Unknown";
     }
 
-    if(data.publish_date){
+    if (data.publish_date) {
         PublishYear = data.publish_date[0];
     } else {
         PublishYear = "Unknown";
@@ -39,18 +39,19 @@
         publisher = "Unknown";
     }
 
-    
     function expand() {
-        expanded= !expanded;
+        expanded = !expanded;
         console.log("Toggled!");
     }
-    
 </script>
 
 <li class="link-card">
-    <button id = "CurrentBook" on:click={expand}>
+    <button id="CurrentBook" on:click={expand}>
         <div class="container">
-            <img src={`https://covers.openlibrary.org/b/id/${data.cover_i}.jpg`} alt="book cover" />
+            <img
+                src={`https://covers.openlibrary.org/b/id/${data.cover_i}.jpg`}
+                alt="book cover"
+            />
             <div class="info-container">
                 <h2>
                     {data.title}
@@ -65,80 +66,64 @@
             </div>
         </div>
         {#if expanded}
-        <div id = "ToggleInfo">
-            <table>
-                <th colspan="2">More Info</th>
-                <tr>
-                    <td id = "TopLeftRounding">
-                        Author Name
-                    </td>
-                    <td id = "TopRightRounding">
-                        {#if author && author.length > 20}
-                        {author.slice(0, 50) + "..."}
-                        {:else}
-                        {author}
-                        {/if}
-                    </td>
-                </tr>
-                <tr>
-                    <td >
-                        ISBN
-                    </td>
-                    <td>
-                        {#if ISBN && ISBN.length > 50}
-                        {ISBN.slice(0, 50) + "..."}
-                        {:else}
-                        {ISBN}
-                        {/if}
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Publishing Year
-                    </td>
-                    <td>
-                        {#if PublishYear && PublishYear.length > 20}
-                        {PublishYear.slice(0, 50) + "..."}
-                        {:else}
-                        {PublishYear}
-                        {/if}
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Publisher City
-                    </td>
-                    <td>
-                        {#if PublishingCity && PublishingCity.length > 20}
-                        {PublishingCity.slice(0, 50) + "..."}
-                        {:else}
-                        {PublishingCity}
-                        {/if}
-                    </td>
-                </tr>
-                <tr>
-                    <td id = "BottomLeftRounding">
-                        Publisher
-                    </td>
-                    <td id = "BottomRightRounding">
-                        {#if publisher && publisher.length > 20}
-                        {publisher.slice(0, 50) + "..."}
-                        {:else}
-                        {publisher}
-                        {/if}
-                    </td>
-                </tr>
-            </table>
-        </div>
-        {:else}
-
-
+            <div id="ToggleInfo">
+                <table>
+                    <th colspan="2">More Info</th>
+                    <tr>
+                        <td id="TopLeftRounding"> Author Name </td>
+                        <td id="TopRightRounding">
+                            {#if author && author.length > 20}
+                                {author.slice(0, 50) + "..."}
+                            {:else}
+                                {author}
+                            {/if}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td> ISBN </td>
+                        <td>
+                            {#if ISBN && ISBN.length > 50}
+                                {ISBN.slice(0, 50) + "..."}
+                            {:else}
+                                {ISBN}
+                            {/if}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td> Publishing Year </td>
+                        <td>
+                            {#if PublishYear && PublishYear.length > 20}
+                                {PublishYear.slice(0, 50) + "..."}
+                            {:else}
+                                {PublishYear}
+                            {/if}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td> Publisher City </td>
+                        <td>
+                            {#if PublishingCity && PublishingCity.length > 20}
+                                {PublishingCity.slice(0, 50) + "..."}
+                            {:else}
+                                {PublishingCity}
+                            {/if}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="BottomLeftRounding"> Publisher </td>
+                        <td id="BottomRightRounding">
+                            {#if publisher && publisher.length > 20}
+                                {publisher.slice(0, 50) + "..."}
+                            {:else}
+                                {publisher}
+                            {/if}
+                        </td>
+                    </tr>
+                </table>
+            </div>
         {/if}
     </button>
-
-
 </li>
-
 
 <style>
     img {
@@ -167,16 +152,16 @@
         color: white;
         background-color: #23262d;
         opacity: 0.8;
-        border:none;
+        border: none;
     }
-    
+
     .container {
         display: flex;
         align-items: center;
         width: 100%;
         justify-content: center;
     }
-    
+
     .info-container {
         display: flex;
         flex-direction: column;
@@ -184,7 +169,7 @@
         margin-left: 1rem;
         padding: 0rem 1rem;
     }
-    
+
     h2 {
         margin: 0;
         font-size: 1.25rem;
@@ -212,7 +197,7 @@
         margin-top: 20px;
         text-align: center;
     }
-    
+
     table {
         display: inline-block;
         width: 100%;
