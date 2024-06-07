@@ -41,8 +41,8 @@
 
     function expand() {
         expanded = !expanded;
-        console.log("Toggled!");
     }
+    console.log(data)
 </script>
 
 <li class="link-card">
