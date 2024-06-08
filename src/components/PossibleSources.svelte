@@ -42,7 +42,7 @@
     function expand() {
         expanded = !expanded;
     }
-    console.log(data)
+    //console.log(data)
 </script>
 
 <li class="link-card">

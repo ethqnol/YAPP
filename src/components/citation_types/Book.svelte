@@ -3,22 +3,22 @@ import { onMount } from 'svelte';
 
     
 import type Source from '../../lib/source';
-export let data;
+export let data : any = null;
 let source : Source;
 if(data){
   source = {
     title: data.title != "" ? data.title : "",
-    author_full: data.author_name != [] ? data.author_name.join(" ") : "",
-    author_last: data.author_name != [] ? data.author_name[0].split(" ")[0] : "",
+    author_full: data.author_name.length == 0 ? data.author_name.join(" ") : "",
+    author_last: data.author_name.length == 0 ? data.author_name[0].split(" ")[0] : "",
     author_mi: "",
     author_first: "",
     series: "",
-    series_num: undefined,
-    volume: undefined,
-    edition: undefined,
+    series_num: null,
+    volume: null,
+    edition: null,
     publishing_location: "",
     publishing_company: "",
-    publishing_year: undefined,
+    publishing_year: null,
     doi: "",
     isbn: "",
     full_citation: "",
@@ -31,12 +31,12 @@ if(data){
     author_mi: "",
     author_first: "",
     series: "",
-    series_num: undefined,
-    volume: undefined,
-    edition: undefined,
+    series_num: null,
+    volume: null,
+    edition: null,
     publishing_location: "",
     publishing_company: "",
-    publishing_year: undefined,
+    publishing_year: null,
     doi: "",
     isbn: "",
     full_citation: "",
@@ -91,7 +91,7 @@ if(data){
         <label for="ISBN">ISBN</label>
         <input id="ISBN" type="text" placeholder="ISBN" bind:value={source.isbn}>
     </div>
-    <button id="ToggleManual" type="button">Auto-citation</button>
+    <button id="ToggleManual" type="button" on:click={()=>console.log("hello wrold")}>Auto-citation</button>
 </form>
 
 
@@ -105,6 +105,7 @@ if(data){
     .form-group {
         display: flex;
         flex-direction: column;
+        margin-right: 1rem;
     }
 
     label {
@@ -113,26 +114,7 @@ if(data){
         color: var(--color-surface-mixed-400);
     }
 
-    .custom-select {
-        position: relative;
-        width: 100%;
-    }
 
-    select {
-        width: 100%;
-        padding: 0.5rem;
-        font-size: 1rem;
-        color: #20232a;
-        border: 1px solid var(--color-surface-mixed-400);
-        border-radius: 4px;
-        background-color: white;
-        appearance: none;
-    }
-
-    select:focus {
-        outline: none;
-        border-color: var(--color-surface-mixed-400);
-    }
 
     input[type="text"] {
         width: 100%;

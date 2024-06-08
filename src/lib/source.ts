@@ -4,13 +4,13 @@ export default interface Source {
   author_first: string;
   author_last: string;
   author_mi: string;
-  volume: number;
-  edition: number;
+  volume: number | null;
+  edition: number | null;
   series: string;
-  series_num: number;
+  series_num: number | null;
   publishing_location: string;
   publishing_company: string;
-  publishing_year: number;
+  publishing_year: number | null;
   isbn: string;
   doi: string;
   full_citation: string;

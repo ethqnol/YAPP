@@ -31,11 +31,24 @@ const { title } = Astro.props;
 		font-family: system-ui, sans-serif;
 		background: #13151a;
 		background-size: 224px;
+		overflow-y: scroll;
 	}
-	
+    *::-webkit-scrollbar {
+        width: 16px;
+    }
+    
+    *::-webkit-scrollbar-track {
+        background: var(--color-surface-mixed-500);
+    }
+    
+    *::-webkit-scrollbar-thumb {
+        background-color: var(--color-surface-mixed-300);
+        border-radius: 10px;
+        border: 3px solid var(--color-surface-mixed-500);
+    }
     #Page {
-        width: calc(100vw - 1rem - 15vw);
-        max-width: calc(100vw - 1rem - 15vw);
+        width: calc(100vw - 1.5rem - 12vw);
+        max-width: calc(100vw - 1.5rem - 12vw);
         text-align: center;
         align-items: center;
         color: white;

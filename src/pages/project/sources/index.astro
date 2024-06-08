@@ -12,7 +12,18 @@ if(!user) {
 
 
 <ProjectLayout title="Sources">
-    <SourceSearch client:visible />
+    <div id="Page">
+        <a href="sources/add">Add Source</a>
+    </div>
+    
+    <div class="source-container">
+        <div class="filter-items" >
+        </div>
+        
+        <div class="source-items">
+            
+        </div>
+    </div>
 </ProjectLayout>
 
 
@@ -20,18 +31,13 @@ if(!user) {
     #Page {
         position: absolute;
         right: 0;
+        margin-top: 1rem;
         width: calc(100vw - 2rem - 5vw);
         max-width: calc(100vw - 2rem - 10vw);
         text-align: center;
     }
 
-    .FormGroup {
-        height: 3em;
-        padding: 1rem 0rem;
-        width: calc(100vw - 2rem - 15vw);
-        max-width: calc(100vw - 2rem - 15vw);
-        text-align: center;
-    }
+    
 
     h1 {
         color: white;
@@ -39,75 +45,17 @@ if(!user) {
         top: 33.5vh;
     }
 
-    input[type="text"] {
-        background-color: transparent;
-        border: solid 1px grey;
-        height: 100%;
-        border-radius: 5px;
-        transition: 0.2s;
-        color: grey;
-        padding: 0.5em;
-        width: 30%;
-        font-size: medium;
-        position: relative;
-        top: 1vh;
-
-        box-sizing: border-box;
-        padding: 0.3rem;
-    }
-
-    input[type="text"]:focus {
-        scale: 1.02;
-        border: white;
-        color: white;
-        margin-right: 0.7rem;
-    }
-
-    input[type="submit"] {
-        background-color: var(--color-primary-400);
-        transition: 0.2s;
-        cursor: pointer;
-        height: 100%;
-        width: 5%;
-        border: none;
-        border-radius: 5px;
-    }
-
-    input[type="submit"]:hover {
-        background-color: var(--color-primary-100);
-        scale: 1.1;
-        color: white;
-        margin-left: 0.3rem;
-    }
-
-    #SearchBar {
-        position: absolute;
-        top: 40vh;
-    }
-
-    #ToggleManual {
-        position: relative;
-        top: 39vh;
-        background-color: var(--color-primary-400);
-        transition: 0.2s;
-        cursor: pointer;
-        border: none;
+    
+    a {
+        background-color: var(--color-primary-200);
+        padding: 1rem;
         border-radius: 0.4rem;
         text-decoration: none;
-        padding: 0.2rem;
-    }
-
-    #ToggleManual:hover {
-        background-color: var(--color-primary-100);
-        scale: 1.1;
         color: white;
+        font-weight: 800;
     }
-
     
-    #searchResults {
-        position: relative;
-        top: 40vh;
-        color: white;
+    a:hover {
+        background-color: var(--color-primary-300);
     }
 </style>
-<!-- list of sources (do not do until the database is fully synced) -->
