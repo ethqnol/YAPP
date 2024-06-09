@@ -116,12 +116,9 @@
     }
 
     #search {
-        width: calc(100vw - 2rem - 5vw);
-        max-width: calc(100vw - 2rem - var(--sidebar-width));
-        margin-top: 5vh;
+        width: calc(100vw - 2rem - 12vw);
+        max-width: calc(100vw - 2rem - 12vw);
         display: flex;
-        position: absolute;
-        right: 0;
         flex-direction: column;
         align-items: center;
         justify-content: center;

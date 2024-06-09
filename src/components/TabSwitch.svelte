@@ -8,8 +8,8 @@ $: active_manual = true;
 
 <div id="Page">   
     <div class="tab-container">
-        <button class="tab-button" on:click={()=>active_manual = true}>Manual Citation</button>
-       <button class="tab-button" on:click={()=>active_manual = false}>Source Search</button>
+        <button class="tab-button" class:tab-button-active={active_manual} on:click={()=>active_manual = true}>Manual Citation</button>
+       <button class="tab-button" class:tab-button-active={!active_manual} on:click={()=>active_manual = false}>Source Search</button>
    </div>
    
    {#if active_manual}
@@ -34,6 +34,7 @@ $: active_manual = true;
            </div>
        </div>
    {:else}
+   
        <div class="tab-content" >
            <SourceSearch />
        </div>
@@ -45,7 +46,7 @@ $: active_manual = true;
        width: calc(100vw - 2rem - 12vw);
        max-width: calc(100vw - 2rem - 12vw);
        color: white;
-       margin: 2rem auto;
+       margin: 0rem auto;
        background-color: #20232a;
        border-radius: 8px;
        box-shadow: 0 0 10px rgba(0,0,0,0.5);
@@ -61,6 +62,8 @@ $: active_manual = true;
        display: flex;
        border-bottom: 1px solid #ccc;
        margin-bottom: 1rem;
+       border-bottom: 1px solid var(--color-surface-mixed-500);
+       
    }
 
    .tab-button {
@@ -71,7 +74,7 @@ $: active_manual = true;
        transition: background-color 0.3s;
        font-size: 1rem;
        color: white;
-       padding: 1rem;
+       padding: 1rem 6.25vw;
    }
 
    .tab-button:hover {
@@ -82,12 +85,11 @@ $: active_manual = true;
        background-color: #ffffff;
    }
 
-   /* .tab-button.active {
-       border-bottom: 2px solid var(--color-primary-400);
-   }  */
+   .tab-button-active {
+       background-color: #3b3f47;
+       border-bottom: 4px solid var(--color-primary-500);
+   } 
 
-   .tab-content {
-   }
 
    .form-group {
        display: flex;
