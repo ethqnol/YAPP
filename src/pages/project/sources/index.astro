@@ -1,28 +1,24 @@
 ---
 import ProjectLayout from "../../../layouts/ProjectLayout.astro";
-import { getSessionUser } from "../../../firebase/server";
-import SourceSearch from "../../../components/SourceSearch.svelte";
+import { app, getSessionUser } from "../../../firebase/server";
 import type Source from "../../../lib/source";
+import { getFirestore } from "firebase-admin/firestore"
 const user = await getSessionUser(Astro.cookies);
 if (!user) {
     return Astro.redirect("/signin");
 }
 
-let source1 : Source = {
-    title: "Promise Me Dad",
-    authors: ["Joseph Robinette Biden"],
-    series: "",
-    series_num: null,
-    volume: null,
-    edition: null,
-    publishing_location: "",
-    publishing_company: "",
-    publishing_year: 2017,
-    doi: "",
-    isbn: "123456789012",
-    full_citation: " Dumoulin, Heinrich. \"Early Chinese Zen Reexamined: A Supplement to \'Zen Buddhism: A History.\" Japanese Journal of Religious Studies, January 20, 1993. JSTOR.  ",
-    student_id: " "
-  };
+interface DatabaseSource {
+    source : Source,
+    primary_id : string
+}
+const db = getFirestore(app);
+const sources_ref = db.collection("Sources");
+const sources_snapshot = await sources_ref.where("student_id", "==", user.uid).get();
+const user_sources : DatabaseSource[] = sources_snapshot.docs.map((doc) => ({
+  primary_id: doc.id,
+  source: doc.data(),
+})) as DatabaseSource[];
 ---
 
 
@@ -50,12 +46,15 @@ let source1 : Source = {
                     <th>Year</th>
                     <th>Chicago Citation</th>
                 </tr>
-                <tr>
-                    <td>{source1.title}</td>
-                    <td>{source1.authors[0]}</td>
-                    <td>{source1.publishing_year}</td>
-                    <td>{source1.full_citation}</td>
-                </tr>
+                { user_sources.map(( source : DatabaseSource ) => (
+                    <tr>
+                        <td>{source.source.title}</td>
+                        <td>{source.source.authors[0]}</td>
+                        <td>{source.source.publishing_year}</td>
+                        <td>{source.source.full_citation}</td>
+                    </tr>
+                    ))
+                }
             </table>
         </div>
     </div>
