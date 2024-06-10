@@ -176,10 +176,7 @@
         transition: color 0.6s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    p {
-        margin-top: 0.5rem;
-        margin-bottom: 0;
-    }
+  
 
     .link-card:is(:hover, :focus-within) {
         background-position: 0;

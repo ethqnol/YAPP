@@ -40,12 +40,11 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
             querySnapshot.docs[0].ref.update({
               google_id: user.uid,
               google_photo: user.photoURL,
-              display_name: user.displayName
+              display_name: user.displayName,
             })
           } else {
-            db.collection("Students").add({
+            db.collection("Students").doc(user.uid).set({
               email: user.email,
-              google_id: user.uid,
               google_photo: user.photoURL,
               display_name: user.displayName,
               streak: 1,
