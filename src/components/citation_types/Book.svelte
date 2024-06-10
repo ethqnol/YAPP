@@ -8,10 +8,7 @@ let source : Source;
 if(data){
   source = {
     title: data.title != "" ? data.title : "",
-    author_full: data.author_name.length == 0 ? data.author_name.join(" ") : "",
-    author_last: data.author_name.length == 0 ? data.author_name[0].split(" ")[0] : "",
-    author_mi: "",
-    author_first: "",
+    authors: data.author_name,
     series: "",
     series_num: null,
     volume: null,
@@ -26,10 +23,7 @@ if(data){
 } else {
   source = {
     title: "",
-    author_full: "",
-    author_last: "",
-    author_mi: "",
-    author_first: "",
+    authors: [],
     series: "",
     series_num: null,
     volume: null,
@@ -55,9 +49,7 @@ if(data){
     </div>
     <div class="form-group">
         <label for="Author">Author</label>
-        <input id="AuthorLastName" type="text" placeholder="Last Name" bind:value={source.author_first}>
-        <input id="AuthorMiddleName" type="text" placeholder="Middle Name" bind:value={source.author_mi}>
-        <input id="AuthorFirstName" type="text" placeholder="First Name" bind:value={source.author_last}>
+        <input id="AuthorLastName" type="text" placeholder="Author Name" bind:value={source.authors}>
     </div>
     <div class="form-group">
         <label for="Series">Series</label>

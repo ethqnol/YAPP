@@ -1,9 +1,6 @@
 export default interface Source {
   title: string;
-  author_full: string;
-  author_first: string;
-  author_last: string;
-  author_mi: string;
+  authors: string[];
   volume: number | null;
   edition: number | null;
   series: string;
