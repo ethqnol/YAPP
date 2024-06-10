@@ -1,6 +1,6 @@
 ---
 import ProjectLayout from '../../layouts/ProjectLayout.astro';
-import Card from '../../components/Card.astro';
+
 import { getSessionUser } from '../../firebase/server';
 
 const user = await getSessionUser(Astro.cookies);

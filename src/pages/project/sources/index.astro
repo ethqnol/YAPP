@@ -1,43 +1,95 @@
 ---
-import ProjectLayout from '../../../layouts/ProjectLayout.astro';
-import { getSessionUser } from '../../../firebase/server';
-import SourceSearch from '../../../components/SourceSearch.svelte';
+import ProjectLayout from "../../../layouts/ProjectLayout.astro";
+import { getSessionUser } from "../../../firebase/server";
+import SourceSearch from "../../../components/SourceSearch.svelte";
+import type Source from "../../../lib/source";
 const user = await getSessionUser(Astro.cookies);
-if(!user) {
-  return Astro.redirect("/signin");
+if (!user) {
+    return Astro.redirect("/signin");
 }
 
-
+let source1 : Source = {
+    title: "Promise Me Dad",
+    authors: ["Joseph Robinette Biden"],
+    series: "",
+    series_num: null,
+    volume: null,
+    edition: null,
+    publishing_location: "",
+    publishing_company: "",
+    publishing_year: 2017,
+    doi: "",
+    isbn: "123456789012",
+    full_citation: " Dumoulin, Heinrich. \"Early Chinese Zen Reexamined: A Supplement to \'Zen Buddhism: A History.\" Japanese Journal of Religious Studies, January 20, 1993. JSTOR.  ",
+    student_id: " "
+  };
 ---
+
+
 
 
 <ProjectLayout title="Sources">
     <div id="Page">
-        <a href="sources/add">Add Source</a>
-    </div>
-    
-    <div class="source-container">
-        <div class="filter-items" >
-        </div>
-        
-        <div class="source-items">
-            
+        <a href="sources/add">
+            <svg class="w-[48px] h-[48px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 12h14m-7 7V5"/>
+            </svg>
+              
+              
+        </a>
+
+        <div class="source-container">
+            <div class="filter-items">
+                <input type="text" placeholder="Search for a Source" />
+            </div>
+
+            <table class = "source-info">
+                <tr class = "header-row">
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Year</th>
+                    <th>Chicago Citation</th>
+                </tr>
+                <tr>
+                    <td>{source1.title}</td>
+                    <td>{source1.authors[0]}</td>
+                    <td>{source1.publishing_year}</td>
+                    <td>{source1.full_citation}</td>
+                </tr>
+            </table>
         </div>
     </div>
 </ProjectLayout>
-
 
 <style>
     #Page {
         position: absolute;
         right: 0;
         margin-top: 1rem;
-        width: calc(100vw - 2rem - 5vw);
-        max-width: calc(100vw - 2rem - 10vw);
+        width: calc(100vw - 1rem - 5vw);
+        max-width: calc(100vw - 1rem - 12vw);
         text-align: center;
+        align-items: center;
     }
 
-    
+    td {
+        padding: 1rem;
+    }
+
+    .header-row {
+        background-color: var(--color-surface-mixed-200);
+        position: relative;
+        bottom: 2px;
+    }
+
+    .source-info {
+        width: 96%;
+        background-color: var(--color-surface-mixed-300);
+        position: relative;
+        margin-top: 4rem;
+        left: 2%;
+        box-sizing: border-box;
+    }
 
     h1 {
         color: white;
@@ -45,17 +97,58 @@ if(!user) {
         top: 33.5vh;
     }
 
-    
+    .general-info {
+        display: flex;
+        flex-direction: column;
+        margin-right: 10rem;
+    }
+
+    input[type="text"] {
+        background-color: transparent;
+        border: solid 1px grey;
+        height: 100%;
+        border-radius: 5px;
+        transition: 0.2s;
+        color: grey;
+        padding: 0.5em;
+        width: 30%;
+        font-size: medium;
+        box-sizing: border-box;
+        padding: 0.3rem;
+        position: relative;
+        top: 0.3vh;
+    }
+
+    input[type="text"]:focus {
+        scale: 1;
+        border: white;
+        color: white;
+    }
+
+    .filter-items {
+        width: 95%;
+        height: 4vw;
+        display: inline-block;
+        text-align: center;
+    }
+
     a {
         background-color: var(--color-primary-200);
-        padding: 1rem;
-        border-radius: 0.4rem;
+        display: flex;
+        position: fixed;
+        right: 2rem;
+        bottom: 2rem;
+        text-align: center;
+        border-radius: 100%;
+        padding: 0.1rem;
         text-decoration: none;
         color: white;
         font-weight: 800;
+        transition: 0.2s;
     }
-    
+
     a:hover {
         background-color: var(--color-primary-300);
+        scale: 1.1;
     }
 </style>

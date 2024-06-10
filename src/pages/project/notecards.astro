@@ -1,7 +1,40 @@
 ---
 import ProjectLayout from '../../layouts/ProjectLayout.astro';
-import Card from '../../components/Card.astro';
 import { getSessionUser } from '../../firebase/server';
+import Card from '../../components/Card.astro';
+import type { Props } from 'astro/components/ViewTransitions.astro';
+import type Source from '../../lib/source';
+let source1 : Source = {
+    title: "Promise Me Dad",
+    authors: ["Joseph Robinette Biden"],
+    series: "",
+    series_num: null,
+    volume: null,
+    edition: null,
+    publishing_location: "",
+    publishing_company: "",
+    publishing_year: 2017,
+    doi: "",
+    isbn: "123456789012",
+    full_citation: " Dumoulin, Heinrich. \"Early Chinese Zen Reexamined: A Supplement to \'Zen Buddhism: A History.\" Japanese Journal of Religious Studies, January 20, 1993. JSTOR.  ",
+    student_id: " "
+  };
+
+  let source : Source = {
+    title: "Promise Me Dad",
+    authors: ["Joseph Robinette Biden"],
+    series: "",
+    series_num: null,
+    volume: null,
+    edition: null,
+    publishing_location: "",
+    publishing_company: "",
+    publishing_year: 2017,
+    doi: "",
+    isbn: "123456789012",
+    full_citation: " Dumoulin, Heinrich. \"Early Chinese Zen Reexamined: A Supplement to \'Zen Buddhism: A History.\" Japanese Journal of Religious Studies, January 20, 1993. JSTOR.  ",
+    student_id: " "
+  };
 
 const user = await getSessionUser(Astro.cookies);
 if(!user) {
@@ -10,5 +43,30 @@ if(!user) {
 ---
 
 <ProjectLayout title="Notecards">
-
+  <div id = "Page">
+    <div class = "notecards">
+      <Card title="Bodhidharma Origins" body="Either a monk or silk-road traveller" source={source1} href="Google.com"></Card>
+      <Card title="Fall of the Song Dynasty" body="Hangzhou taken by Kublai Khan in 1279. Yuan Dynasty established." source={source1} href="Google.com"></Card>
+    </div>
+  </div>
 </ProjectLayout>
+
+<style>
+    #Page {
+        position: absolute;
+        right: 0;
+        margin-top: 1rem;
+        width: calc(100vw - 1rem - 5vw);
+        max-width: calc(100vw - 1rem - 12vw);
+        text-align: center;
+        align-items: center;
+    }
+
+    .notecards {
+      width: 90%;
+      position: relative;
+      left: 5%;
+      display: grid;
+      grid-template-columns: 2;
+    }
+</style>
