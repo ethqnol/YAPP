@@ -54,7 +54,7 @@
             </p>
         {:else if book_data.length > 0}
             {#each book_data as book}
-                <PossibleSources data={book} />
+                <PossibleSources data={book} on:save/>
             {/each}
         {:else}
             <p>No Books Found</p>

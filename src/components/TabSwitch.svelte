@@ -2,11 +2,37 @@
 import Book from './citation_types/Book.svelte'
 import SourceSearch from './SourceSearch.svelte'
 
+let source_add_requested = false;
+let source_add_success = false;
 $: active_manual = true;
+function display_popup(event : any) {
+  if(event.detail == true) {
+      source_add_requested = true;
+      source_add_success = true;
+  } else {
+      source_add_requested = true;
+      source_add_success = false;
+  }
+}
 
 </script>
 
-<div id="Page">   
+<div id="Page"> 
+    {#if source_add_requested}
+        <div class="overlay"></div>
+    {/if}
+
+    {#if source_add_success && source_add_requested}
+        <div class="popup success">
+            <p>Source added successfully!</p>
+            <a href="/project/sources">Go to Sources</a>
+        </div>
+    {:else if source_add_requested && !source_add_success}
+        <div class="popup failure">
+            <p>Failed to add source. Please try again.</p>
+            <a href="/project/sources">Go to Sources</a>
+        </div>
+    {/if}
     <div class="tab-container">
         <button class="tab-button" class:tab-button-active={active_manual} on:click={()=>active_manual = true}>Manual Citation</button>
        <button class="tab-button" class:tab-button-active={!active_manual} on:click={()=>active_manual = false}>Source Search</button>
@@ -36,7 +62,7 @@ $: active_manual = true;
    {:else}
    
        <div class="tab-content" >
-           <SourceSearch />
+           <SourceSearch on:save={display_popup}/>
        </div>
    {/if}
 </div>
@@ -123,5 +149,75 @@ $: active_manual = true;
    select:focus {
        outline: none;
        border-color: var(--color-surface-mixed-400);
+   }
+
+   .popup {
+       position: fixed;
+       top: 50%;
+       left: 50%;
+       transform: translate(-50%, -50%);
+       padding: 0.5rem;
+       border-radius: 0.4rem;
+       box-shadow: 0 0 10px rgba(0,0,0,0.5);
+       color: #fff;
+       text-align: center;
+       z-index: 1001;
+       background-color: #4BB543;
+       padding: 2rem;
+       border: white 3px solid;
+   }
+
+   .popup.success {
+       background-color: #28a745;
+   }
+
+   .popup.failure {
+       background-color: #dc3545;
+   }
+
+   .popup p {
+       margin: 0;
+       font-size: 2rem;
+       font-weight: 400;
+       padding: 2rem;
+   }
+
+   .popup a {
+       padding: 0.5rem 1rem;
+       border: none;
+       border-radius: 4px;
+       cursor: pointer;
+       color: white;
+       font-size: 1rem;
+       text-decoration: none;
+       transition: background-color 0.3s;
+       transition: border 0.3s;
+   }
+
+   .popup.success a {
+       background-color: #1e7e34;
+   }
+
+   .popup.failure a {
+       background-color: #c82333;
+   }
+
+   .popup a:hover {
+       background-color: #155724;
+       border: 2px black solid;
+   }
+
+   .popup.failure a:hover {
+       background-color: #bd2130;
+   }
+
+   .overlay {
+       position: fixed;
+       top: 0;
+       left: 0;
+       width: 100%;
+       height: 100%;
+       background-color: rgba(0, 0, 0, 0.5);
+       z-index: 1000;
    }
 </style>
