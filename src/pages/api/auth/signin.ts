@@ -24,9 +24,8 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
   }
   
   //session length
-  
   const SESSION_COOKIE = await AUTH.createSessionCookie(id_token, {
-    expiresIn: import.meta.env.SESSION_LEN,
+    expiresIn: parseInt(import.meta.env.SESSION_LEN),
   });
   const DECODED_COOKIE = await AUTH.verifySessionCookie(SESSION_COOKIE);
   const USER = await AUTH.getUser(DECODED_COOKIE.uid);
