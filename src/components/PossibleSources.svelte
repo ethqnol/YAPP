@@ -2,16 +2,14 @@
     import type Source from "../lib/source";
     import { createEventDispatcher } from "svelte";
     export let data : any;
-    let success : boolean = false;
-    let citation_called : boolean = false;
     let author : string;
-    let ISBN : string;
+    let isbn : string;
     let publisher : string;
-    let PublishYear : string;
-    let PublishingCity : string;
+    let publish_year : string;
+    let publishing_city : string;
     
     const dispatch = createEventDispatcher();
-
+    console.log(data)
     let expanded = false;
 
     if (data.author_name) {
@@ -21,21 +19,21 @@
     }
 
     if (data.isbn) {
-        ISBN = data.isbn[0];
+        isbn = data.isbn[0];
     } else {
-        ISBN = "Unknown";
+        isbn = "Unknown";
     }
 
     if (data.publish_place) {
-        PublishingCity = data.publish_place[0];
+        publishing_city = data.publish_place[0];
     } else {
-        PublishingCity = "Unknown";
+        publishing_city = "Unknown";
     }
 
     if (data.publish_date) {
-        PublishYear = data.publish_date[0];
+        publish_year = data.publish_year[0];
     } else {
-        PublishYear = "Unknown";
+        publish_year = "Unknown";
     }
 
     if (data.publisher) {
@@ -63,24 +61,24 @@
             series: "",
             series_num: null,
             volume: null,
-            edition: null,
-            publishing_location: PublishingCity,
+            edition: 1,
+            publishing_location: publishing_city,
             publishing_company: publisher,
-            publishing_year: parseInt(PublishYear),
+            publishing_year: parseInt(publish_year),
             doi: "",
-            isbn: ISBN,
+            isbn: isbn,
             full_citation: "",
+            student_id: "",
         };
         
-        // const res = await fetch("/api/sources/add", {
-        //     method: "POST",
-        //     headers: {
-        //         "Content-Type": "application/json",
-        //     },
-        //     body: JSON.stringify(source),
-        // });
-        citation_called = true;
-        if(true){
+        const res = await fetch("/api/sources/add", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(source),
+        });
+        if(res.ok){
             source_added();
 
         } else {
@@ -128,30 +126,30 @@
                             <tr>
                                 <td> ISBN </td>
                                 <td>
-                                    {#if ISBN && ISBN.length > 50}
-                                        {ISBN.slice(0, 50) + "..."}
+                                    {#if isbn && isbn.length > 50}
+                                        {isbn.slice(0, 50) + "..."}
                                     {:else}
-                                        {ISBN}
+                                        {isbn}
                                     {/if}
                                 </td>
                             </tr>
                             <tr>
                                 <td> Publishing Year </td>
                                 <td>
-                                    {#if PublishYear && PublishYear.length > 20}
-                                        {PublishYear.slice(0, 50) + "..."}
+                                    {#if publish_year && publish_year.length > 20}
+                                        {publish_year.slice(0, 50) + "..."}
                                     {:else}
-                                        {PublishYear}
+                                        {publish_year}
                                     {/if}
                                 </td>
                             </tr>
                             <tr>
                                 <td> Publisher City </td>
                                 <td>
-                                    {#if PublishingCity && PublishingCity.length > 20}
-                                        {PublishingCity.slice(0, 50) + "..."}
+                                    {#if publishing_city && publishing_city.length > 20}
+                                        {publishing_city.slice(0, 50) + "..."}
                                     {:else}
-                                        {PublishingCity}
+                                        {publishing_city}
                                     {/if}
                                 </td>
                             </tr>

@@ -19,6 +19,7 @@ if(data){
     doi: "",
     isbn: "",
     full_citation: "",
+    student_id: ""
   };
 } else {
   source = {
@@ -34,6 +35,7 @@ if(data){
     doi: "",
     isbn: "",
     full_citation: "",
+    student_id: ""
   };
 }
 

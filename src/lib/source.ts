@@ -11,4 +11,5 @@ export default interface Source {
   isbn: string;
   doi: string;
   full_citation: string;
+  student_id : string;
 }
