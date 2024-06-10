@@ -1,7 +1,6 @@
 <script lang="ts">
     import type Source from "../lib/source";
     import { createEventDispatcher } from "svelte";
-    import Book from "./citation_types/Book.svelte";
     export let data : any;
     let success : boolean = false;
     let citation_called : boolean = false;
@@ -60,10 +59,7 @@
     async function generate_citation() {
         let source : Source = {
             title: data.title,
-            author_full: author,
-            author_last: author.split(" ")[0],
-            author_mi: "",
-            author_first: "",
+            authors: data.author_name,
             series: "",
             series_num: null,
             volume: null,
