@@ -11,14 +11,14 @@ const auth = getAuth(app);
 if (!Astro.cookies.has("__session")) {
   return Astro.redirect("/signin");
 }
-const sessionCookie = Astro.cookies.get("__session")?.value;
+const session_cookie = Astro.cookies.get("__session")?.value;
 
-if(!sessionCookie){
+if(!session_cookie){
   
   return Astro.redirect("/signin");
 };
 //let user : null | 
-const decodedCookie: null | DecodedIdToken= await auth.verifySessionCookie(sessionCookie, true)
+const decodedCookie: null | DecodedIdToken= await auth.verifySessionCookie(session_cookie, true)
       .then((decodedToken) => {
         return decodedToken;
       })

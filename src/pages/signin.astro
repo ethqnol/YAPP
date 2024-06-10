@@ -5,16 +5,16 @@ import Layout from "../layouts/Layout.astro";
 
 const auth = getAuth(app);
 if (Astro.cookies.has("__session")) {
-  const sessionCookie = Astro.cookies.get("__session")?.value;
+  const session_cookie = Astro.cookies.get("__session")?.value;
   
-  if(!sessionCookie) {
+  if(!session_cookie) {
     Astro.cookies.delete("__session");
     return Astro.redirect("/signin");
   }
   
-  const decodedCookie: Response | DecodedIdToken= await auth.verifySessionCookie(sessionCookie, true)
-        .then((decodedToken) => {
-          return decodedToken;
+  const decoded_cookie: Response | DecodedIdToken= await auth.verifySessionCookie(session_cookie, true)
+        .then((decoded_token) => {
+          return decoded_token;
         })
         .catch((error) => {
           console.log(error)

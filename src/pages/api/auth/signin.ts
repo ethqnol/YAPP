@@ -4,10 +4,10 @@ import { getAuth } from "firebase-admin/auth";
 import { getFirestore } from "firebase-admin/firestore";
 
 export const GET: APIRoute = async ({ request, cookies, redirect }) => {
-  const auth = getAuth(app);
+  const AUTH = getAuth(app);
   /* Get token from request headers */
-  const idToken = request.headers.get("Authorization")?.split("Bearer ")[1];
-  if (!idToken) {
+  const id_token = request.headers.get("Authorization")?.split("Bearer ")[1];
+  if (!id_token) {
     return new Response(
       "No token found", { status: 401 }
     );
@@ -15,7 +15,7 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
   /* Verify id token */
 
   try {
-    await auth.verifyIdToken(idToken);
+    await AUTH.verifyIdToken(id_token);
   } catch (error) {
     return new Response(
       "Invalid token",
@@ -24,33 +24,32 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
   }
   
   //session length
-  const sessionLen = 60 * 60 * 24 * 7 * 1000;
   
-  const sessionCookie = await auth.createSessionCookie(idToken, {
-    expiresIn: sessionLen,
+  const SESSION_COOKIE = await AUTH.createSessionCookie(id_token, {
+    expiresIn: import.meta.env.SESSION_LEN,
   });
-  const decodedCookie = await auth.verifySessionCookie(sessionCookie);
-  const user = await auth.getUser(decodedCookie.uid);
+  const DECODED_COOKIE = await AUTH.verifySessionCookie(SESSION_COOKIE);
+  const USER = await AUTH.getUser(DECODED_COOKIE.uid);
   const db = getFirestore(app);
   db.collection("Students")
-    .where("email", "==", user.email)
+    .where("email", "==", USER.email)
     .get()
     .then(querySnapshot => {
           if(!querySnapshot.empty) {
             querySnapshot.docs[0].ref.update({
-              google_id: user.uid,
-              google_photo: user.photoURL,
-              display_name: user.displayName,
+              google_id: USER.uid,
+              google_photo: USER.photoURL,
+              display_name: USER.displayName,
             })
           } else {
-            db.collection("Students").doc(user.uid).set({
-              email: user.email,
-              google_photo: user.photoURL,
-              display_name: user.displayName,
+            db.collection("Students").doc(USER.uid).set({
+              email: USER.email,
+              google_photo: USER.photoURL,
+              display_name: USER.displayName,
               streak: 1,
               awards: [],
               project_completion: 0.00,
-              //teacher_id and class_id are initialized when a user gets added or joins a class
+              //teacher_id and class_id are initialized when a USER gets added or joins a class
             })
           }
       
@@ -60,7 +59,7 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
 
 
 
-  cookies.set("__session", sessionCookie, {
+  cookies.set("__session", SESSION_COOKIE, {
     path: "/",
   });
   return redirect("/account");

@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { app, getSessionUser } from "../../../firebase/server";
+import { app, get_user_session } from "../../../firebase/server";
 import { getFirestore } from "firebase-admin/firestore";
 import type Source from "../../../lib/source";
 import {generate_citation} from "../../../lib/lib.ts";
@@ -7,7 +7,7 @@ import {generate_citation} from "../../../lib/lib.ts";
 
 export const POST: APIRoute = async ({ request, cookies }) => {
   const source : Source = await request.json();
-  const user = await getSessionUser(cookies);
+  const user = await get_user_session(cookies);
   if(!user) {
     return new Response("Unauthorized", {status: 403});
   }

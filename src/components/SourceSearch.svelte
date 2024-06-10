@@ -1,9 +1,9 @@
 <script>
     import PossibleSources from "./PossibleSources.svelte";
-    let bookInput = "";
+    let book_input = "";
     let book_data = [];
     let loading = false;
-    let querySent = false;
+    let query_sent = false;
     async function searchBook(query) {
         const response = await fetch(
             `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&fields=*&limit=8`,
@@ -16,8 +16,8 @@
 
     async function handleSearch() {
         loading = true;
-        querySent = true;
-        book_data = await searchBook(bookInput);
+        query_sent = true;
+        book_data = await searchBook(book_input);
         loading = false;
     }
 </script>
@@ -32,9 +32,9 @@
         <form class="FormGroup" id="SearchBar" on:submit|preventDefault={handleSearch}>
             <input
                 type="text"
-                id="bookInput"
+                id="book_input"
                 placeholder="Enter an ISBN, DOI, or arXiv ID"
-                bind:value={bookInput}
+                bind:value={book_input}
             />
             <button on:click={handleSearch}> Search </button>
         </form>
@@ -48,7 +48,7 @@
                 <span class="dot"></span>
                 <span class="dot"></span>
             </p>
-        {:else if querySent == false}
+        {:else if query_sent == false}
             <p>
                 Nothing to see here... yet.
             </p>
