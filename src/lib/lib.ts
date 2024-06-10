@@ -60,4 +60,10 @@ export function generate_citation(source: Source): string {
     return citation;
 }
 
-
+export function generate_page_number(start : number, end : number) : string {
+    if(start == end){
+        return start + "";
+    } else {
+        return start + "-" + end;
+    }
+}

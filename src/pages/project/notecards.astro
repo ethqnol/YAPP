@@ -44,10 +44,19 @@ if(!user) {
 
 <ProjectLayout title="Notecards">
   <div id = "Page">
-    <div class = "notecards">
-      <Card title="Bodhidharma Origins" body="Either a monk or silk-road traveller" source={source1} href="Google.com"></Card>
-      <Card title="Fall of the Song Dynasty" body="Hangzhou taken by Kublai Khan in 1279. Yuan Dynasty established." source={source1} href="Google.com"></Card>
-    </div>
+    <table class = "notecards">
+      <tr>
+        <td><Card title="Bodhidharma Origins" analysis="Either a monk or silk-road traveller" source={source1} href="Google.com"></Card></td>
+        <td><Card title="Fall of the Song Dynasty" analysis="Hangzhou taken by Kublai Khan in 1279. Yuan Dynasty established." source={source1} href="Google.com"></Card></td>
+        <td><Card title="Bodhidharma Origins" analysis="Either a monk or silk-road traveller" source={source1} href="Google.com"></Card></td>
+        <td><Card title="Early Universalism" analysis="Ch'an declares itself the only true form of Buddhism." source={source1} href="Google.com"></Card></td>
+      </tr>
+      <tr>
+        <td><Card title="Origins of Dhyana" analysis="Preached by Patanjali in India, present by the time Bodhidharma arrived." source={source1} href="Google.com"></Card></td>
+        <td><Card title="Empress Wu" analysis="Tried to establish the Chou dynasty, supported Buddhism through her reign." source={source1} href="Google.com"></Card></td>
+        <td><Card title="The Patriarchs" analysis="Like most sects, the patriarchs of Zen helped lead the school forward; Bodhidharma was the first." source={source1} href="Google.com"></Card></td>
+      </tr>
+    </table>
   </div>
 </ProjectLayout>
 
@@ -66,7 +75,10 @@ if(!user) {
       width: 90%;
       position: relative;
       left: 5%;
-      display: grid;
-      grid-template-columns: 2;
+    }
+
+    td {
+      padding: 0.5rem;
+      width: 25%;
     }
 </style>

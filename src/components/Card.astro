@@ -1,19 +1,23 @@
 ---
+import { number } from 'astro/zod';
 import type Source from '../lib/source';
 
 interface Props {
 	title: string;
 	source: Source;
-	body: string;
+	quote: string;
+	analysis: string;
+	start_page: number;
+	end_page: number;
 	href: string;
 }
 
 
 
-const { href, title, body, source } = Astro.props;
+const { href, title, analysis, source } = Astro.props;
 ---
 
-<li class="link-card">
+<div class="link-card">
 	<a href={href}>
 		<h2>
 			{title}
@@ -23,24 +27,25 @@ const { href, title, body, source } = Astro.props;
 			{source.title}
 		</h4>
 		<p>
-			{body}
+			{analysis.slice(0, 65) + (analysis.length > 65 ? "..." : "")}
 		</p>
 	</a>
-</li>
+</div>
 
 <style>
 	.link-card {
-		list-style: none;
-		width: 100%;
 		display: flex;
+		max-height: 18vh;
+		height: 18vh;
 		padding: 1px;
-		background-color: #23262d;
+		background-color: var(--color-surface-mixed-300);
 		background-image: none;
 		background-size: 400%;
 		border-radius: 7px;
 		background-position: 100%;
 		transition: background-position 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 		box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+		overflow: hidden;
 	}
 	.link-card > a {
 		width: 100%;
@@ -54,15 +59,16 @@ const { href, title, body, source } = Astro.props;
 	}
 	h2 {
 		margin: 0;
-		font-size: 1.25rem;
+		font-size: 1rem;
 		transition: color 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 	}
 	h4 {
 		margin-top: 0;
 	}
 	p {
-		margin-top: 0.5rem;
+		margin-top: 0.3rem;
 		margin-bottom: 0;
+		font-size: 0.9rem;
 	}
 	.link-card:is(:hover, :focus-within) {
 		background-position: 0;
