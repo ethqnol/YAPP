@@ -3,9 +3,7 @@ import type Source from '../lib/source';
 
 interface Props {
 	title: string;
-	source: Source;
 	quote: string;
-	analysis: string;
 	start_page: number;
 	end_page: number;
 	href: string;
@@ -13,7 +11,7 @@ interface Props {
 
 
 
-const { href, title, analysis, source, start_page, end_page, quote } = Astro.props;
+const { href, title, quote, start_page, end_page } = Astro.props;
 ---
 
 <div class="link-card">
@@ -22,11 +20,8 @@ const { href, title, analysis, source, start_page, end_page, quote } = Astro.pro
 			{title}
 			<span>&rarr;</span>
 		</h2>
-		<h4>
-			{source.title}
-		</h4>
 		<p>
-			{analysis.slice(0, 65) + (analysis.length > 65 ? "..." : "")}
+			{quote.slice(0, 65) + (quote.length > 65 ? "..." : "")}
 		</p>
 	</a>
 </div>
