@@ -3,11 +3,17 @@ import ProjectLayout from '../../../../layouts/ProjectLayout.astro';
 import { get_user_session, app } from '../../../../firebase/server';
 import ModifyNotecard from '../../../../components/ModifyNotecard.svelte';
 import type DatabaseSource from '../../../../lib/source_database';
+import type DatabaseNotecard from '../../../../lib/notecard_database';
 import { getFirestore } from 'firebase-admin/firestore';
+import type Notecard from '../../../../lib/notecard';
 
 const user = await get_user_session(Astro.cookies);
 if(!user) {
   return Astro.redirect("/signin");
+}
+const { id } = Astro.params;
+if (!id) {
+  return Astro.redirect("/404");
 }
 
 const db = getFirestore(app);
@@ -18,8 +24,24 @@ const user_sources : DatabaseSource[] = sources_snapshot.docs.map((doc) => ({
   source: doc.data(),
 })) as DatabaseSource[];
 
+const notecards_ref = db.collection("Notecards");
+const notecards_snapshot = await notecards_ref.doc(id).get();
+
+if(!notecards_snapshot.exists) {
+  return Astro.redirect("/404");
+}
+
+let notecard_data = notecards_snapshot.data() as Notecard;
+let notecard : DatabaseNotecard = {
+  primary_id: notecards_snapshot.id,
+  notecard: notecard_data,
+}
+
+if(notecard.notecard.student_id != user.uid) {
+  return Astro.redirect("/404");
+}
 ---
 
 <ProjectLayout title="Add Notecard">
-    <ModifyNotecard sources={user_sources} client:visible/>
+    <ModifyNotecard notecard={notecard} sources={user_sources} client:visible/>
 </ProjectLayout>

@@ -4,17 +4,14 @@ import { get_user_session, app } from '../../../firebase/server';
 import Card from '../../../components/Card.astro';
 import type { Props } from 'astro/components/ViewTransitions.astro';
 import { getFirestore } from 'firebase-admin/firestore';
-import type Notecard from '../../../lib/notecard.ts';
+import type DatabaseNotecard from '../../../lib/notecard_database';
 
 const user = await get_user_session(Astro.cookies);
 if(!user) {
   return Astro.redirect("/signin");
 }
 
-interface DatabaseNotecard {
-  primary_id : string;
-  notecard : Notecard;
-}
+
 
 const db = getFirestore(app);
 const notecards_ref = db.collection("Notecards");
@@ -23,7 +20,6 @@ const user_notecards : DatabaseNotecard[] = notecards_snapshot.docs.map((doc) =>
   primary_id: doc.id,
   notecard: doc.data(),
 })) as DatabaseNotecard[];
-
 
 ---
 
@@ -38,7 +34,7 @@ const user_notecards : DatabaseNotecard[] = notecards_snapshot.docs.map((doc) =>
                     end_page={notecard.notecard.end_page} 
                     title = {notecard.notecard.title}  
                     quote = {notecard.notecard.quote} 
-                    href = {`/notecards/${notecard.primary_id}`}
+                    href = {`/project/notecards/edit/${notecard.primary_id}`}
                 />
             </div> 
           ))
@@ -79,8 +75,8 @@ const user_notecards : DatabaseNotecard[] = notecards_snapshot.docs.map((doc) =>
       position: relative;
       left: 5%;
       display: grid;
-      grid-template-columns: auto auto auto;
-      
+      grid-template-columns: 25% 25% 25% 25%;
+      gap: 1rem;
     }
 
     td {
