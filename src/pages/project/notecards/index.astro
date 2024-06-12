@@ -40,6 +40,11 @@ const user_notecards : DatabaseNotecard[] = notecards_snapshot.docs.map((doc) =>
           ))
         }
     </div>
+      <a href="notecards/add">
+        <svg class="w-[48px] h-[48px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 12h14m-7 7V5"/>
+        </svg>
+    </a>
   </div>
 </ProjectLayout>
 
@@ -52,6 +57,31 @@ const user_notecards : DatabaseNotecard[] = notecards_snapshot.docs.map((doc) =>
         max-width: calc(100vw - 1rem - 12vw);
         text-align: center;
         align-items: center;
+    }
+
+    a {
+        background-color: var(--color-primary-200);
+        display: flex;
+        position: fixed;
+        right: 2rem;
+        bottom: 2rem;
+        text-align: center;
+        border-radius: 100%;
+        padding: 0.1rem;
+        text-decoration: none;
+        color: white;
+        font-weight: 800;
+        transition: 0.2s;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    a:hover {
+        background-color: var(--color-primary-300);
+        scale: 1.1;
+    }
+
+    a {
+      color: white;
     }
     
     .add-notecard {

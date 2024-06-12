@@ -59,16 +59,8 @@
             <input id="AuthorLastName" type="text" placeholder="Author Name" bind:value={source.authors}>
         </div>
         <div class="form-group">
-            <label for="Series">Series</label>
-            <input id="Series" type="text" placeholder="Series Title" bind:value={source.series}>
-        </div>
-        <div class="form-group">
-            <label for="SeriesNum">Series Number</label>
-            <input id="SeriesNum" type="text" placeholder="Series Number"bind:value={source.series_num}>
-        </div>
-        <div class="form-group">
-            <label for="Volume">Volume</label>
-            <input id="Volume" type="text" placeholder="Volume" bind:value={source.volume}>
+            <label for="Pages">Pages</label>
+            <input id="Pages" type="text" placeholder="Pages"bind:value={source.pages}>
         </div>
         <div class="form-group">
             <label for="Edition">Edition</label>
@@ -85,10 +77,6 @@
         <div class="form-group">
             <label for="Date">Date</label>
             <input id="Date" type="text" placeholder="Date" bind:value={source.publishing_year}>
-        </div>
-        <div class="form-group">
-            <label for="ISBN">ISBN</label>
-            <input id="ISBN" type="text" placeholder="ISBN" bind:value={source.isbn}>
         </div>
         <button id="ToggleManual" type="button" on:click={()=>console.log("hello wrold")}>Auto-citation</button>
     </form>
