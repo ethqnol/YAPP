@@ -15,4 +15,6 @@ export default interface Source {
   doi: string;
   full_citation: string;
   student_id : string;
+  pages: number | null;
+  url: string;
 }

@@ -19,7 +19,9 @@ if(data){
     doi: "",
     isbn: "",
     full_citation: "",
-    student_id: ""
+    student_id: "",
+    pages: data.number_of_pages_median,
+    url: data.url
   };
 } else {
   source = {
@@ -36,7 +38,9 @@ if(data){
     doi: "",
     isbn: "",
     full_citation: "",
-    student_id: ""
+    student_id: "",
+    pages: null,
+    url: ""
   };
 }
 
@@ -48,7 +52,7 @@ if(data){
 <form>
     <div class="form-group">
         <label for="Title">Title</label>
-        <input id="Title" type="text" placeholder="Source Title">
+        <input id="Title" type="text" placeholder="Source Title" bind:value={source.title}>
     </div>
     <div class="form-group">
         <label for="Author">Author</label>
