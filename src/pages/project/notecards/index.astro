@@ -1,0 +1,121 @@
+---
+import ProjectLayout from '../../../layouts/ProjectLayout.astro';
+import { get_user_session } from '../../../firebase/server';
+import Card from '../../../components/Card.astro';
+import type { Props } from 'astro/components/ViewTransitions.astro';
+import type Source from '../../../lib/source';
+let source1 : Source = {
+    title: "Promise Me Dad",
+    authors: ["Joseph Robinette Biden"],
+    series: "",
+    series_num: null,
+    volume: null,
+    edition: null,
+    publishing_location: "",
+    publishing_company: "",
+    publishing_year: 2017,
+    doi: "",
+    isbn: "123456789012",
+    full_citation: " Dumoulin, Heinrich. \"Early Chinese Zen Reexamined: A Supplement to \'Zen Buddhism: A History.\" Japanese Journal of Religious Studies, January 20, 1993. JSTOR.  ",
+    student_id: " "
+  };
+
+  let source : Source = {
+    title: "Promise Me Dad",
+    authors: ["Joseph Robinette Biden"],
+    series: "",
+    series_num: null,
+    volume: null,
+    edition: null,
+    publishing_location: "",
+    publishing_company: "",
+    publishing_year: 2017,
+    doi: "",
+    isbn: "123456789012",
+    full_citation: " Dumoulin, Heinrich. \"Early Chinese Zen Reexamined: A Supplement to \'Zen Buddhism: A History.\" Japanese Journal of Religious Studies, January 20, 1993. JSTOR.  ",
+    student_id: " "
+  };
+
+const user = await get_user_session(Astro.cookies);
+if(!user) {
+  return Astro.redirect("/signin");
+}
+---
+
+<ProjectLayout title="Notecards">
+  <div id="Page">
+    <div class="filter-bar">
+      <input type="text" placeholder="Search for a notecard..." />
+      <button>Filter</button>
+    </div>
+
+    <table class="notecards">
+      <tr>
+        <td><Card title="Bodhidharma Origins" quote="je ne parle pas français" start_page={5} end_page={5} analysis="Either a monk or silk-road traveller" source={source1} href="Google.com"></Card></td>
+        <td><Card title="Fall of the Song Dynasty" quote="je ne parle pas français" start_page={5} end_page={5} analysis="Hangzhou taken by Kublai Khan in 1279. Yuan Dynasty established." source={source1} href="Google.com"></Card></td>
+        <td><Card title="Bodhidharma Origins" quote="je ne parle pas français" start_page={5} end_page={5} analysis="Either a monk or silk-road traveller" source={source1} href="Google.com"></Card></td>
+        <td><Card title="Early Universalism"  quote="je ne parle pas français" start_page={5} end_page={5} analysis="Ch'an declares itself the only true form of Buddhism." source={source1} href="Google.com"></Card></td>
+      </tr>
+      <tr>
+        <td><Card title="Origins of Dhyana" quote="je ne parle pas français" start_page={5} end_page={5} analysis="Preached by Patanjali in India, present by the time Bodhidharma arrived." source={source1} href="Google.com"></Card></td>
+        <td><Card title="Empress Wu" quote="je ne parle pas français" start_page={5} end_page={5} analysis="Tried to establish the Chou dynasty, supported Buddhism through her reign." source={source1} href="Google.com"></Card></td>
+        <td><Card title="The Patriarchs" quote="je ne parle pas français" start_page={5} end_page={5} analysis="Like most sects, the patriarchs of Zen helped lead the school forward; Bodhidharma was the first." source={source1} href="Google.com"></Card></td>
+      </tr>
+    </table>
+  </div>
+</ProjectLayout>
+
+<style>
+    #Page {
+        position: absolute;
+        right: 0;
+        margin-top: 1rem;
+        width: calc(100vw - 1rem - 12vw);
+        max-width: calc(100vw - 1rem - 12vw);
+        text-align: center;
+        align-items: center;
+    }
+
+    .filter-bar {
+        width: 90%;
+        margin: 2rem auto;
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+    }
+
+    .filter-bar input[type="text"] {
+        width: 70%;
+        padding: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 1rem;
+    }
+
+    .filter-bar button {
+        padding: 0.5rem 1rem;
+        border: none;
+        background-color: var(--color-primary-200);
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: background-color 0.3s;
+    }
+
+    .filter-bar button:hover {
+        background-color: var(--color-primary-300);
+    }
+
+    .notecards {
+      width: 90%;
+      margin: 2rem auto;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    td {
+      padding: 1rem;
+      vertical-align: top;
+    }
+</style>

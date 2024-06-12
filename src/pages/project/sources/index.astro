@@ -1,9 +1,9 @@
 ---
 import ProjectLayout from "../../../layouts/ProjectLayout.astro";
-import { app, getSessionUser } from "../../../firebase/server";
+import { app, get_user_session } from "../../../firebase/server";
 import type Source from "../../../lib/source";
 import { getFirestore } from "firebase-admin/firestore"
-const user = await getSessionUser(Astro.cookies);
+const user = await get_user_session(Astro.cookies);
 if (!user) {
     return Astro.redirect("/signin");
 }
@@ -21,17 +21,12 @@ const user_sources : DatabaseSource[] = sources_snapshot.docs.map((doc) => ({
 })) as DatabaseSource[];
 ---
 
-
-
-
 <ProjectLayout title="Sources">
     <div id="Page">
         <a href="sources/add">
             <svg class="w-[48px] h-[48px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="none" viewBox="0 0 24 24">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 12h14m-7 7V5"/>
             </svg>
-              
-              
         </a>
 
         <div class="source-container">
@@ -39,8 +34,8 @@ const user_sources : DatabaseSource[] = sources_snapshot.docs.map((doc) => ({
                 <input type="text" placeholder="Search for a Source" />
             </div>
 
-            <table class = "source-info">
-                <tr class = "header-row">
+            <table class="source-info">
+                <tr class="header-row">
                     <th>Title</th>
                     <th>Author</th>
                     <th>Year</th>
@@ -61,18 +56,26 @@ const user_sources : DatabaseSource[] = sources_snapshot.docs.map((doc) => ({
 </ProjectLayout>
 
 <style>
+
     #Page {
         position: absolute;
         right: 0;
         margin-top: 1rem;
-        width: calc(100vw - 1rem - 5vw);
+        width: calc(100vw - 1rem - 12vw);
         max-width: calc(100vw - 1rem - 12vw);
         text-align: center;
         align-items: center;
     }
-
     td {
         padding: 1rem;
+        text-align: left;
+        border-bottom: 1px solid var(--color-surface-mixed-400);
+    }
+
+    th {
+        padding: 1rem;
+        text-align: left;
+        border-bottom: 2px solid var(--color-surface-mixed-500);
     }
 
     .header-row {
@@ -83,11 +86,18 @@ const user_sources : DatabaseSource[] = sources_snapshot.docs.map((doc) => ({
 
     .source-info {
         width: 96%;
-        background-color: var(--color-surface-mixed-300);
+        background-color: var(--color-surface-mixed-400);
         position: relative;
         margin-top: 4rem;
         left: 2%;
         box-sizing: border-box;
+        border-collapse: collapse;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .source-info tr:nth-child(even) {
+        background-color: var(--color-surface-mixed-300);
     }
 
     h1 {
@@ -120,7 +130,7 @@ const user_sources : DatabaseSource[] = sources_snapshot.docs.map((doc) => ({
 
     input[type="text"]:focus {
         scale: 1;
-        border: white;
+        border: 1px solid white;
         color: white;
     }
 
@@ -129,6 +139,7 @@ const user_sources : DatabaseSource[] = sources_snapshot.docs.map((doc) => ({
         height: 4vw;
         display: inline-block;
         text-align: center;
+        margin-bottom: 2rem;
     }
 
     a {
@@ -144,6 +155,7 @@ const user_sources : DatabaseSource[] = sources_snapshot.docs.map((doc) => ({
         color: white;
         font-weight: 800;
         transition: 0.2s;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
     }
 
     a:hover {

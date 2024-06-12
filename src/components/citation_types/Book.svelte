@@ -1,6 +1,4 @@
 <script lang="ts">
-import { onMount } from 'svelte';
-
     
 import type Source from '../../lib/source';
 export let data : any = null;

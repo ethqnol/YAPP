@@ -2,8 +2,8 @@ import type { ServiceAccount } from "firebase-admin";
 import { initializeApp, cert, getApps } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
 
-const activeApps = getApps();
-const serviceAccount = {
+const ACTIVE_APPS = getApps();
+const SERVICE_ACCOUNT = {
   type: "service_account",
   project_id: import.meta.env.FB_PROJECT_ID,
   private_key_id: import.meta.env.FB_PRIVATE_KEY_ID,
@@ -16,23 +16,23 @@ const serviceAccount = {
   client_x509_cert_url: import.meta.env.FB_CLIENT_CERT_URL,
 };
 
-export const app = activeApps.length === 0 ? initializeApp({
-  credential: cert(serviceAccount as ServiceAccount),
-}) : activeApps[0];
+export const app = ACTIVE_APPS.length === 0 ? initializeApp({
+  credential: cert(SERVICE_ACCOUNT as ServiceAccount),
+}) : ACTIVE_APPS[0];
 
 export const db = getFirestore(app);
 
 import type { AstroCookies } from 'astro'
 import { getAuth } from 'firebase-admin/auth'
 
-export async function getSessionUser(wrapped_cookie: AstroCookies) {
+export async function get_user_session(wrapped_cookie: AstroCookies) {
   if(!wrapped_cookie) return null;
-  const cookie : string |undefined = wrapped_cookie.get('__session')?.value;
-  if(!cookie) return null;
-  const auth = getAuth(app);
+  const COOKIE : string |undefined = wrapped_cookie.get('__session')?.value;
+  if(!COOKIE) return null;
+  const AUTH = getAuth(app);
   try {
-    const decodedIdToken = await auth.verifySessionCookie(cookie, true);
-    const user = await auth.getUser(decodedIdToken.uid);
+    const decodedIdToken = await AUTH.verifySessionCookie(COOKIE, true);
+    const user = await AUTH.getUser(decodedIdToken.uid);
     return user;
   } catch (error) {
     console.log(error)
