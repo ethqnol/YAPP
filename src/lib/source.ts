@@ -1,4 +1,7 @@
+import SourceType from "./source_type";
+
 export default interface Source {
+  source_type: SourceType;
   title: string;
   authors: string[];
   volume: number | null;

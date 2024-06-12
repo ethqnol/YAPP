@@ -1,10 +1,12 @@
 <script lang="ts">
     
 import type Source from '../../lib/source';
+import SourceType from '../../lib/source_type';
 export let data : any = null;
 let source : Source;
 if(data){
   source = {
+    source_type: SourceType.BOOK,
     title: data.title != "" ? data.title : "",
     authors: data.author_name,
     series: "",
@@ -21,6 +23,7 @@ if(data){
   };
 } else {
   source = {
+    source_type: SourceType.BOOK,
     title: "",
     authors: [],
     series: "",
