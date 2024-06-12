@@ -55,6 +55,15 @@ if(!user) {
         <td><Card title="Origins of Dhyana" analysis="Preached by Patanjali in India, present by the time Bodhidharma arrived." source={source1} href="Google.com"></Card></td>
         <td><Card title="Empress Wu" analysis="Tried to establish the Chou dynasty, supported Buddhism through her reign." source={source1} href="Google.com"></Card></td>
         <td><Card title="The Patriarchs" analysis="Like most sects, the patriarchs of Zen helped lead the school forward; Bodhidharma was the first." source={source1} href="Google.com"></Card></td>
+        <td>
+          <div class="add-notecard">
+            <a href="google.com">
+              <svg class="w-[48px] h-[48px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="currentColor" viewBox="0 0 24 24">
+                <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4.243a1 1 0 1 0-2 0V11H7.757a1 1 0 1 0 0 2H11v3.243a1 1 0 1 0 2 0V13h3.243a1 1 0 1 0 0-2H13V7.757Z" clip-rule="evenodd"/>
+              </svg>  
+            </a>          
+          </div>
+        </td>
       </tr>
     </table>
   </div>
@@ -70,6 +79,40 @@ if(!user) {
         text-align: center;
         align-items: center;
     }
+    
+    .add-notecard {
+      display: flex;
+		  max-height: 18vh;
+		  height: 18vh;
+		  padding: 1px;
+		  background-color: var(--color-surface-mixed-300);
+		  background-image: none;
+		  background-size: 400%;
+	    border-radius: 7px;
+		  background-position: 100%;
+		  transition: background-position 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+		  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+		  overflow: hidden;
+    }
+
+    .add-notecard > a {
+      width: 100%;
+		  text-decoration: none;
+		  line-height: 1.4;
+		  padding: calc(3rem - 1px);
+		  border-radius: 8px;
+		  color: white;
+		  background-color: #23262d;
+		  opacity: 0.8;
+	  }
+
+    .add-notecard:is(:hover, :focus-within) {
+		  background-position: 0;
+		  background-image: var(--accent-gradient);
+	  }
+	  .add-notecard:is(:hover, :focus-within) h2 {
+		  color: rgb(var(--accent-light));
+	  }
 
     .notecards {
       width: 90%;
