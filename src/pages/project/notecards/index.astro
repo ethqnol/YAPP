@@ -77,7 +77,7 @@ if (search_query == "") {
       </div>
 
       <select id="sources" name="sources">
-        <option disabled selected> -- select an option -- </option>
+        <option disabled selected> -- select a source to filter by -- </option>
         {
           user_sources.map((source: DatabaseSource) => (
             <option value={source.primary_id}>
