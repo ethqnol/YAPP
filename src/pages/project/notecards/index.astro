@@ -5,15 +5,23 @@ import type { Props } from "astro/components/ViewTransitions.astro";
 import { getFirestore } from "firebase-admin/firestore";
 import type DatabaseNotecard from "../../../lib/notecard_database";
 import Fuse, { type FuseResult } from "fuse.js";
-import Card from "../../../components/Card.astro";
+import Card from "../../../components/Card.svelte";
 import type DatabaseSource from "../../../lib/source_database";
+import type Tag from "../../../lib/tags";
+
 
 const user = await get_user_session(Astro.cookies);
 if (!user) {
   return Astro.redirect("/signin");
 }
 
+
 const db = getFirestore(app);
+const tags_ref = db.collection("Tags");
+let tags_snapshot = await tags_ref.doc(user.uid).get();
+let user_tags : Tag[] = tags_snapshot.data()?.tags || [];
+
+
 const notecards_ref = db.collection("Notecards");
 let notecard_query = notecards_ref.where("student_id", "==", user.uid);
 let source_query: string | null = Astro.url.searchParams.get("source")
@@ -42,8 +50,8 @@ const user_sources: DatabaseSource[] = sources_snapshot.docs.map((doc) => ({
 
 const fuse_options = {
   keys: ["notecard.quote", "notecard.analysis", "notecard.title"],
-  includeScore: true, 
-  threshold: 0.35, 
+  includeScore: true,
+  threshold: 0.35,
 };
 
 let results: DatabaseNotecard[];
@@ -99,11 +107,11 @@ if (search_query == "") {
         results.map((notecard: DatabaseNotecard) => (
           <div>
             <Card
-              start_page={notecard.notecard.start_page}
-              end_page={notecard.notecard.end_page}
-              title={notecard.notecard.title}
-              quote={notecard.notecard.quote}
+              notecard={notecard.notecard}
               href={`/project/notecards/edit/${notecard.primary_id}`}
+              tags={user_tags}
+              source_id={notecard.primary_id}
+              client:visible
             />
           </div>
         ))
@@ -111,11 +119,19 @@ if (search_query == "") {
     </div>
   </div>
   <a href="notecards/tags" class="add-tag-button">
-  <svg class="w-[40px] h-[40px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" viewBox="0 0 24 24">
-    <path d="M18.045 3.007 12.31 3a1.965 1.965 0 0 0-1.4.585l-7.33 7.394a2 2 0 0 0 0 2.805l6.573 6.631a1.957 1.957 0 0 0 1.4.585 1.965 1.965 0 0 0 1.4-.585l7.409-7.477A2 2 0 0 0 21 11.479v-5.5a2.972 2.972 0 0 0-2.955-2.972Zm-2.452 6.438a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"/>
-  </svg>
-
-
+    <svg
+      class="w-[40px] h-[40px] text-gray-800 dark:text-white"
+      aria-hidden="true"
+      xmlns="http://www.w3.org/2000/svg"
+      width="40"
+      height="40"
+      fill="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        d="M18.045 3.007 12.31 3a1.965 1.965 0 0 0-1.4.585l-7.33 7.394a2 2 0 0 0 0 2.805l6.573 6.631a1.957 1.957 0 0 0 1.4.585 1.965 1.965 0 0 0 1.4-.585l7.409-7.477A2 2 0 0 0 21 11.479v-5.5a2.972 2.972 0 0 0-2.955-2.972Zm-2.452 6.438a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"
+      ></path>
+    </svg>
   </a>
   <a href="notecards/add" class="add-notecard-button">
     <svg
@@ -196,16 +212,15 @@ if (search_query == "") {
     text-align: center;
     align-items: center;
   }
-  
+
   .add-tag-button {
-      right: 2rem;
-      bottom: 6rem;
+    right: 2rem;
+    bottom: 6rem;
   }
-  
-  
+
   .add-notecard-button {
-      right: 2rem;
-      bottom: 2rem;
+    right: 2rem;
+    bottom: 2rem;
   }
 
   a {

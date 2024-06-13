@@ -6,5 +6,5 @@ export default interface Notecard {
   analysis : string;
   start_page : number;
   end_page : number;
-  tags : number[];
+  tags : string[];
 }

@@ -57,14 +57,14 @@
             msg="Success!"
             path="/project/notecards"
             success={true}
-            loc="Notecards"
+            loc="Go To Notecards"
         />
     {:else if notecard_add && !notecard_success}
         <Popup
             msg="Failed to add notecard."
             path="/project/notecards"
             success={false}
-            loc="Notecards"
+            loc="Go To Notecards"
         />
     {/if}
     <form on:submit|preventDefault={handle_submit}>

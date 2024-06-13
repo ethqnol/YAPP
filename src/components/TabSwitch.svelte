@@ -28,14 +28,14 @@ function display_popup(event : any) {
             msg="Success!"
             path="/project/sources"
             success={true}
-            loc="Sources"
+            loc="Go To Sources"
         />
     {:else if source_add_requested && !source_add_success}
         <Popup
             msg="Failed to add source."
             path="/project/sources"
             success={false}
-            loc="Sources"
+            loc="Go To Sources"
         />
     {/if}
     <div class="tab-container">

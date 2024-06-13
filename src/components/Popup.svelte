@@ -8,12 +8,12 @@
 {#if success}
     <div class="popup success">
         <p>{msg}</p>
-        <a href={path}>Go to {loc}</a>
+        <a href={path}>{loc}</a>
     </div>
 {:else}
     <div class="popup failure">
         <p>{msg}</p>
-        <a href={path}>Go to {loc}</a>
+        <a href={path}>{loc}</a>
     </div>
 {/if}
 <style>
