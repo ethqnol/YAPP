@@ -20,6 +20,7 @@
     "firebase-functions": "^5.0.1",
     "firebase-tools": "^13.8.3",
     "fuse.js": "^7.0.0",
+    "hashids": "^2.3.0",
     "svelte": "^4.2.17",
     "typescript": "^5.4.5"
   }

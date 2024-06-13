@@ -110,7 +110,14 @@ if (search_query == "") {
       }
     </div>
   </div>
-  <a href="notecards/add">
+  <a href="notecards/tags" class="add-tag-button">
+  <svg class="w-[40px] h-[40px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" viewBox="0 0 24 24">
+    <path d="M18.045 3.007 12.31 3a1.965 1.965 0 0 0-1.4.585l-7.33 7.394a2 2 0 0 0 0 2.805l6.573 6.631a1.957 1.957 0 0 0 1.4.585 1.965 1.965 0 0 0 1.4-.585l7.409-7.477A2 2 0 0 0 21 11.479v-5.5a2.972 2.972 0 0 0-2.955-2.972Zm-2.452 6.438a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"/>
+  </svg>
+
+
+  </a>
+  <a href="notecards/add" class="add-notecard-button">
     <svg
       class="w-[48px] h-[48px] text-gray-800 dark:text-white"
       aria-hidden="true"
@@ -189,13 +196,23 @@ if (search_query == "") {
     text-align: center;
     align-items: center;
   }
+  
+  .add-tag-button {
+      right: 2rem;
+      bottom: 6rem;
+  }
+  
+  
+  .add-notecard-button {
+      right: 2rem;
+      bottom: 2rem;
+  }
 
   a {
     background-color: var(--color-primary-200);
     display: flex;
     position: fixed;
-    right: 2rem;
-    bottom: 2rem;
+
     text-align: center;
     border-radius: 100%;
     padding: 0.1rem;
@@ -231,9 +248,9 @@ if (search_query == "") {
   }
 
   .notecards-grid {
-    width: 90%;
+    width: 85%;
     position: relative;
-    left: 5%;
+    left: 6%;
     display: grid;
     grid-template-columns: 25% 25% 25% 25%;
     gap: 1rem;
