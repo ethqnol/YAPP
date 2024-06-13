@@ -1,52 +1,92 @@
 ---
 import ProjectLayout from '../../../layouts/ProjectLayout.astro';
 import { get_user_session, app } from '../../../firebase/server';
-import Card from '../../../components/Card.astro';
 import type { Props } from 'astro/components/ViewTransitions.astro';
 import { getFirestore } from 'firebase-admin/firestore';
 import type DatabaseNotecard from '../../../lib/notecard_database';
+import Fuse, { type FuseResult } from 'fuse.js';
+import Card from '../../../components/Card.astro';
 
 const user = await get_user_session(Astro.cookies);
 if(!user) {
   return Astro.redirect("/signin");
 }
 
-
-
 const db = getFirestore(app);
 const notecards_ref = db.collection("Notecards");
 const notecards_snapshot = await notecards_ref.where("student_id", "==", user.uid).get();
+
 const user_notecards : DatabaseNotecard[] = notecards_snapshot.docs.map((doc) => ({
   primary_id: doc.id,
   notecard: doc.data(),
 })) as DatabaseNotecard[];
 
+const fuse_options={
+  keys: [
+    "notecard.quote",
+    "notecard.analysis",
+    "notecard.title"
+  ]
+}
+let results : DatabaseNotecard[];
+let search_query : string = Astro.url.searchParams.get("search") || "";
+if(search_query == "") results = user_notecards;
+else {
+  const fuse = new Fuse(user_notecards, fuse_options);
+  results = fuse.search(search_query).map((notecard : FuseResult<DatabaseNotecard>) => notecard.item);
+}
 ---
 
 <ProjectLayout title="Notecards">
-  <div id = "Page">
-    <div class = "notecards-grid">
-        {
-          user_notecards.map((notecard : DatabaseNotecard) => (
-            <div>
-                <Card
-                    start_page={notecard.notecard.start_page} 
-                    end_page={notecard.notecard.end_page} 
-                    title = {notecard.notecard.title}  
-                    quote = {notecard.notecard.quote} 
-                    href = {`/project/notecards/edit/${notecard.primary_id}`}
-                />
-            </div> 
-          ))
-        }
+<form class="form">
+    <div>
+        <input 
+            type="search"
+            id="search" 
+            name="search" 
+            placeholder="Search Notecards"
+        />
     </div>
       <a href="notecards/add">
         <svg class="w-[48px] h-[48px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="none" viewBox="0 0 24 24">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 12h14m-7 7V5"/>
         </svg>
     </a>
+</form>
+  <div id = "Page">
+  <div class = "notecards-grid">
+         {
+           results.map((notecard : DatabaseNotecard) => (
+             <div>
+                 <Card
+                     start_page={notecard.notecard.start_page} 
+                     end_page={notecard.notecard.end_page} 
+                     title = {notecard.notecard.title}  
+                     quote = {notecard.notecard.quote} 
+                     href = {`/project/notecards/edit/${notecard.primary_id}`}
+                 />
+             </div> 
+           ))
+         }
+     </div>
+
   </div>
 </ProjectLayout>
+
+
+<script> 
+  const form = document.querySelector('form');
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const search = (new FormData(form)).get('search')?.toString();
+
+    if(!search || search.length == 0) return;
+    const url = new URL("/project/notecards", window.location.origin);
+    url.searchParams.set('search', search);
+    window.location.assign(url.toString());
+  });
+</script>
+
 
 <style>
     #Page {
