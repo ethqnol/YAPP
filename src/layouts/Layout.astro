@@ -25,10 +25,11 @@ const { title } = Astro.props;
             </style>
             
             <div class="footer">
+                <p>© 2024 YAPP</p>
                 <p>YAPP is an open source project licensed under Apache 2.0. 
                 The source code can be found at: <code> <a href="https://github.com/ethqnol/YAPP"> https://github.com/ethqnol/YAPP</a> </code>, which anybody can clone, run, and build themselves. 
-                Read the full license <a> here </a> </p>
-               
+                Read the full license <a href="https://www.apache.org/licenses/LICENSE-2.0"> here </a> </p>
+
             </div>
         </footer>
 	</body>
@@ -89,6 +90,15 @@ const { title } = Astro.props;
         background-color: var(--color-surface-mixed-100);
         color: white;
         text-align: center;
-        font-size: 0.8rem;
+    }
+    
+    .footer a {
+        color: #0000FF;
+    }
+    
+    .footer p {
+        margin: 0;
+        padding: 5px;
+        margin-bottom: 5px;
     }
 </style>

@@ -1,7 +1,7 @@
 import type { APIRoute } from "astro";
-import { app, get_user_session } from "../../../../firebase/server";
+import { app, get_user_session } from "../../../firebase/server";
 import { getFirestore } from "firebase-admin/firestore";
-import type Tag from "../../../../lib/tags.ts";
+import type Tag from "../../../lib/tags.ts";
 import Hashids from 'hashids'
 
 export const POST: APIRoute = async ({ request, cookies }) => {

@@ -21,6 +21,7 @@
             if (response.ok) {
                 tag_add = true;
                 tag_success = true;
+                window.location.reload();
             } else {
                 tag_add = true;
                 tag_success = false;
@@ -38,6 +39,7 @@
             if (response.ok) {
                 tag_delete = true;
                 tag_delete_success = true;
+                window.location.reload();
             } else {
                 tag_delete = true;
                 tag_delete_success = false;
@@ -48,40 +50,27 @@
     }
 </script>
 
-{#if tag_add || tag_delete}
-    <div class="overlay"></div>
-{/if}
 
-{#if tag_add && tag_success}
-    <Popup
-        msg="Success!"
-        path="/project/notecards/tags"
-        success={true}
-        loc="Okay"
-    />
-{:else if tag_add && !tag_success}
+
+
+{#if tag_add && !tag_success}
     <Popup
         msg="Failed to add tag."
         path="/project/notecards/tags"
         success={false}
         loc="Okay"
     />
+    <div class="overlay"></div>
 {/if}
 
-{#if tag_delete && tag_delete_success}
-    <Popup
-        msg="Success!"
-        path="/project/notecards/tags"
-        success={true}
-        loc="Okay"
-    />
-{:else if tag_delete && !tag_delete_success}
+{#if tag_delete && !tag_delete_success}
     <Popup
         msg="Failed to delete tag."
         path="/project/notecards/tags"
         success={false}
         loc="Okay"
     />
+    <div class="overlay"></div>
 {/if}
 
 <div id="Page">

@@ -1,9 +1,9 @@
 <script lang="ts">
-    import type Notecard from "../lib/notecard";
     import type Tag from "../lib/tags";
     import type DatabaseSource from "../lib/source_database";
     import { generate_page_number } from "../lib/lib";
-    export let notecard: Notecard;
+    import type DatabaseNotecard from "../lib/notecard_database";
+    export let notecard: DatabaseNotecard;
     export let href: string;
     export let tags: Tag[] = [];
     export let source: DatabaseSource;
@@ -40,11 +40,11 @@
         show_delete = !show_delete;
     }
 
-    let tag_selection: string[] = notecard.tags ? notecard.tags : [];
+    let tag_selection: string[] = notecard.notecard.tags ? notecard.notecard.tags : [];
 
     async function add_tags() {
         try {
-            const response = await fetch(`/api/notecards/tags/${source.primary_id}`, {
+            const response = await fetch(`/api/notecards/tags/${notecard.primary_id}`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -54,6 +54,7 @@
             );
             if (response.ok) {
                 show_tags = false;
+                window.location.reload();
             }
         } catch (error) {
             console.error("Error:", error);
@@ -62,12 +63,13 @@
     
     async function delete_card() {
         try {
-            const response = await fetch(`/api/notecards/delete/${source.primary_id}`, {
+            const response = await fetch(`/api/notecards/delete/${notecard.primary_id}`, {
                     method: "DELETE",
                 },
             );
             if (response.ok) {
-                show_tags = false;
+                show_delete = false;
+                window.location.reload();
             }
         } catch (error) {
             console.error("Error:", error);
@@ -78,15 +80,15 @@
 <div class="link-card">
     <a {href}>
         <h2>
-            {notecard.title}
+            {notecard.notecard.title}
             <span>&rarr;</span>
         </h2>
         <p>
-            {notecard.quote.slice(0, 65) +
-                (notecard.quote.length > 65 ? "..." : "")}
+            {notecard.notecard.quote.slice(0, 65) +
+                (notecard.notecard.quote.length > 65 ? "..." : "")}
         </p>
         <p class="page-numbers">
-            Pages: {notecard.start_page} - {notecard.end_page}
+            Page: {generate_page_number(notecard.notecard.start_page, notecard.notecard.end_page)}
         </p>
     </a>
     <div class="actions">
@@ -163,8 +165,8 @@
 
         {#if show_footnote}
             <div class="footnote-menu">
-                <p>{source.source.footnote_long + ", " + generate_page_number(notecard.start_page, notecard.end_page) + "."}</p>
-                <p>{source.source.footnote_short + ", " + generate_page_number(notecard.start_page, notecard.end_page) + "."}</p>
+                <p>{source.source.footnote_long + ", " + generate_page_number(notecard.notecard.start_page, notecard.notecard.end_page) + "."}</p>
+                <p>{source.source.footnote_short + ", " + generate_page_number(notecard.notecard.start_page, notecard.notecard.end_page) + "."}</p>
             </div>
         {/if}
 

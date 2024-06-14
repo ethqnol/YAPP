@@ -107,13 +107,13 @@ if (search_query == "") {
         results.map((notecard: DatabaseNotecard) => (
           <div>
             <Card
-              notecard={notecard.notecard}
+              notecard={notecard}
               href={`/project/notecards/edit/${notecard.primary_id}`}
               tags={user_tags}
               source={user_sources.find(
                 (source: DatabaseSource) =>
                   source.primary_id == notecard.notecard.source_id,
-              )}
+              )!}
               client:visible
             />
           </div>

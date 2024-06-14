@@ -1,7 +1,7 @@
 import type { APIRoute } from "astro";
-import { app, get_user_session } from "../../../../firebase/server";
+import { app, get_user_session } from "../../../firebase/server";
 import { getFirestore } from "firebase-admin/firestore";
-import type Tag from "../../../../lib/tags.ts";
+import type Tag from "../../../lib/tags.ts";
 
 export const DELETE: APIRoute = async ({ params, cookies }) => {
   let tag_id : string | undefined = params.id;
