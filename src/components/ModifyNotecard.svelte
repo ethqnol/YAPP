@@ -27,7 +27,7 @@
         };
 
         try {
-            const response = await fetch(`/api/notecards/${notecard ? notecard.primary_id : "add"}`, {
+            const response = await fetch(`/api/notecards/${notecard ? ("edit/" + notecard.primary_id) : "add"}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

@@ -1,8 +1,8 @@
 
 import type { APIRoute } from "astro";
-import { app, get_user_session } from "../../../firebase/server";
+import { app, get_user_session } from "../../../../firebase/server";
 import { getFirestore } from "firebase-admin/firestore";
-import type Notecard from "../../../lib/notecard.ts";
+import type Notecard from "../../../../lib/notecard.ts";
 
 
 export const POST: APIRoute = async ({ params, request, cookies }) => {

@@ -7,9 +7,7 @@ export function parse_author(author : string) : string[] {
 export function generate_citation(source: Source): string {
     let citation = '';
 
-    if (source.authors && source.authors.length > 0) {
-        citation += source.authors.join(', ') + '. ';
-    }
+    citation += format_authors(source.authors) + '. ';
 
     if (source.title) {
         citation += source.title + '. ';
@@ -66,4 +64,33 @@ export function generate_page_number(start : number, end : number) : string {
     } else {
         return start + "-" + end;
     }
+}
+
+
+function format_authors(authors: string[]): string {
+  if (authors.length === 0) return '';
+  if (authors.length === 1) return authors[0];
+  if (authors.length === 2) return `${authors[0]} and ${authors[1]}`;
+  return `${authors[0]} et al`;
+}
+
+
+export function generate_long_footnote(source: Source): string {
+    let authors = source.authors.join(', ');
+    let edition = source.edition ? `, ${source.edition} ed.` : '';
+    let volume = source.volume ? `, vol. ${source.volume}` : '';
+    let series = source.series ? `, ${source.series} ${source.series_num}` : '';
+    let year = source.publishing_year ? ` (${source.publishing_year})` : '';
+    let url = source.url ? `, ${source.url}` : '';
+    
+    let footnote = `${authors}, *${source.title}*${edition}${volume}${series} (${source.publishing_location}: ${source.publishing_company}${year})${url}.`;
+    return footnote;
+}
+
+export function generate_short_footnote(source: Source): string {
+    let authors = source.authors.join(', ');
+    let short_title = source.title.split(' ').slice(0, 4).join(' ') + (source.title.split(' ').length > 4 ? '...' : '');
+    
+    let footnote = `${authors}, *${short_title}* `;
+    return footnote;
 }

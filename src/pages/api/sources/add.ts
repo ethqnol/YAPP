@@ -2,7 +2,7 @@ import type { APIRoute } from "astro";
 import { app, get_user_session } from "../../../firebase/server";
 import { getFirestore } from "firebase-admin/firestore";
 import type Source from "../../../lib/source";
-import {generate_citation} from "../../../lib/lib.ts";
+import {generate_citation, generate_long_footnote, generate_short_footnote } from "../../../lib/lib.ts";
 
 
 export const POST: APIRoute = async ({ request, cookies }) => {
@@ -18,6 +18,8 @@ export const POST: APIRoute = async ({ request, cookies }) => {
   }
   source.full_citation = generate_citation(source);
   source.student_id = user.uid;
+  source.footnote_long = generate_long_footnote(source);
+  source.footnote_short = generate_short_footnote(source);
   try {
     const db = getFirestore(app);
     const sources_ref = db.collection("Sources");

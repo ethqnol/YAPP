@@ -14,6 +14,8 @@ export default interface Source {
   isbn: string;
   doi: string;
   full_citation: string;
+  footnote_long: string;
+  footnote_short: string;
   student_id : string;
   pages: number | null;
   url: string;

@@ -1,51 +1,96 @@
 <script lang="ts">
     import type Notecard from "../lib/notecard";
     import type Tag from "../lib/tags";
-    export let notecard : Notecard;
+    import type DatabaseSource from "../lib/source_database";
+    import { generate_page_number } from "../lib/lib";
+    export let notecard: Notecard;
     export let href: string;
-    export let tags : Tag[] = [];
-    export let source_id: string;
-    $: show_tags = false
-    function show_menu() {
-        show_tags = !show_tags
+    export let tags: Tag[] = [];
+    export let source: DatabaseSource;
+
+    $: show_tags = false;
+    $: show_footnote = false;
+    $: show_move = false;
+    $: show_delete = false;
+    function show_tag_menu() {
+        show_tags = !show_tags;
+        show_footnote = false;
+        show_move = false;
+        show_delete = false;
     }
-    
-    let tag_selection : string[] = notecard.tags ? notecard.tags : [];
-    
-    async function add_tags(){
+
+    function show_footnote_menu() {
+        show_tags = false;
+        show_move = false;
+        show_footnote = !show_footnote;
+        show_delete = false;
+    }
+
+    function show_move_menu() {
+        show_tags = false;
+        show_footnote = false;
+        show_move = !show_move;
+        show_delete = false;
+    }
+
+    function show_delete_menu() {
+        show_tags = false;
+        show_footnote = false;
+        show_move = false;
+        show_delete = !show_delete;
+    }
+
+    let tag_selection: string[] = notecard.tags ? notecard.tags : [];
+
+    async function add_tags() {
         try {
-            const response = await fetch(`/api/notecards/tags/${source_id}`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
+            const response = await fetch(`/api/notecards/tags/${source.primary_id}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(tag_selection),
                 },
-                body: JSON.stringify(tag_selection),
-            });
-            if(response.ok) {
-                show_tags = false
+            );
+            if (response.ok) {
+                show_tags = false;
             }
         } catch (error) {
             console.error("Error:", error);
         }
     }
     
+    async function delete_card() {
+        try {
+            const response = await fetch(`/api/notecards/delete/${source.primary_id}`, {
+                    method: "DELETE",
+                },
+            );
+            if (response.ok) {
+                show_tags = false;
+            }
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
 </script>
 
 <div class="link-card">
-    <a href={href}>
+    <a {href}>
         <h2>
             {notecard.title}
             <span>&rarr;</span>
         </h2>
         <p>
-            {notecard.quote.slice(0, 65) + (notecard.quote.length > 65 ? "..." : "")}
+            {notecard.quote.slice(0, 65) +
+                (notecard.quote.length > 65 ? "..." : "")}
         </p>
         <p class="page-numbers">
             Pages: {notecard.start_page} - {notecard.end_page}
         </p>
     </a>
     <div class="actions">
-        <button class="icon tag-icon" title="Tag" on:click={show_menu}>
+        <button class="icon tag-icon" title="Tag" on:click={show_tag_menu}>
             <svg
                 class="w-6 h-6 text-gray-800 dark:text-white"
                 aria-hidden="true"
@@ -63,13 +108,20 @@
         {#if show_tags}
             <form class="tag-menu" on:submit|preventDefault={add_tags}>
                 {#each tags as tag}
-                    <label><input type="checkbox" bind:group={tag_selection} value={tag.tag_id}> {tag.name}</label>
+                    <label
+                        ><input
+                            type="checkbox"
+                            bind:group={tag_selection}
+                            value={tag.tag_id}
+                        />
+                        {tag.name}</label
+                    >
                 {/each}
                 <button type="submit" class="submit-button">Submit</button>
             </form>
         {/if}
 
-        <span class="icon" title="Pile">
+        <button class="icon pile-icon" title="Pile" on:click={show_move_menu}>
             <svg
                 class="w-[28px] h-[28px] text-gray-800 dark:text-white"
                 aria-hidden="true"
@@ -85,8 +137,13 @@
                     clip-rule="evenodd"
                 />
             </svg>
-        </span>
-        <span class="icon" title="Generate Footnote">
+        </button>
+
+        {#if show_move}
+            <p class="move-menu">Currently Under Development :D</p>
+        {/if}
+
+        <button class="icon footnote-icon" title="Generate Footnote" on:click={show_footnote_menu}>
             <svg
                 class="w-[28px] h-[28px] text-gray-800 dark:text-white"
                 aria-hidden="true"
@@ -102,12 +159,43 @@
                     clip-rule="evenodd"
                 />
             </svg>
-        </span>
-        <span class="icon" title="Delete">
-            <svg class="w-[28px] h-[28px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.7" d="M7.757 12h8.486M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+        </button>
+
+        {#if show_footnote}
+            <div class="footnote-menu">
+                <p>{source.source.footnote_long + ", " + generate_page_number(notecard.start_page, notecard.end_page) + "."}</p>
+                <p>{source.source.footnote_short + ", " + generate_page_number(notecard.start_page, notecard.end_page) + "."}</p>
+            </div>
+        {/if}
+
+        <button class="icon delete-icon" title="Delete" on:click={show_delete_menu}>
+            <svg
+                class="w-[28px] h-[28px] text-gray-800 dark:text-white"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="none"
+                viewBox="0 0 24 24"
+            >
+                <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2.7"
+                    d="M7.757 12h8.486M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                />
             </svg>
-        </span>
+        </button>
+        
+        {#if show_delete}
+            <form class="delete-menu" on:submit|preventDefault={delete_card}>
+                <p>Are you sure you want to delete this notecard? (This process is irreversible)</p>
+                <button type="submit" class="delete-button">Delete</button>
+            </form>
+        {/if}
+        
+        
     </div>
 </div>
 
@@ -198,7 +286,7 @@
         transition: opacity 0.3s;
     }
     .icon::after {
-        content: '';
+        content: "";
         position: absolute;
         bottom: 100%;
         left: 50%;
@@ -214,11 +302,11 @@
         max-height: 12vh;
         overflow-y: auto;
         background-color: rgba(0, 0, 0, 0.9);
-        padding: 0.5rem;
+        padding: 1px 0.6rem;
         border-radius: 4px;
         display: flex;
         flex-direction: column;
-        gap: 0.3rem;
+        gap: 0.5rem;
         z-index: 2;
         display: none;
         text-align: left;
@@ -226,18 +314,109 @@
     }
     .tag-menu label {
         color: white;
-        font-size: 0.9rem;
+        font-size: 0.8rem;
+
         cursor: pointer;
     }
-    .tag-menu label input {
-        margin-right: 0.5rem;
-    }
+
     .tag-icon:hover + .tag-menu,
     .tag-icon:focus + .tag-menu,
     .tag-menu:hover,
     .tag-menu:focus-within {
         display: flex;
     }
+    
+    
+    .move-menu {
+        position: absolute;
+        bottom: 120%;
+        transform: translateY(10%);
+        max-width: 45%;
+        width: 45%;
+        max-height: 12vh;
+        overflow-y: auto;
+        background-color: rgba(0, 0, 0, 0.9);
+        padding: 1px 0.6rem;
+        border-radius: 4px;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        z-index: 2;
+        display: none;
+        text-align: left;
+        border: 1px solid rgba(255, 255, 255, 0.8);
+    }
+    /* .move-menu label {
+        color: white;
+        font-size: 0.8rem;
+
+        cursor: pointer;
+    } */
+
+    .pile-icon:hover + .move-menu,
+    .pile-icon:focus + .move-menu,
+    .move-menu:hover,
+    .move-menu:focus-within {
+        display: flex;
+    }
+    
+    
+    .footnote-menu {
+        position: absolute;
+        bottom: 120%;
+        transform: translateY(10%);
+        max-width: 45%;
+        width: 45%;
+        max-height: 12vh;
+        overflow-y: auto;
+        background-color: rgba(0, 0, 0, 0.9);
+        padding: 1rem;
+        overflow: auto;
+        border-radius: 4px;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        z-index: 2;
+        display: none;
+        text-align: left;
+        border: 1px solid rgba(255, 255, 255, 0.8);
+    }
+
+    .footnote-icon:hover + .footnote-menu,
+    .footnote-icon:focus + .footnote-menu,
+    .footnote-menu:hover,
+    .footnote-menu:focus-within {
+        display: flex;
+    }
+    
+    .delete-menu {
+        position: absolute;
+        bottom: 120%;
+        transform: translateX(45%) translateY(10%);
+        max-width: 45%;
+        width: 45%;
+        max-height: 12vh;
+        overflow-y: auto;
+        background-color: rgba(0, 0, 0, 0.9);
+        padding: 1px 0.6rem;
+        border-radius: 4px;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        z-index: 2;
+        display: none;
+        text-align: center;
+        border: 1px solid rgba(255, 255, 255, 0.8);
+    }
+ 
+    
+    .delete-icon:hover + .delete-menu,
+    .delete-icon:focus + .delete-menu,
+    .delete-menu:hover,
+    .delete-menu:focus-within {
+        display: flex;
+    }
+    
     .link-card:is(:hover, :focus-within) {
         background-position: 0;
         background-image: var(--accent-gradient);
@@ -245,19 +424,50 @@
     .link-card:is(:hover, :focus-within) h2 {
         color: rgb(var(--accent-light));
     }
-    
-    
+
     *::-webkit-scrollbar {
         width: 10px;
     }
-    
+
     *::-webkit-scrollbar-track {
         background: var(--color-surface-mixed-500);
     }
-    
+
     *::-webkit-scrollbar-thumb {
         background-color: var(--color-surface-mixed-300);
         border-radius: 10px;
         border: 2px solid var(--color-surface-mixed-500);
     }
+    
+    .submit-button {
+        padding: 4px;
+        border: none;
+        background-color: var(--color-primary-100);
+        border-radius: 4px;
+        margin-bottom: 0.5rem;
+        color: white;
+    }
+    
+    .submit-button:hover {
+        background-color: var(--color-primary-200);
+        cursor: pointer;
+    }
+    
+    
+    
+    .delete-button {
+        padding: 4px;
+        border: none;
+        background-color: red;
+        border-radius: 4px;
+        margin-bottom: 0.5rem;
+        color: white;
+    }
+    
+    .delete-button.delete-button:hover {
+        background-color: darkred;
+        cursor: pointer;
+    }
+    
+    
 </style>
