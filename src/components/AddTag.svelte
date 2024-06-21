@@ -158,11 +158,10 @@
     }
 
     #Page {
-        position: absolute;
+
         right: 0;
         margin-top: 0.1rem;
-        width: calc(100vw - 1rem - 12vw);
-        max-width: calc(100vw - 1rem - 12vw);
+        width: 100%;
         text-align: center;
         align-items: center;
     }

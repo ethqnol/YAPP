@@ -1,25 +1,27 @@
 ---
 import ProjectLayout from "../../../layouts/ProjectLayout.astro";
 import { app, get_user_session } from "../../../firebase/server";
-import type Source from "../../../lib/source";
 import type DatabaseSource from "../../../lib/source_database";
 import { getFirestore } from "firebase-admin/firestore"
-const user = await get_user_session(Astro.cookies);
-if (!user) {
-    return Astro.redirect("/signin");
-}
+// const user = await get_user_session(Astro.cookies);
+// if (!user) {
+//     return Astro.redirect("/signin");
+// }
 
-const db = getFirestore(app);
-const sources_ref = db.collection("Sources");
-const sources_snapshot = await sources_ref.where("student_id", "==", user.uid).get();
-const user_sources : DatabaseSource[] = sources_snapshot.docs.map((doc) => ({
-  primary_id: doc.id,
-  source: doc.data(),
-})) as DatabaseSource[];
+// const db = getFirestore(app);
+// const sources_ref = db.collection("Sources");
+// const sources_snapshot = await sources_ref.where("student_id", "==", user.uid).get();
+// const user_sources : DatabaseSource[] = sources_snapshot.docs.map((doc) => ({
+//   primary_id: doc.id,
+//   source: doc.data(),
+// })) as DatabaseSource[];
+// 
+let user_sources = []
+
+
 ---
 
 <ProjectLayout title="Sources">
-    <div id="Page">
         <a href="sources/add">
             <svg class="w-[48px] h-[48px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="none" viewBox="0 0 24 24">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 12h14m-7 7V5"/>
@@ -49,7 +51,6 @@ const user_sources : DatabaseSource[] = sources_snapshot.docs.map((doc) => ({
                 }
             </table>
         </div>
-    </div>
 </ProjectLayout>
 
 <style>
@@ -58,8 +59,8 @@ const user_sources : DatabaseSource[] = sources_snapshot.docs.map((doc) => ({
         position: absolute;
         right: 0;
         margin-top: 1rem;
-        width: calc(100vw - 1rem - 12vw);
-        max-width: calc(100vw - 1rem - 12vw);
+        /* width: calc(100vw - 1rem - 12vw);
+        max-width: calc(100vw - 1rem - 12vw); */
         text-align: center;
         align-items: center;
     }

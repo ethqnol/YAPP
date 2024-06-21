@@ -9,18 +9,15 @@ import Card from "../../../components/Card.svelte";
 import type DatabaseSource from "../../../lib/source_database";
 import type Tag from "../../../lib/tags";
 
-
 const user = await get_user_session(Astro.cookies);
 if (!user) {
   return Astro.redirect("/signin");
 }
 
-
 const db = getFirestore(app);
 const tags_ref = db.collection("Tags");
 let tags_snapshot = await tags_ref.doc(user.uid).get();
-let user_tags : Tag[] = tags_snapshot.data()?.tags || [];
-
+let user_tags: Tag[] = tags_snapshot.data()?.tags || [];
 
 const notecards_ref = db.collection("Notecards");
 let notecard_query = notecards_ref.where("student_id", "==", user.uid);
@@ -31,14 +28,18 @@ const tag_query: string[] | null = Astro.url.searchParams.get("tags")
   ? Astro.url.searchParams.get("tags")!.split("_")
   : null;
 
-console.log(tag_query)
+console.log(tag_query);
 
 if (source_query) {
   notecard_query = notecard_query.where("source_id", "==", source_query);
 }
 
-if(tag_query != null && tag_query.length > 0) {
-  notecard_query = notecard_query.where("tags", "array-contains-any", tag_query);
+if (tag_query != null && tag_query.length > 0) {
+  notecard_query = notecard_query.where(
+    "tags",
+    "array-contains-any",
+    tag_query,
+  );
 }
 
 const notecards_snapshot = await notecard_query.get();
@@ -49,8 +50,6 @@ const user_notecards: DatabaseNotecard[] = notecards_snapshot.docs.map(
     notecard: doc.data(),
   }),
 ) as DatabaseNotecard[];
-
-
 
 const sources_ref = db.collection("Sources");
 const sources_snapshot = await sources_ref
@@ -77,6 +76,8 @@ if (search_query == "") {
     .search(search_query)
     .map((notecard: FuseResult<DatabaseNotecard>) => notecard.item);
 }
+
+
 ---
 
 <ProjectLayout title="Notecards">
@@ -91,12 +92,13 @@ if (search_query == "") {
       <div class="dropdown">
         <button class="dropbtn">Select Tags</button>
         <div class="dropdown-content">
-            {
+          {
             user_tags.map((tag: Tag) => (
-                <label><input type="checkbox" value={tag.tag_id} /> {tag.name}</label>
+              <label>
+                <input type="checkbox" value={tag.tag_id} /> {tag.name}
+              </label>
             ))
-            
-            }
+          }
         </div>
       </div>
 
@@ -126,10 +128,12 @@ if (search_query == "") {
               notecard={notecard}
               href={`/project/notecards/edit/${notecard.primary_id}`}
               tags={user_tags}
-              source={user_sources.find(
-                (source: DatabaseSource) =>
-                  source.primary_id == notecard.notecard.source_id,
-              )!}
+              source={
+                user_sources.find(
+                  (source: DatabaseSource) =>
+                    source.primary_id == notecard.notecard.source_id,
+                )!
+              }
               client:visible
             />
           </div>
@@ -215,18 +219,17 @@ if (search_query == "") {
 
     if (search && search.length != 0) url.searchParams.set("search", search);
     if (selected_source != "") url.searchParams.set("source", selected_source);
-    if (selected_tags.length > 0 && selected_tags != undefined) url.searchParams.set("tags", selected_tags.join("_"));
+    if (selected_tags.length > 0 && selected_tags != undefined)
+      url.searchParams.set("tags", selected_tags.join("_"));
     window.location.assign(url.toString());
   });
 </script>
 
 <style>
   #Page {
-    position: absolute;
     right: 0;
     margin-top: 0.1rem;
-    width: calc(100vw - 1rem - 12vw);
-    max-width: calc(100vw - 1rem - 12vw);
+    width: 100%;
     text-align: center;
     align-items: center;
   }

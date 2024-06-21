@@ -111,13 +111,12 @@
         justify-content: center;
         background-color: var(--color-surface-200);
         border-radius: 0.4rem;
-        width: 95%;
         padding: 1rem;
+        width: 80vw;
     }
 
     #search {
-        width: calc(100vw - 2rem - 12vw);
-        max-width: calc(100vw - 2rem - 12vw);
+        width: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -151,7 +150,6 @@
         font-size: medium;
         box-sizing: border-box;
         padding: 0.3rem;
-        position: relative;
         top: 0.3vh;
     }
 

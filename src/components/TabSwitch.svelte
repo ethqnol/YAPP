@@ -74,16 +74,12 @@ function display_popup(event : any) {
 
 <style>
    #Page {
-       width: calc(100vw - 2rem - 12vw);
-       max-width: calc(100vw - 2rem - 12vw);
        color: white;
-       margin: 0rem auto;
        background-color: #20232a;
        border-radius: 8px;
        box-shadow: 0 0 10px rgba(0,0,0,0.5);
        display: flex;
-       position: absolute;
-       right: 0.5rem;
+       width: 100%;
        flex-direction: column;
        justify-content: center;
        align-items: center;
