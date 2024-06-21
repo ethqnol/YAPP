@@ -179,7 +179,7 @@ const { title } = Astro.props;
 </html>
 <style>
     .nav.collapsed {
-        width: 5vw;
+        width: 4.2rem;
         font-size: 0;
     }
 
@@ -194,11 +194,10 @@ const { title } = Astro.props;
     }
 
     
-    
     .nav.collapsed ~ #page {
-        margin-left: 5vw;
-        width: calc(100vw - 1.5rem - 5vw);
-        max-width: calc(100vw - 1.5rem - 5vw);
+        margin-left: 4.2rem;
+        width: calc(100vw - 1.5rem - 4.2rem);
+        max-width: calc(100vw - 1.5rem - 4.2rem);
     }
 
     .nav svg {
@@ -308,7 +307,7 @@ const { title } = Astro.props;
         display: flex;
         position: fixed;
         bottom: 2rem;
-        left: calc(2.5vw - 0.05rem - 22px);
+        left: calc(2.1rem - 0.05rem - 22px);
         text-align: center;
         border-radius: 100%;
         padding: 0.1rem;
@@ -362,12 +361,31 @@ const { title } = Astro.props;
         --color-surface-mixed-500: #76777e;
         --color-surface-mixed-600: #8f9197;
     }
+    
+    
+    @media only screen and (max-width: 1200px) {
+            .website-name {
+                font-size: 0;
+            }
+            
+            .nav {
+                width: 4.2rem;
+                font-size: 0;
+            }
+            
+            #page {
+                margin-left: 4.2rem;
+                width: calc(100vw - 1.5rem - 4.2rem);
+                max-width: calc(100vw - 1.5rem - 4.2rem);
+            }
+            .toggle-btn {display: none;}
+        }
 </style>
 
 <script>
     document.getElementById('toggle-btn')!.addEventListener('click', function () {
         let sidebar = document.getElementById('sidebar')!;
-        let website_name = document.getElementById('website-name');
+        let website_name = document.getElementById('website-name')!;
         
         website_name.classList.toggle('website-name-collapse');
         website_name.classList.toggle('website-name');

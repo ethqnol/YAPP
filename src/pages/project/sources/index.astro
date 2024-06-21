@@ -3,6 +3,8 @@ import ProjectLayout from "../../../layouts/ProjectLayout.astro";
 import { app, get_user_session } from "../../../firebase/server";
 import type DatabaseSource from "../../../lib/source_database";
 import { getFirestore } from "firebase-admin/firestore"
+
+import Fuse, { type FuseResult } from "fuse.js";
 const user = await get_user_session(Astro.cookies);
 if (!user) {
     return Astro.redirect("/signin");
@@ -17,6 +19,24 @@ const user_sources : DatabaseSource[] = sources_snapshot.docs.map((doc) => ({
 })) as DatabaseSource[];
 
 
+let results: DatabaseSource[];
+let search_query: string = Astro.url.searchParams.get("search") || "";
+
+
+const fuse_options = {
+  keys: ["source.full_citation", "source.title"],
+  includeScore: true,
+  threshold: 0.35,
+};
+
+if (search_query == "") {
+  results = user_sources;
+} else {
+  const fuse = new Fuse(user_sources, fuse_options);
+  results = fuse
+    .search(search_query)
+    .map((source: FuseResult<DatabaseSource>) => source.item);
+}
 
 ---
 
@@ -28,9 +48,16 @@ const user_sources : DatabaseSource[] = sources_snapshot.docs.map((doc) => ({
         </a>
 
         <div class="source-container">
-            <div class="filter-items">
-                <input type="text" placeholder="Search for a Source" />
-            </div>
+            <form class="form">
+                <input
+                    type="search"
+                    id="search"
+                    name="search"
+                    placeholder="Search Sources"
+                />
+                <button type="submit" class="submit-button"> Search </button>
+                <button type="reset" class="reset-button"> Reset </button>
+            </form>
 
             <table class="source-info">
                 <tr class="header-row">
@@ -39,7 +66,7 @@ const user_sources : DatabaseSource[] = sources_snapshot.docs.map((doc) => ({
                     <th>Year</th>
                     <th>Chicago Citation</th>
                 </tr>
-                { user_sources.map(( source : DatabaseSource ) => (
+                { results.map(( source : DatabaseSource ) => (
                     <tr>
                         <td>{source.source.title}</td>
                         <td>{source.source.authors[0]}</td>
@@ -51,18 +78,22 @@ const user_sources : DatabaseSource[] = sources_snapshot.docs.map((doc) => ({
             </table>
         </div>
 </ProjectLayout>
+<script>
+
+
+  const form = document.querySelector("form");
+  form?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const search = new FormData(form).get("search")?.toString();
+    const url = new URL("/project/sources", window.location.origin);
+
+    if (search && search.length != 0) url.searchParams.set("search", search);
+    window.location.assign(url.toString());
+  });
+</script>
+
 
 <style>
-
-    #Page {
-        position: absolute;
-        right: 0;
-        margin-top: 1rem;
-        /* width: calc(100vw - 1rem - 12vw);
-        max-width: calc(100vw - 1rem - 12vw); */
-        text-align: center;
-        align-items: center;
-    }
     td {
         padding: 1rem;
         text-align: left;
@@ -103,41 +134,69 @@ const user_sources : DatabaseSource[] = sources_snapshot.docs.map((doc) => ({
         top: 33.5vh;
     }
 
-    .general-info {
-        display: flex;
-        flex-direction: column;
-        margin-right: 10rem;
-    }
 
-    input[type="text"] {
-        background-color: transparent;
-        border: solid 1px grey;
+
+    .form {
+        background: var(--color-surface-mixed-200);
+        padding: 0.4rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        max-width: calc(100vw - 2rem - 60vw);
+        margin: 0 auto;
+        display: flex;
+        flex-direction: row;
+        gap: 1rem;
+        margin-bottom: 1rem;
+        justify-content: space-between;
+      }
+    
+      .form input[type="search"] {
+        background-color: rgb(0, 0, 0, 0.3);
+        border: solid 1px gray;
         height: 100%;
         border-radius: 5px;
         transition: 0.2s;
         color: grey;
-        padding: 0.5em;
-        width: 30%;
+        padding: 10px;
+        width: 85%;
         font-size: medium;
         box-sizing: border-box;
-        padding: 0.3rem;
         position: relative;
-        top: 0.3vh;
-    }
-
-    input[type="text"]:focus {
-        scale: 1;
-        border: 1px solid white;
+      }
+   
+      
+      .reset-button {
+        padding: 10px;
+        border: 1px solid red;
+        background-color: red;
+        border-radius: 4px;
         color: white;
-    }
-
-    .filter-items {
-        width: 95%;
-        height: 4vw;
-        display: inline-block;
-        text-align: center;
-        margin-bottom: 2rem;
-    }
+        font-weight: 700;
+      }
+      
+      .reset-button:hover,
+      .submit-button:hover {
+        cursor: pointer;
+        scale: 1.1;
+        opacity: 0.8;
+      }
+    
+      .submit-button {
+        padding: 10px;
+        border: 1px solid var(--color-primary-200);
+        background-color: var(--color-primary-200);
+        border-radius: 4px;
+        color: white;
+        font-weight: 700;
+      }
+    
+      .form input[type="search"]::placeholder {
+        color: #aaa;
+      }
+    
+      .form select {
+        height: auto;
+      }
 
     a {
         background-color: var(--color-primary-200);
