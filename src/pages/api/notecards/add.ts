@@ -15,7 +15,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       status: 400,
     });
   }
-  
+
   notecard.student_id = user.uid;
 
   try {

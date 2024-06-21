@@ -2,15 +2,15 @@
     import type Source from "../lib/source";
     import SourceType from "../lib/source_type";
     import { createEventDispatcher } from "svelte";
-    export let data : any;
-    let author : string;
-    let isbn : string;
-    let publisher : string;
-    let publish_year : string;
-    let publishing_city : string;
-    
+    export let data: any;
+    let author: string;
+    let isbn: string;
+    let publisher: string;
+    let publish_year: string;
+    let publishing_city: string;
+
     const dispatch = createEventDispatcher();
-    console.log(data)
+    console.log(data);
     let expanded = false;
 
     if (data.author_name) {
@@ -46,17 +46,17 @@
     function expand() {
         expanded = !expanded;
     }
-    
+
     const source_added = () => {
-      dispatch("save", true);
-    }
-    
+        dispatch("save", true);
+    };
+
     const source_add_fail = () => {
-      dispatch("save", false);
-    }
-    
+        dispatch("save", false);
+    };
+
     async function generate_citation() {
-        let source : Source = {
+        let source: Source = {
             source_type: SourceType.BOOK,
             title: data.title,
             authors: data.author_name,
@@ -72,7 +72,7 @@
             full_citation: "",
             student_id: "",
         };
-        
+
         const res = await fetch("/api/sources/add", {
             method: "POST",
             headers: {
@@ -80,97 +80,93 @@
             },
             body: JSON.stringify(source),
         });
-        if(res.ok){
+        if (res.ok) {
             source_added();
-
         } else {
             source_add_fail();
         }
-        
     }
-    
 </script>
 
 <li class="link-card">
-        <button class="current-book" on:click={expand}>
-            <div class="container">
-                <img
-                    src={`https://covers.openlibrary.org/b/id/${data.cover_i}.jpg`}
-                    alt="book cover"
-                />
-                <div class="info-container">
-                    <h2>
-                        {data.title}
-                    </h2>
-                    <h2>
-                        {#if author && author.length > 20}
-                            {author.slice(0, 50) + "..."}
-                        {:else}
-                            {author}
-                        {/if}
-                    </h2>
-                </div>
+    <button class="current-book" on:click={expand}>
+        <div class="container">
+            <img
+                src={`https://covers.openlibrary.org/b/id/${data.cover_i}.jpg`}
+                alt="book cover"
+            />
+            <div class="info-container">
+                <h2>
+                    {data.title}
+                </h2>
+                <h2>
+                    {#if author && author.length > 20}
+                        {author.slice(0, 50) + "..."}
+                    {:else}
+                        {author}
+                    {/if}
+                </h2>
             </div>
-                {#if expanded}
-                    <div id="ToggleInfo">
-                        <table>
-                            <th colspan="2">More Info</th>
-                            <tr>
-                                <td id="TopLeftRounding"> Author Name </td>
-                                <td id="TopRightRounding">
-                                    {#if author && author.length > 20}
-                                        {author.slice(0, 50) + "..."}
-                                    {:else}
-                                        {author}
-                                    {/if}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td> ISBN </td>
-                                <td>
-                                    {#if isbn && isbn.length > 50}
-                                        {isbn.slice(0, 50) + "..."}
-                                    {:else}
-                                        {isbn}
-                                    {/if}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td> Publishing Year </td>
-                                <td>
-                                    {#if publish_year && publish_year.length > 20}
-                                        {publish_year.slice(0, 50) + "..."}
-                                    {:else}
-                                        {publish_year}
-                                    {/if}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td> Publisher City </td>
-                                <td>
-                                    {#if publishing_city && publishing_city.length > 20}
-                                        {publishing_city.slice(0, 50) + "..."}
-                                    {:else}
-                                        {publishing_city}
-                                    {/if}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td id="BottomLeftRounding"> Publisher </td>
-                                <td id="BottomRightRounding">
-                                    {#if publisher && publisher.length > 20}
-                                        {publisher.slice(0, 50) + "..."}
-                                    {:else}
-                                        {publisher}
-                                    {/if}
-                                </td>
-                            </tr>
-                        </table>
-                        
-                    </div>
-                {/if}
-            </button>
-            <button class="cite-button" on:click={generate_citation}> Cite! </button>
+        </div>
+        {#if expanded}
+            <div id="ToggleInfo">
+                <table>
+                    <th colspan="2">More Info</th>
+                    <tr>
+                        <td id="TopLeftRounding"> Author Name </td>
+                        <td id="TopRightRounding">
+                            {#if author && author.length > 20}
+                                {author.slice(0, 50) + "..."}
+                            {:else}
+                                {author}
+                            {/if}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td> ISBN </td>
+                        <td>
+                            {#if isbn && isbn.length > 50}
+                                {isbn.slice(0, 50) + "..."}
+                            {:else}
+                                {isbn}
+                            {/if}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td> Publishing Year </td>
+                        <td>
+                            {#if publish_year && publish_year.length > 20}
+                                {publish_year.slice(0, 50) + "..."}
+                            {:else}
+                                {publish_year}
+                            {/if}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td> Publisher City </td>
+                        <td>
+                            {#if publishing_city && publishing_city.length > 20}
+                                {publishing_city.slice(0, 50) + "..."}
+                            {:else}
+                                {publishing_city}
+                            {/if}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="BottomLeftRounding"> Publisher </td>
+                        <td id="BottomRightRounding">
+                            {#if publisher && publisher.length > 20}
+                                {publisher.slice(0, 50) + "..."}
+                            {:else}
+                                {publisher}
+                            {/if}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        {/if}
+    </button>
+    <button class="cite-button" on:click={generate_citation}> Cite! </button>
 </li>
 
 <style>
@@ -178,7 +174,7 @@
         max-height: 10vh;
         border-radius: 8px 8px 0 0;
     }
-    
+
     .link-card {
         margin: 1rem;
         list-style: none;
@@ -204,7 +200,6 @@
         background-color: #23262d;
         border: none;
     }
-    
 
     .container {
         display: flex;
@@ -222,7 +217,7 @@
         border-radius: 0 0 8px 8px;
         margin-top: 0.1rem;
     }
-    
+
     .cite-button:hover {
         background-color: var(--color-primary-100);
     }
@@ -239,8 +234,6 @@
         font-size: 1.25rem;
         transition: color 0.6s cubic-bezier(0.22, 1, 0.36, 1);
     }
-
-  
 
     .link-card:is(:hover, :focus-within) {
         background-position: 0;

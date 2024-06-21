@@ -12,9 +12,13 @@
     let analysis = notecard ? notecard.notecard.analysis : "";
     let start_page = notecard ? notecard.notecard.start_page : 0;
     let end_page = notecard ? notecard.notecard.end_page : 0;
-    let selected_source = notecard ? notecard.notecard.source_id : sources.length > 0 ? sources[0].primary_id : "";
+    let selected_source = notecard
+        ? notecard.notecard.source_id
+        : sources.length > 0
+          ? sources[0].primary_id
+          : "";
 
-    let title : string = notecard ? notecard.notecard.title : "";
+    let title: string = notecard ? notecard.notecard.title : "";
     async function handle_submit() {
         const updated_notecard = {
             source_id: selected_source,
@@ -27,19 +31,21 @@
         };
 
         try {
-            const response = await fetch(`/api/notecards/${notecard ? ("edit/" + notecard.primary_id) : "add"}`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
+            const response = await fetch(
+                `/api/notecards/${notecard ? "edit/" + notecard.primary_id : "add"}`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(updated_notecard),
                 },
-                body: JSON.stringify(updated_notecard),
-            });
-            
+            );
+
             notecard_add = true;
             if (response.ok) {
                 notecard_success = true;
-            } 
-            
+            }
         } catch (error) {
             console.error("Error:", error);
             notecard_add = true;
@@ -72,7 +78,9 @@
             <label for="source">Source</label>
             <select id="source" bind:value={selected_source}>
                 {#each sources as source}
-                  <option value={source.primary_id}>{`${source.source.title}; ${source.source.full_citation.slice(0, 50) + (source.source.full_citation.length > 50 ? "..." : "")}` }</option>
+                    <option value={source.primary_id}
+                        >{`${source.source.title}; ${source.source.full_citation.slice(0, 50) + (source.source.full_citation.length > 50 ? "..." : "")}`}</option
+                    >
                 {/each}
             </select>
         </div>

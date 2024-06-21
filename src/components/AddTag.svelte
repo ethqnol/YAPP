@@ -50,9 +50,6 @@
     }
 </script>
 
-
-
-
 {#if tag_add && !tag_success}
     <Popup
         msg="Failed to add tag."
@@ -158,7 +155,6 @@
     }
 
     #Page {
-
         right: 0;
         margin-top: 0.1rem;
         width: 100%;

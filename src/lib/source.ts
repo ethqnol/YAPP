@@ -16,7 +16,7 @@ export default interface Source {
   full_citation: string;
   footnote_long: string;
   footnote_short: string;
-  student_id : string;
+  student_id: string;
   pages: number | null;
   url: string;
 }

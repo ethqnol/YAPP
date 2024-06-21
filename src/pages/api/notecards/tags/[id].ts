@@ -15,14 +15,14 @@ export const POST: APIRoute = async ({ request, params, cookies }) => {
       status: 400,
     });
   }
-  let notecard_id : string | undefined = params.id;
-  
-  if(!notecard_id){
+  let notecard_id: string | undefined = params.id;
+
+  if (!notecard_id) {
     return new Response("Missing required fields", {
       status: 400,
     });
   }
-  
+
   try {
     const db = getFirestore(app);
     const notecards_ref = db.collection("Notecards");

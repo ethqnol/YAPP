@@ -7,11 +7,16 @@ import Layout from "../layouts/Layout.astro";
         <div id="message">
             <h2>404</h2>
             <h1>Page Not Found</h1>
-            <p>The specified file was not found on this website. Please check the URL for mistakes and try again.</p>
+            <p>
+                The specified file was not found on this website. Please check
+                the URL for mistakes and try again.
+            </p>
             <h3>Why am I seeing this?</h3>
-            <p>This page apparently does not exist. Contact your history teacher if you think this is a mistake.</p>
+            <p>
+                This page apparently does not exist. Contact your history
+                teacher if you think this is a mistake.
+            </p>
             <a href="/"> <span> Return Home </span></a>
-            
         </div>
     </body>
 </Layout>
@@ -29,7 +34,6 @@ import Layout from "../layouts/Layout.astro";
         margin: 100px auto 16px;
         padding: 40px 36px 24px;
         border-radius: 3px;
-        
     }
     #message h3 {
         color: #888;
@@ -49,13 +53,13 @@ import Layout from "../layouts/Layout.astro";
         font-weight: 300;
         color: rgba(0, 0, 0, 0.6);
         margin: 0 0 16px;
-        color:white;
+        color: white;
     }
     #message p {
         line-height: 140%;
         margin: 16px 0 24px;
         font-size: 14px;
-        color: lightgray
+        color: lightgray;
     }
     #message a {
         display: block;
@@ -73,7 +77,7 @@ import Layout from "../layouts/Layout.astro";
             0 1px 3px rgba(0, 0, 0, 0.12),
             0 1px 2px rgba(0, 0, 0, 0.24);
     }
-    
+
     #message a:hover {
         background-color: var(--color-surface-mixed-600);
     }
@@ -93,5 +97,4 @@ import Layout from "../layouts/Layout.astro";
             border-top: 16px solid #ffa100;
         }
     }
-
 </style>

@@ -3,9 +3,7 @@ import { app } from "../firebase/server";
 import { getAuth, type DecodedIdToken } from "firebase-admin/auth";
 import Layout from "../layouts/Layout.astro";
 
-
 const auth = getAuth(app);
-
 
 /* Check current session */
 if (!Astro.cookies.has("__session")) {
@@ -13,38 +11,38 @@ if (!Astro.cookies.has("__session")) {
 }
 const session_cookie = Astro.cookies.get("__session")?.value;
 
-if(!session_cookie){
-  
+if (!session_cookie) {
   return Astro.redirect("/signin");
-};
-//let user : null | 
-const decodedCookie: null | DecodedIdToken= await auth.verifySessionCookie(session_cookie, true)
-      .then((decodedToken) => {
-        return decodedToken;
-      })
-      .catch((error) => {
-          console.log(error)
-        //Astro.cookies.delete("__session");
-        return null;
-      });
+}
+//let user : null |
+const decodedCookie: null | DecodedIdToken = await auth
+  .verifySessionCookie(session_cookie, true)
+  .then((decodedToken) => {
+    return decodedToken;
+  })
+  .catch((error) => {
+    console.log(error);
+    //Astro.cookies.delete("__session");
+    return null;
+  });
 
-if(!decodedCookie){
-  
-  return Astro.redirect('/signin');
+if (!decodedCookie) {
+  return Astro.redirect("/signin");
 }
 
 const user = await auth.getUser(decodedCookie.uid);
 ---
+
 <Layout title="Dashboard">
   <div id="container">
     <div id="board">
       <h1>Welcome, <span>{user.displayName}</span></h1>
-      <img src={user.photoURL} id="profile-pic" alt="Profile Picture"/>
+      <img src={user.photoURL} id="profile-pic" alt="Profile Picture" />
       <p>Have a great day!</p>
       <form action="/api/auth/signout">
         <button type="submit">Sign Out</button>
       </form>
-      <br>
+      <br />
       <form action="/">
         <button type="submit">Back to Home</button>
       </form>
@@ -99,10 +97,10 @@ const user = await auth.getUser(decodedCookie.uid);
   }
   button:hover {
     transform: scale(1.05);
-    background-color: #5460E0;
+    background-color: #5460e0;
   }
   span {
-    color: #00FF7F;
+    color: #00ff7f;
     font-weight: 700;
   }
 </style>

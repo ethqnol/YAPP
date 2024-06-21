@@ -2,16 +2,16 @@ import type { APIRoute } from "astro";
 import { app, get_user_session } from "../../../firebase/server";
 import { getFirestore } from "firebase-admin/firestore";
 import type Source from "../../../lib/source";
-import {generate_citation, generate_long_footnote, generate_short_footnote } from "../../../lib/lib.ts";
+import { generate_citation, generate_long_footnote, generate_short_footnote } from "../../../lib/lib.ts";
 
 
 export const POST: APIRoute = async ({ request, cookies }) => {
-  const source : Source = await request.json();
+  const source: Source = await request.json();
   const user = await get_user_session(cookies);
-  if(!user) {
-    return new Response("Unauthorized", {status: 403});
+  if (!user) {
+    return new Response("Unauthorized", { status: 403 });
   }
-  if (!source || !source.title || !source.authors || !source.publishing_location || !source.publishing_company ) {
+  if (!source || !source.title || !source.authors || !source.publishing_location || !source.publishing_company) {
     return new Response("Missing required fields", {
       status: 400,
     });
@@ -31,8 +31,8 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       status: 500,
     });
   }
-  
-  return new Response("Source added successfully", {status: 200});
+
+  return new Response("Source added successfully", { status: 200 });
 };
 
 

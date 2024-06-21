@@ -5,7 +5,7 @@ import type Tag from "../../../lib/tags.ts";
 import Hashids from 'hashids'
 
 export const POST: APIRoute = async ({ request, cookies }) => {
-  let tag_name : string = await request.json();
+  let tag_name: string = await request.json();
   const user = await get_user_session(cookies);
   if (!user) {
     return new Response("Unauthorized", { status: 403 });
@@ -15,25 +15,25 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       status: 400,
     });
   }
-  
+
   if (tag_name.length > 20) {
     return new Response("Tag name too long", {
       status: 400,
     });
   }
-  
-  let tag : Tag = { name: tag_name, tag_id: new Hashids().encode(Date.now()) };
+
+  let tag: Tag = { name: tag_name, tag_id: new Hashids().encode(Date.now()) };
 
   try {
     const db = getFirestore(app);
     const tags_ref = db.collection("Tags");
-    const current_tags_snapshot= await tags_ref.doc(user.uid).get(); 
-    if(!current_tags_snapshot.exists) { 
-      tags_ref.doc(user.uid).set({tags: [tag]}); 
-      return new Response("tag added successfully", {status: 200})
+    const current_tags_snapshot = await tags_ref.doc(user.uid).get();
+    if (!current_tags_snapshot.exists) {
+      tags_ref.doc(user.uid).set({ tags: [tag] });
+      return new Response("tag added successfully", { status: 200 })
     }
-    
-    let current_tags : Tag[] = current_tags_snapshot.data()!.tags;
+
+    let current_tags: Tag[] = current_tags_snapshot.data()!.tags;
     current_tags.push(tag)
     await tags_ref.doc(user.uid).update({
       tags: current_tags,

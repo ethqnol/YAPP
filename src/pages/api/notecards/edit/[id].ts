@@ -17,13 +17,13 @@ export const POST: APIRoute = async ({ params, request, cookies }) => {
     });
   }
   notecard.student_id = user.uid;
-  
+
   if (!params.id) {
     return new Response("Cannot find notecard", {
       status: 404,
     });
   }
-  
+
   try {
     const db = getFirestore(app);
     await db.collection("Notecards").doc(params.id).update({

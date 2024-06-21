@@ -1,7 +1,7 @@
 import type Source from "./source";
 
-export function parse_author(author : string) : string[] {
-  return author.split(" ");
+export function parse_author(author: string): string[] {
+    return author.split(" ");
 }
 
 export function generate_citation(source: Source): string {
@@ -58,8 +58,8 @@ export function generate_citation(source: Source): string {
     return citation;
 }
 
-export function generate_page_number(start : number, end : number) : string {
-    if(start == end){
+export function generate_page_number(start: number, end: number): string {
+    if (start == end) {
         return start + "";
     } else {
         return start + "-" + end;
@@ -68,10 +68,10 @@ export function generate_page_number(start : number, end : number) : string {
 
 
 function format_authors(authors: string[]): string {
-  if (authors.length === 0) return '';
-  if (authors.length === 1) return authors[0];
-  if (authors.length === 2) return `${authors[0]} and ${authors[1]}`;
-  return `${authors[0]} et al`;
+    if (authors.length === 0) return '';
+    if (authors.length === 1) return authors[0];
+    if (authors.length === 2) return `${authors[0]} and ${authors[1]}`;
+    return `${authors[0]} et al`;
 }
 
 
@@ -82,7 +82,7 @@ export function generate_long_footnote(source: Source): string {
     let series = source.series ? `, ${source.series} ${source.series_num}` : '';
     let year = source.publishing_year ? ` (${source.publishing_year})` : '';
     let url = source.url ? `, ${source.url}` : '';
-    
+
     let footnote = `${authors}, *${source.title}*${edition}${volume}${series} (${source.publishing_location}: ${source.publishing_company}${year})${url}.`;
     return footnote;
 }
@@ -90,7 +90,7 @@ export function generate_long_footnote(source: Source): string {
 export function generate_short_footnote(source: Source): string {
     let authors = source.authors.join(', ');
     let short_title = source.title.split(' ').slice(0, 4).join(' ') + (source.title.split(' ').length > 4 ? '...' : '');
-    
+
     let footnote = `${authors}, *${short_title}* `;
     return footnote;
 }

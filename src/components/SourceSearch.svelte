@@ -29,7 +29,11 @@
 <div id="search">
     <div id="search-area">
         <h1>Source Search</h1>
-        <form class="FormGroup" id="SearchBar" on:submit|preventDefault={handleSearch}>
+        <form
+            class="FormGroup"
+            id="SearchBar"
+            on:submit|preventDefault={handleSearch}
+        >
             <input
                 type="text"
                 id="book_input"
@@ -49,12 +53,10 @@
                 <span class="dot"></span>
             </p>
         {:else if query_sent == false}
-            <p>
-                Nothing to see here... yet.
-            </p>
+            <p>Nothing to see here... yet.</p>
         {:else if book_data.length > 0}
             {#each book_data as book}
-                <PossibleSources data={book} on:save/>
+                <PossibleSources data={book} on:save />
             {/each}
         {:else}
             <p>No Books Found</p>
@@ -184,8 +186,6 @@
         margin-left: 0.3rem;
     }
 
-
-
     #searchResults {
         width: 95%;
         color: white;
@@ -194,7 +194,7 @@
         height: 100%;
         gap: 1rem;
     }
-    
+
     p {
         color: white;
         font-weight: 900;

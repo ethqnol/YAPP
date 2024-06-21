@@ -1,10 +1,9 @@
 ---
-import AddTag from "../../../../components/AddTag.svelte"
+import AddTag from "../../../../components/AddTag.svelte";
 import { getFirestore } from "firebase-admin/firestore";
 import { app, get_user_session } from "../../../../firebase/server.ts";
 import type Tag from "../../../../lib/tags";
 import ProjectLayout from "../../../../layouts/ProjectLayout.astro";
-
 
 const user = await get_user_session(Astro.cookies);
 if (!user) {
@@ -14,11 +13,11 @@ if (!user) {
 const db = getFirestore(app);
 const tags_ref = db.collection("Tags");
 const tags_snapshot = await tags_ref.doc(user.uid).get();
-const user_tags : Tag[] = tags_snapshot.data() ? tags_snapshot.data()!.tags as Tag[] : [];
+const user_tags: Tag[] = tags_snapshot.data()
+  ? (tags_snapshot.data()!.tags as Tag[])
+  : [];
 ---
 
 <ProjectLayout title="Add Tags">
-    <AddTag client:visible user_tags={user_tags} />
+  <AddTag client:visible user_tags={user_tags} />
 </ProjectLayout>
-
-

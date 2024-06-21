@@ -11,13 +11,13 @@ export const DELETE: APIRoute = async ({ params, cookies }) => {
   if (!user) {
     return new Response("Unauthorized", { status: 403 });
   }
-  
+
   if (!notecard_id) {
     return new Response("Cannot find notecard", {
       status: 404,
     });
   }
-  
+
   try {
     const db = getFirestore(app);
     await db.collection("Notecards").doc(notecard_id).delete();

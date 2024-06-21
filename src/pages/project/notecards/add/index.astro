@@ -1,25 +1,26 @@
 ---
-import ProjectLayout from '../../../../layouts/ProjectLayout.astro';
-import { get_user_session, app } from '../../../../firebase/server';
-import ModifyNotecard from '../../../../components/ModifyNotecard.svelte';
-import type DatabaseSource from '../../../../lib/source_database';
-import { getFirestore } from 'firebase-admin/firestore';
+import ProjectLayout from "../../../../layouts/ProjectLayout.astro";
+import { get_user_session, app } from "../../../../firebase/server";
+import ModifyNotecard from "../../../../components/ModifyNotecard.svelte";
+import type DatabaseSource from "../../../../lib/source_database";
+import { getFirestore } from "firebase-admin/firestore";
 
 const user = await get_user_session(Astro.cookies);
-if(!user) {
+if (!user) {
   return Astro.redirect("/signin");
 }
 
 const db = getFirestore(app);
 const sources_ref = db.collection("Sources");
-const sources_snapshot = await sources_ref.where("student_id", "==", user.uid).get();
-const user_sources : DatabaseSource[] = sources_snapshot.docs.map((doc) => ({
+const sources_snapshot = await sources_ref
+  .where("student_id", "==", user.uid)
+  .get();
+const user_sources: DatabaseSource[] = sources_snapshot.docs.map((doc) => ({
   primary_id: doc.id,
   source: doc.data(),
 })) as DatabaseSource[];
-
 ---
 
 <ProjectLayout title="Add Notecard">
-    <ModifyNotecard sources={user_sources} client:visible/>
+  <ModifyNotecard sources={user_sources} client:visible />
 </ProjectLayout>

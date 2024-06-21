@@ -40,11 +40,15 @@
         show_delete = !show_delete;
     }
 
-    let tag_selection: string[] = notecard.notecard.tags ? notecard.notecard.tags : [];
+    let tag_selection: string[] = notecard.notecard.tags
+        ? notecard.notecard.tags
+        : [];
 
     async function add_tags() {
         try {
-            const response = await fetch(`/api/notecards/tags/${notecard.primary_id}`, {
+            const response = await fetch(
+                `/api/notecards/tags/${notecard.primary_id}`,
+                {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -60,10 +64,12 @@
             console.error("Error:", error);
         }
     }
-    
+
     async function delete_card() {
         try {
-            const response = await fetch(`/api/notecards/delete/${notecard.primary_id}`, {
+            const response = await fetch(
+                `/api/notecards/delete/${notecard.primary_id}`,
+                {
                     method: "DELETE",
                 },
             );
@@ -88,7 +94,10 @@
                 (notecard.notecard.quote.length > 65 ? "..." : "")}
         </p>
         <p class="page-numbers">
-            Page: {generate_page_number(notecard.notecard.start_page, notecard.notecard.end_page)}
+            Page: {generate_page_number(
+                notecard.notecard.start_page,
+                notecard.notecard.end_page,
+            )}
         </p>
     </a>
     <div class="actions">
@@ -145,7 +154,11 @@
             <p class="move-menu">Currently Under Development :D</p>
         {/if}
 
-        <button class="icon footnote-icon" title="Generate Footnote" on:click={show_footnote_menu}>
+        <button
+            class="icon footnote-icon"
+            title="Generate Footnote"
+            on:click={show_footnote_menu}
+        >
             <svg
                 class="w-[28px] h-[28px] text-gray-800 dark:text-white"
                 aria-hidden="true"
@@ -165,12 +178,32 @@
 
         {#if show_footnote}
             <div class="footnote-menu">
-                <p>{source.source.footnote_long + ", " + generate_page_number(notecard.notecard.start_page, notecard.notecard.end_page) + "."}</p>
-                <p>{source.source.footnote_short + ", " + generate_page_number(notecard.notecard.start_page, notecard.notecard.end_page) + "."}</p>
+                <p>
+                    {source.source.footnote_long +
+                        ", " +
+                        generate_page_number(
+                            notecard.notecard.start_page,
+                            notecard.notecard.end_page,
+                        ) +
+                        "."}
+                </p>
+                <p>
+                    {source.source.footnote_short +
+                        ", " +
+                        generate_page_number(
+                            notecard.notecard.start_page,
+                            notecard.notecard.end_page,
+                        ) +
+                        "."}
+                </p>
             </div>
         {/if}
 
-        <button class="icon delete-icon" title="Delete" on:click={show_delete_menu}>
+        <button
+            class="icon delete-icon"
+            title="Delete"
+            on:click={show_delete_menu}
+        >
             <svg
                 class="w-[28px] h-[28px] text-gray-800 dark:text-white"
                 aria-hidden="true"
@@ -189,15 +222,16 @@
                 />
             </svg>
         </button>
-        
+
         {#if show_delete}
             <form class="delete-menu" on:submit|preventDefault={delete_card}>
-                <p>Are you sure you want to delete this notecard? (This process is irreversible)</p>
+                <p>
+                    Are you sure you want to delete this notecard? (This process
+                    is irreversible)
+                </p>
                 <button type="submit" class="delete-button">Delete</button>
             </form>
         {/if}
-        
-        
     </div>
 </div>
 
@@ -327,8 +361,7 @@
     .tag-menu:focus-within {
         display: flex;
     }
-    
-    
+
     .move-menu {
         position: absolute;
         bottom: 120%;
@@ -361,8 +394,7 @@
     .move-menu:focus-within {
         display: flex;
     }
-    
-    
+
     .footnote-menu {
         position: absolute;
         bottom: 120%;
@@ -390,7 +422,7 @@
     .footnote-menu:focus-within {
         display: flex;
     }
-    
+
     .delete-menu {
         position: absolute;
         bottom: 120%;
@@ -410,15 +442,14 @@
         text-align: center;
         border: 1px solid rgba(255, 255, 255, 0.8);
     }
- 
-    
+
     .delete-icon:hover + .delete-menu,
     .delete-icon:focus + .delete-menu,
     .delete-menu:hover,
     .delete-menu:focus-within {
         display: flex;
     }
-    
+
     .link-card:is(:hover, :focus-within) {
         background-position: 0;
         background-image: var(--accent-gradient);
@@ -440,7 +471,7 @@
         border-radius: 10px;
         border: 2px solid var(--color-surface-mixed-500);
     }
-    
+
     .submit-button {
         padding: 4px;
         border: none;
@@ -449,14 +480,12 @@
         margin-bottom: 0.5rem;
         color: white;
     }
-    
+
     .submit-button:hover {
         background-color: var(--color-primary-200);
         cursor: pointer;
     }
-    
-    
-    
+
     .delete-button {
         padding: 4px;
         border: none;
@@ -465,11 +494,9 @@
         margin-bottom: 0.5rem;
         color: white;
     }
-    
+
     .delete-button.delete-button:hover {
         background-color: darkred;
         cursor: pointer;
     }
-    
-    
 </style>
