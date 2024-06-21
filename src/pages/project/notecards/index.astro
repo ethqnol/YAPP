@@ -24,12 +24,23 @@ let user_tags : Tag[] = tags_snapshot.data()?.tags || [];
 
 const notecards_ref = db.collection("Notecards");
 let notecard_query = notecards_ref.where("student_id", "==", user.uid);
-let source_query: string | null = Astro.url.searchParams.get("source")
+const source_query: string | null = Astro.url.searchParams.get("source")
   ? Astro.url.searchParams.get("source")
   : null;
+const tag_query: string[] | null = Astro.url.searchParams.get("tags")
+  ? Astro.url.searchParams.get("tags")!.split("_")
+  : null;
+
+console.log(tag_query)
+
 if (source_query) {
   notecard_query = notecard_query.where("source_id", "==", source_query);
 }
+
+if(tag_query != null && tag_query.length > 0) {
+  notecard_query = notecard_query.where("tags", "array-contains-any", tag_query);
+}
+
 const notecards_snapshot = await notecard_query.get();
 
 const user_notecards: DatabaseNotecard[] = notecards_snapshot.docs.map(
@@ -38,6 +49,8 @@ const user_notecards: DatabaseNotecard[] = notecards_snapshot.docs.map(
     notecard: doc.data(),
   }),
 ) as DatabaseNotecard[];
+
+
 
 const sources_ref = db.collection("Sources");
 const sources_snapshot = await sources_ref
@@ -78,9 +91,12 @@ if (search_query == "") {
       <div class="dropdown">
         <button class="dropbtn">Select Tags</button>
         <div class="dropdown-content">
-          <label><input type="checkbox" value="tag1" /> Tag 1</label>
-          <label><input type="checkbox" value="tag2" /> Tag 2</label>
-          <label><input type="checkbox" value="tag3" /> Tag 3</label>
+            {
+            user_tags.map((tag: Tag) => (
+                <label><input type="checkbox" value={tag.tag_id} /> {tag.name}</label>
+            ))
+            
+            }
         </div>
       </div>
 
@@ -174,21 +190,20 @@ if (search_query == "") {
   const checkboxes = document.querySelectorAll(
     '.dropdown-content input[type="checkbox"]',
   );
-  const selectedTags: string[] = [];
+  const selected_tags: string[] = [];
 
   checkboxes.forEach((checkbox) => {
     checkbox.addEventListener("change", () => {
       if ((checkbox as HTMLInputElement).checked) {
-        selectedTags.push((checkbox as HTMLInputElement).value);
+        selected_tags.push((checkbox as HTMLInputElement).value);
       } else {
-        const index = selectedTags.indexOf(
+        const index = selected_tags.indexOf(
           (checkbox as HTMLInputElement).value,
         );
         if (index > -1) {
-          selectedTags.splice(index, 1);
+          selected_tags.splice(index, 1);
         }
       }
-      console.log(selectedTags);
     });
   });
 
@@ -200,7 +215,7 @@ if (search_query == "") {
 
     if (search && search.length != 0) url.searchParams.set("search", search);
     if (selected_source != "") url.searchParams.set("source", selected_source);
-
+    if (selected_tags.length > 0 && selected_tags != undefined) url.searchParams.set("tags", selected_tags.join("_"));
     window.location.assign(url.toString());
   });
 </script>
