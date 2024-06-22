@@ -28,7 +28,6 @@ const tag_query: string[] | null = Astro.url.searchParams.get("tags")
   ? Astro.url.searchParams.get("tags")!.split("_")
   : null;
 
-console.log(tag_query);
 
 if (source_query) {
   notecard_query = notecard_query.where("source_id", "==", source_query);

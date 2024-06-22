@@ -10,7 +10,7 @@
     let publishing_city: string;
 
     const dispatch = createEventDispatcher();
-    console.log(data);
+
     let expanded = false;
 
     if (data.author_name) {

@@ -10,7 +10,7 @@
         );
         const unwrapped = await response.json();
         let data = unwrapped.docs;
-        console.log(data);
+
         return data;
     }
 
