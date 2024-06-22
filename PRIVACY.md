@@ -24,8 +24,6 @@ This privacy notice for YAPP ("**we**," "**us**," or "**our**"), describes how a
 
 **How do we keep your information safe?** We have organizational and technical processes and procedures in place to protect information information, however, no electronic transmission over the internet or information storage technology can be guaranteed to be 100% secure, so we cannot promise or guarantee that your information is 100% protected. Security issues can be reported here: [github.com/ethqnol/YAPP/security](https://github.com/ethqnol/YAPP/security)
 
-**TABLE OF CONTENTS**
-
 ## Information We Collect
 
 The personal information we collect includes the following:
