@@ -1,5 +1,6 @@
 <script lang="ts">
     export let msg: string;
+    export let error: string = "";
     export let path: string;
     export let success: boolean;
     export let loc: string;
@@ -13,6 +14,9 @@
 {:else}
     <div class="popup failure">
         <p>{msg}</p>
+        {#if error != ""}
+            <p>{error}</p>
+        {/if}
         <a href={path}>{loc}</a>
     </div>
 {/if}
@@ -23,15 +27,14 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        padding: 0.5rem;
-        border-radius: 0.4rem;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        padding: 1.5rem 2rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         color: #fff;
         text-align: center;
         z-index: 1001;
         background-color: #4bb543;
-        padding: 2rem;
-        border: white 3px solid;
+        border: 3px solid #fff;
     }
 
     .popup.success {
@@ -44,21 +47,20 @@
 
     .popup p {
         margin: 0;
-        font-size: 2rem;
-        font-weight: 400;
-        padding: 2rem;
+        font-size: 1.25rem;
+        font-weight: 500;
     }
 
     .popup a {
+        display: inline-block;
+        margin-top: 1rem;
         padding: 0.5rem 1rem;
-        border: none;
         border-radius: 4px;
         cursor: pointer;
-        color: white;
+        color: #fff;
         font-size: 1rem;
         text-decoration: none;
-        transition: background-color 0.3s;
-        transition: border 0.3s;
+        transition: background-color 0.3s ease, border 0.3s ease;
     }
 
     .popup.success a {
@@ -71,7 +73,7 @@
 
     .popup a:hover {
         background-color: #155724;
-        border: 2px black solid;
+        border: 2px solid #000;
     }
 
     .popup.failure a:hover {

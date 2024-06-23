@@ -7,7 +7,8 @@
 
     let notecard_add = false;
     let notecard_success = false;
-
+    
+    let error_msg : string = "";
     let quote = notecard ? notecard.notecard.quote : "";
     let analysis = notecard ? notecard.notecard.analysis : "";
     let start_page = notecard ? notecard.notecard.start_page : 0;
@@ -49,6 +50,8 @@
         } catch (error) {
             console.error("Error:", error);
             notecard_add = true;
+            if(error instanceof Error) error_msg = error.message;
+            else { error_msg = "An unknown error occurred";}
         }
     }
 </script>
@@ -70,6 +73,7 @@
             msg="Failed to add notecard."
             path="/project/notecards"
             success={false}
+            error={error_msg}
             loc="Go To Notecards"
         />
     {/if}

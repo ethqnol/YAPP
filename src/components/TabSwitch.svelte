@@ -6,6 +6,7 @@
     let source_add_requested = false;
     let source_add_success = false;
     $: active_manual = true;
+    let error_msg: string = "";
     function display_popup(event: any) {
         if (event.detail == true) {
             source_add_requested = true;
@@ -13,6 +14,7 @@
         } else {
             source_add_requested = true;
             source_add_success = false;
+            error_msg = "An unknown error occurred";
         }
     }
 </script>
@@ -34,6 +36,7 @@
             msg="Failed to add source."
             path="/project/sources"
             success={false}
+            error={error_msg}
             loc="Go To Sources"
         />
     {/if}

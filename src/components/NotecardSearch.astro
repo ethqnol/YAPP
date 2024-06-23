@@ -1,0 +1,101 @@
+---
+import { app } from "../firebase/server";
+import { getFirestore } from "firebase-admin/firestore";
+import type DatabaseNotecard from "../lib/notecard_database.ts"
+import type { UserRecord } from "firebase-admin/auth"
+import type Tag from "../lib/tags.ts"
+import type DatabaseSource from "../lib/source_database.ts"
+import Card from "./Card.svelte"
+import Fuse, { type FuseResult } from "fuse.js"
+
+const db = getFirestore(app);
+interface Props {
+  user: UserRecord;
+  tags: Promise<void |Tag[]>;
+  sources: Promise<void | DatabaseSource[]>;
+}
+
+
+
+const { user, tags, sources } = Astro.props;
+const notecards_ref = db.collection("Notecards");
+let notecard_query = notecards_ref.where("student_id", "==", user.uid);
+const source_query: string | null = Astro.url.searchParams.get("source")
+  ? Astro.url.searchParams.get("source")
+  : null;
+const tag_query: string[] | null = Astro.url.searchParams.get("tags")
+  ? Astro.url.searchParams.get("tags")!.split("_")
+  : null;
+
+if (source_query) {
+  notecard_query = notecard_query.where("source_id", "==", source_query);
+}
+
+if (tag_query != null && tag_query.length > 0) {
+  notecard_query = notecard_query.where(
+    "tags",
+    "array-contains-any",
+    tag_query,
+  );
+}
+
+const notecards_snapshot = await notecard_query.get();
+
+const user_notecards: DatabaseNotecard[] = notecards_snapshot.docs.map(
+  (doc) => ({
+    primary_id: doc.id,
+    notecard: doc.data(),
+  }),
+) as DatabaseNotecard[];
+
+let user_sources = await sources;
+let user_tags = await tags;
+const fuse_options = {
+  keys: ["notecard.quote", "notecard.analysis", "notecard.title"],
+  includeScore: true,
+  threshold: 0.35,
+};
+
+let results: DatabaseNotecard[];
+let search_query: string = Astro.url.searchParams.get("search") || "";
+if (search_query == "") {
+  results = user_notecards;
+} else {
+  const fuse = new Fuse(user_notecards, fuse_options);
+  results = fuse
+    .search(search_query)
+    .map((notecard: FuseResult<DatabaseNotecard>) => notecard.item);
+}
+---
+
+<div class="notecards-grid">
+  {
+    results.map((notecard: DatabaseNotecard) => (
+      <div>
+        <Card
+          notecard={notecard}
+          href={`/project/notecards/edit/${notecard.primary_id}`}
+          tags={user_tags!}
+          source={
+            user_sources!.find(
+              (source: DatabaseSource) =>
+                source.primary_id == notecard.notecard.source_id,
+            )!
+          }
+          client:visible
+        />
+      </div>
+    ))
+  }
+</div>
+
+<style>
+.notecards-grid {
+  width: 85%;
+  position: relative;
+  left: 6%;
+  display: grid;
+  grid-template-columns: 25% 25% 25% 25%;
+  gap: 1rem;
+}
+</style>

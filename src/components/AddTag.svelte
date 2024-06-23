@@ -7,6 +7,7 @@
     let tag_success: boolean = false;
     let tag_delete: boolean = false;
     let tag_delete_success: boolean = false;
+    let error_msg : string = "";
     async function add_tag() {
         try {
             if (tag_name.length <= 0) return;
@@ -21,13 +22,14 @@
             if (response.ok) {
                 tag_add = true;
                 tag_success = true;
-                window.location.reload();
             } else {
                 tag_add = true;
                 tag_success = false;
             }
         } catch (error) {
             console.error("Error:", error);
+            if(error instanceof Error) error_msg = error.message;
+            else { error_msg = "An unknown error occurred";}
         }
     }
 
@@ -46,14 +48,27 @@
             }
         } catch (error) {
             console.error("Error:", error);
+            if(error instanceof Error) error_msg = error.message;
+            else { error_msg = "An unknown error occurred";}
         }
     }
 </script>
 
-{#if tag_add && !tag_success}
+{#if tag_add}
+    <div class="overlay"></div>
+{/if}
+
+{#if tag_add && tag_success}
+    <Popup
+        msg="Tag Added Succesfully!"
+        path="/project/notecards/tags"
+        success={true}
+        loc="Okay"
+    />
+{:else if tag_add && !tag_success}
     <Popup
         msg="Failed to add tag."
-        path="/project/notecards/tags"
+        path="/project/notecards"
         success={false}
         loc="Okay"
     />
@@ -65,6 +80,7 @@
         msg="Failed to delete tag."
         path="/project/notecards/tags"
         success={false}
+        error={error_msg}
         loc="Okay"
     />
     <div class="overlay"></div>
