@@ -264,12 +264,18 @@ const { title } = Astro.props;
     .nav li:hover {
         background-color: rgba(255, 255, 255, 0.1);
     }
+   
 
     .nav a {
         text-decoration: none;
         display: flex;
         align-items: center;
         color: inherit;
+    }
+    
+    
+    .active {
+        background-color: rgb(var(--accent-light), 0.2);
     }
 
     .nav i {
@@ -392,6 +398,21 @@ const { title } = Astro.props;
 </style>
 
 <script>
+
+    let current_main_path = (window.location.pathname).split('/').slice(0,3).join('/')
+    const links = document.querySelectorAll('#sidebar li');
+    links.forEach(link => {
+      
+      let link_path = link.querySelector('a')!.getAttribute('href')
+      
+      console.log(current_main_path)
+      if (link_path === current_main_path) {
+        link.classList.add('active'); 
+      } else {
+        link.classList.remove('active');
+      }
+    });
+  
     document
         .getElementById("toggle-btn")!
         .addEventListener("click", function () {
