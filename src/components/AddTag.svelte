@@ -7,11 +7,13 @@
     let tag_success: boolean = false;
     let tag_delete: boolean = false;
     let tag_delete_success: boolean = false;
-    let error_msg : string = "";
+    let error_msg: string = "";
+    let selected_tags: string[] = [];
+
     async function add_tag() {
         try {
             if (tag_name.length <= 0) return;
-            let tag : Tag = { tag_id: "", name: tag_name}
+            let tag: Tag = { tag_id: "", name: tag_name }
             const response = await fetch(`/api/tags`, {
                 method: "POST",
                 headers: {
@@ -22,27 +24,44 @@
             if (response.ok) {
                 tag_add = true;
                 tag_success = true;
+                tag_name = "";
+                window.location.reload();
             } else {
                 tag_add = true;
                 tag_success = false;
             }
         } catch (error) {
             console.error("Error:", error);
-            if(error instanceof Error) error_msg = error.message;
-            else { error_msg = "An unknown error occurred";}
+            if (error instanceof Error) error_msg = error.message;
+            else { error_msg = "An unknown error occurred"; }
             tag_add = true;
             tag_success = false;
         }
     }
 
-    async function delete_tag(tag_id: string) {
+
+    function select_all_tags(e : any) {
+      if (selected_tags.length == user_tags.length){
+        selected_tags = [];
+      } else {
+        selected_tags = user_tags.map(tag => tag.tag_id);
+      }
+    }
+
+    async function delete_selected_tags() {
         try {
-            const response = await fetch(`/api/tags/${tag_id}`, {
+            const response = await fetch(`/api/tags/delete`, {
                 method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(selected_tags),
             });
+
             if (response.ok) {
                 tag_delete = true;
                 tag_delete_success = true;
+                selected_tags = [];
                 window.location.reload();
             } else {
                 tag_delete = true;
@@ -50,20 +69,20 @@
             }
         } catch (error) {
             console.error("Error:", error);
-            
-            if(error instanceof Error) {error_msg = error.message; console.log(error.message)}
-            else { error_msg = "An unknown error occurred";}
+            if (error instanceof Error) { error_msg = error.message; console.log(error.message) }
+            else { error_msg = "An unknown error occurred"; }
+            tag_delete = true;
+            tag_delete_success = false;
         }
     }
 </script>
-
 {#if tag_add}
     <div class="overlay"></div>
 {/if}
 
 {#if tag_add && tag_success}
     <Popup
-        msg="Tag Added Succesfully!"
+        msg="Tag Added Successfully!"
         path="/project/notecards/tags"
         success={true}
         loc="Okay"
@@ -81,7 +100,7 @@
 
 {#if tag_delete && !tag_delete_success}
     <Popup
-        msg="Failed to delete tag."
+        msg="Failed to delete tags."
         path="/project/notecards/tags"
         success={false}
         error={error_msg}
@@ -99,34 +118,31 @@
             bind:value={tag_name}
             maxlength="30"
         />
-        <button class="add-button" type="submit" on:click={add_tag}
-            >Add Tag</button
-        >
+        <button class="add-button" type="submit" on:click={add_tag}>Add Tag</button>
     </form>
-
+    {#if selected_tags.length > 0}
+        <button class="delete-selected-button" on:click={delete_selected_tags}>Delete Selected</button>
+    {/if}
     <table>
         <thead>
             <tr>
+                <th><input type="checkbox" checked={user_tags.length == selected_tags.length && user_tags.length != 0} on:change={select_all_tags}/></th>
                 <th>Tag Name</th>
                 <th>Tag ID</th>
-                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
             {#each user_tags as tag}
                 <tr>
+                  <td><input type="checkbox" bind:group={selected_tags} value={tag.tag_id}/></td>
                     <td>{tag.name}</td>
                     <td>{tag.tag_id}</td>
-                    <td>
-                        <button on:click={() => delete_tag(tag.tag_id)}
-                            >Delete</button
-                        >
-                    </td>
                 </tr>
             {/each}
         </tbody>
     </table>
 </div>
+
 
 <style>
     .tag-container {
@@ -141,9 +157,9 @@
         margin-bottom: 1rem;
         justify-content: space-between;
     }
-
+    
     .input-field {
-        background-color: rgb(0, 0, 0, 0.3);
+        background-color: rgba(0, 0, 0, 0.3);
         border: solid 1px gray;
         height: 100%;
         border-radius: 5px;
@@ -156,11 +172,11 @@
         box-sizing: border-box;
         position: relative;
     }
-
+    
     .input-field::placeholder {
         color: var(--color-primary-500);
     }
-
+    
     .add-button {
         background-color: var(--color-primary-200);
         color: whitesmoke;
@@ -169,11 +185,28 @@
         border-radius: 5px;
         cursor: pointer;
     }
-
+    
     .add-button:hover {
         background-color: var(--color-primary-300);
     }
-
+    
+    .delete-selected-button {
+        background-color: red;
+        color: whitesmoke;
+        padding: 0.8rem 1.2rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-bottom: 1rem;
+        font-weight: 800;
+        font-size: 100%;
+    }
+    
+    
+    .delete-selected-button:hover {
+        background-color: darkred;
+    }
+    
     #Page {
         right: 0;
         margin-top: 0.1rem;
@@ -181,7 +214,7 @@
         text-align: center;
         align-items: center;
     }
-
+    
     .overlay {
         position: fixed;
         top: 0;
@@ -191,7 +224,7 @@
         background-color: rgba(0, 0, 0, 0.5);
         z-index: 1000;
     }
-
+    
     table {
         background: var(--color-surface-mixed-200);
         padding: 1rem;
@@ -202,14 +235,14 @@
         margin: 0 auto;
         margin-bottom: 1rem;
     }
-
+    
     th,
     td {
         padding: 8px;
         text-align: left;
         border-bottom: 1px solid var(--color-surface-mixed-200);
     }
-
+    
     th {
         background-color: var(--color-primary-200);
         color: white;
@@ -220,17 +253,15 @@
     tr:hover {
         background-color: var(--color-primary-100);
     }
-
-    button {
-        background-color: red;
-        color: white;
-        border: none;
-        padding: 5px 10px;
-        border-radius: 5px;
-        cursor: pointer;
+    
+    input[type="checkbox"] {
+        transform: scale(1.2);
     }
-
-    button:hover {
-        background-color: darkred;
+    
+    input[type="checkbox"]:checked {
+        background-color: var(--color-primary-200);
+        border-color: var(--color-primary-200);
     }
+    
+    
 </style>
