@@ -5,36 +5,37 @@ import type Tag from "../../../lib/tags.ts";
 import Hashids from 'hashids'
 
 export const POST: APIRoute = async ({ request, cookies }) => {
-  let tag_name: string = await request.json();
+  let user_tag : Tag = await request.json();
+  
   const user = await get_user_session(cookies);
   if (!user) {
     return new Response("Unauthorized", { status: 403 });
   }
-  if (!tag_name || tag_name.length == 0) {
+  if (!user_tag.name || user_tag.name.length == 0) {
     return new Response("Missing required fields", {
       status: 400,
     });
   }
 
-  if (tag_name.length > 20) {
+  if (user_tag.name.length > 20) {
     return new Response("Tag name too long", {
       status: 400,
     });
   }
 
-  let tag: Tag = { name: tag_name, tag_id: new Hashids().encode(Date.now()) };
+  user_tag.tag_id = new Hashids().encode(Date.now());
 
   try {
     const db = getFirestore(app);
     const tags_ref = db.collection("Tags");
     const current_tags_snapshot = await tags_ref.doc(user.uid).get();
     if (!current_tags_snapshot.exists) {
-      tags_ref.doc(user.uid).set({ tags: [tag] });
+      tags_ref.doc(user.uid).set({ tags: [user_tag] });
       return new Response("tag added successfully", { status: 200 })
     }
 
     let current_tags: Tag[] = current_tags_snapshot.data()!.tags;
-    current_tags.push(tag)
+    current_tags.push(user_tag)
     await tags_ref.doc(user.uid).update({
       tags: current_tags,
     });

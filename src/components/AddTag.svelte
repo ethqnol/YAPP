@@ -11,13 +11,13 @@
     async function add_tag() {
         try {
             if (tag_name.length <= 0) return;
-
+            let tag : Tag = { tag_id: "", name: tag_name}
             const response = await fetch(`/api/tags`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(tag_name),
+                body: JSON.stringify(tag),
             });
             if (response.ok) {
                 tag_add = true;
@@ -30,6 +30,8 @@
             console.error("Error:", error);
             if(error instanceof Error) error_msg = error.message;
             else { error_msg = "An unknown error occurred";}
+            tag_add = true;
+            tag_success = false;
         }
     }
 
@@ -48,7 +50,8 @@
             }
         } catch (error) {
             console.error("Error:", error);
-            if(error instanceof Error) error_msg = error.message;
+            
+            if(error instanceof Error) {error_msg = error.message; console.log(error.message)}
             else { error_msg = "An unknown error occurred";}
         }
     }
@@ -69,6 +72,7 @@
     <Popup
         msg="Failed to add tag."
         path="/project/notecards"
+        error={error_msg}
         success={false}
         loc="Okay"
     />
