@@ -1,21 +1,19 @@
 ---
 import { app } from "../firebase/server";
 import { getFirestore } from "firebase-admin/firestore";
-import type DatabaseNotecard from "../lib/notecard_database.ts"
-import type { UserRecord } from "firebase-admin/auth"
-import type Tag from "../lib/tags.ts"
-import type DatabaseSource from "../lib/source_database.ts"
-import Card from "./Card.svelte"
-import Fuse, { type FuseResult } from "fuse.js"
+import type DatabaseNotecard from "../lib/notecard_database.ts";
+import type { UserRecord } from "firebase-admin/auth";
+import type Tag from "../lib/tags.ts";
+import type DatabaseSource from "../lib/source_database.ts";
+import Card from "./Card.svelte";
+import Fuse, { type FuseResult } from "fuse.js";
 
 const db = getFirestore(app);
 interface Props {
   user: UserRecord;
-  tags: Promise<void |Tag[]>;
+  tags: Promise<void | Tag[]>;
   sources: Promise<void | DatabaseSource[]>;
 }
-
-
 
 const { user, tags, sources } = Astro.props;
 const notecards_ref = db.collection("Notecards");
@@ -90,12 +88,12 @@ if (search_query == "") {
 </div>
 
 <style>
-.notecards-grid {
-  width: 85%;
-  position: relative;
-  left: 6%;
-  display: grid;
-  grid-template-columns: 25% 25% 25% 25%;
-  gap: 1rem;
-}
+  .notecards-grid {
+    width: 85%;
+    position: relative;
+    left: 6%;
+    display: grid;
+    grid-template-columns: 25% 25% 25% 25%;
+    gap: 1rem;
+  }
 </style>

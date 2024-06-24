@@ -13,7 +13,7 @@
     async function add_tag() {
         try {
             if (tag_name.length <= 0) return;
-            let tag: Tag = { tag_id: "", name: tag_name }
+            let tag: Tag = { tag_id: "", name: tag_name };
             const response = await fetch(`/api/tags`, {
                 method: "POST",
                 headers: {
@@ -33,19 +33,20 @@
         } catch (error) {
             console.error("Error:", error);
             if (error instanceof Error) error_msg = error.message;
-            else { error_msg = "An unknown error occurred"; }
+            else {
+                error_msg = "An unknown error occurred";
+            }
             tag_add = true;
             tag_success = false;
         }
     }
 
-
-    function select_all_tags(e : any) {
-      if (selected_tags.length == user_tags.length){
-        selected_tags = [];
-      } else {
-        selected_tags = user_tags.map(tag => tag.tag_id);
-      }
+    function select_all_tags(e: any) {
+        if (selected_tags.length == user_tags.length) {
+            selected_tags = [];
+        } else {
+            selected_tags = user_tags.map((tag) => tag.tag_id);
+        }
     }
 
     async function delete_selected_tags() {
@@ -69,13 +70,18 @@
             }
         } catch (error) {
             console.error("Error:", error);
-            if (error instanceof Error) { error_msg = error.message; console.log(error.message) }
-            else { error_msg = "An unknown error occurred"; }
+            if (error instanceof Error) {
+                error_msg = error.message;
+                console.log(error.message);
+            } else {
+                error_msg = "An unknown error occurred";
+            }
             tag_delete = true;
             tag_delete_success = false;
         }
     }
 </script>
+
 {#if tag_add}
     <div class="overlay"></div>
 {/if}
@@ -118,15 +124,26 @@
             bind:value={tag_name}
             maxlength="30"
         />
-        <button class="add-button" type="submit" on:click={add_tag}>Add Tag</button>
+        <button class="add-button" type="submit" on:click={add_tag}
+            >Add Tag</button
+        >
     </form>
     {#if selected_tags.length > 0}
-        <button class="delete-selected-button" on:click={delete_selected_tags}>Delete Selected</button>
+        <button class="delete-selected-button" on:click={delete_selected_tags}
+            >Delete Selected</button
+        >
     {/if}
     <table>
         <thead>
             <tr>
-                <th><input type="checkbox" checked={user_tags.length == selected_tags.length && user_tags.length != 0} on:change={select_all_tags}/></th>
+                <th
+                    ><input
+                        type="checkbox"
+                        checked={user_tags.length == selected_tags.length &&
+                            user_tags.length != 0}
+                        on:change={select_all_tags}
+                    /></th
+                >
                 <th>Tag Name</th>
                 <th>Tag ID</th>
             </tr>
@@ -134,7 +151,13 @@
         <tbody>
             {#each user_tags as tag}
                 <tr>
-                  <td><input type="checkbox" bind:group={selected_tags} value={tag.tag_id}/></td>
+                    <td
+                        ><input
+                            type="checkbox"
+                            bind:group={selected_tags}
+                            value={tag.tag_id}
+                        /></td
+                    >
                     <td>{tag.name}</td>
                     <td>{tag.tag_id}</td>
                 </tr>
@@ -142,7 +165,6 @@
         </tbody>
     </table>
 </div>
-
 
 <style>
     .tag-container {
@@ -157,7 +179,7 @@
         margin-bottom: 1rem;
         justify-content: space-between;
     }
-    
+
     .input-field {
         background-color: rgba(0, 0, 0, 0.3);
         border: solid 1px gray;
@@ -172,11 +194,11 @@
         box-sizing: border-box;
         position: relative;
     }
-    
+
     .input-field::placeholder {
         color: var(--color-primary-500);
     }
-    
+
     .add-button {
         background-color: var(--color-primary-200);
         color: whitesmoke;
@@ -185,11 +207,11 @@
         border-radius: 5px;
         cursor: pointer;
     }
-    
+
     .add-button:hover {
         background-color: var(--color-primary-300);
     }
-    
+
     .delete-selected-button {
         background-color: red;
         color: whitesmoke;
@@ -201,12 +223,11 @@
         font-weight: 800;
         font-size: 100%;
     }
-    
-    
+
     .delete-selected-button:hover {
         background-color: darkred;
     }
-    
+
     #Page {
         right: 0;
         margin-top: 0.1rem;
@@ -214,7 +235,7 @@
         text-align: center;
         align-items: center;
     }
-    
+
     .overlay {
         position: fixed;
         top: 0;
@@ -224,7 +245,7 @@
         background-color: rgba(0, 0, 0, 0.5);
         z-index: 1000;
     }
-    
+
     table {
         background: var(--color-surface-mixed-200);
         padding: 1rem;
@@ -235,14 +256,14 @@
         margin: 0 auto;
         margin-bottom: 1rem;
     }
-    
+
     th,
     td {
         padding: 8px;
         text-align: left;
         border-bottom: 1px solid var(--color-surface-mixed-200);
     }
-    
+
     th {
         background-color: var(--color-primary-200);
         color: white;
@@ -253,15 +274,13 @@
     tr:hover {
         background-color: var(--color-primary-100);
     }
-    
+
     input[type="checkbox"] {
         transform: scale(1.2);
     }
-    
+
     input[type="checkbox"]:checked {
         background-color: var(--color-primary-200);
         border-color: var(--color-primary-200);
     }
-    
-    
 </style>

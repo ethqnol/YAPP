@@ -60,7 +60,9 @@
         color: #fff;
         font-size: 1rem;
         text-decoration: none;
-        transition: background-color 0.3s ease, border 0.3s ease;
+        transition:
+            background-color 0.3s ease,
+            border 0.3s ease;
     }
 
     .popup.success a {

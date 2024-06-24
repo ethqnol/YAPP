@@ -5,8 +5,8 @@ import type Tag from "../../../lib/tags.ts";
 import Hashids from 'hashids'
 
 export const POST: APIRoute = async ({ request, cookies }) => {
-  let user_tag : Tag = await request.json();
-  
+  let user_tag: Tag = await request.json();
+
   const user = await get_user_session(cookies);
   if (!user) {
     return new Response("Unauthorized", { status: 403 });

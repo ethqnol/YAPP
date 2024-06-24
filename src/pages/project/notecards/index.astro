@@ -5,7 +5,7 @@ import type { Props } from "astro/components/ViewTransitions.astro";
 import { getFirestore } from "firebase-admin/firestore";
 import type DatabaseSource from "../../../lib/source_database";
 import type Tag from "../../../lib/tags";
-import NotecardSearch from "../../../components/NotecardSearch.astro"
+import NotecardSearch from "../../../components/NotecardSearch.astro";
 
 const user = await get_user_session(Astro.cookies);
 if (!user) {
@@ -16,31 +16,31 @@ const db = getFirestore(app);
 
 async function get_user_tags() {
   const tags_ref = db.collection("Tags");
-  
-  return tags_ref.doc(user!.uid).get()
-    .then(tags_snapshot => {
+
+  return tags_ref
+    .doc(user!.uid)
+    .get()
+    .then((tags_snapshot) => {
       const user_tags = tags_snapshot.data()?.tags || [];
       return user_tags;
     })
-    .catch(error => {
+    .catch((error) => {
       console.error("Error getting user tags:", error);
       throw error; // Re-throw the error to handle it later
     });
 }
 
-
 const user_tags = get_user_tags()
-  .then(user_tags => {
-      return user_tags
+  .then((user_tags) => {
+    return user_tags;
   })
-  .catch(error => {
-    console.error('Error:', error);
+  .catch((error) => {
+    console.error("Error:", error);
   });
-
 
 async function get_user_sources() {
   const sources_ref = db.collection("Sources");
-  
+
   return sources_ref
     .where("student_id", "==", user!.uid)
     .get()
@@ -53,18 +53,17 @@ async function get_user_sources() {
     })
     .catch((error) => {
       console.error("Error getting user sources: ", error);
-      throw error;  
+      throw error;
     });
 }
 
 const user_sources = get_user_sources()
-                      .then((user_sources) => {
-                        return user_sources;
-                      })
-                    .catch((error) => {
-                      console.error('Error:', error);
-                    });
-
+  .then((user_sources) => {
+    return user_sources;
+  })
+  .catch((error) => {
+    console.error("Error:", error);
+  });
 ---
 
 <ProjectLayout title="Notecards">
@@ -80,11 +79,13 @@ const user_sources = get_user_sources()
         <button class="dropbtn">Select Tags</button>
         <div class="dropdown-content">
           {
-             Promise.resolve(user_tags).then(tags => tags.map((tag: Tag) => (
-              <label>
-                <input type="checkbox" value={tag.tag_id} /> {tag.name}
-              </label>
-            )))
+            Promise.resolve(user_tags).then((tags) =>
+              tags.map((tag: Tag) => (
+                <label>
+                  <input type="checkbox" value={tag.tag_id} /> {tag.name}
+                </label>
+              )),
+            )
           }
         </div>
       </div>
@@ -92,22 +93,28 @@ const user_sources = get_user_sources()
       <select id="sources" name="sources">
         <option disabled selected> -- select a source to filter by -- </option>
         {
-          Promise.resolve(user_sources).then(sources => sources!.map((source: DatabaseSource) => (
-            <option value={source.primary_id}>
-              {'"' +
-                source.source.title +
-                '"' +
-                " || " +
-                (source.source.full_citation.slice(0, 50) +
-                  (source.source.full_citation.length >= 50 ? "..." : ""))}
-            </option>
-          )))
+          Promise.resolve(user_sources).then((sources) =>
+            sources!.map((source: DatabaseSource) => (
+              <option value={source.primary_id}>
+                {'"' +
+                  source.source.title +
+                  '"' +
+                  " || " +
+                  (source.source.full_citation.slice(0, 50) +
+                    (source.source.full_citation.length >= 50 ? "..." : ""))}
+              </option>
+            )),
+          )
         }
       </select>
       <button type="submit" class="submit-button"> Search </button>
       <button type="reset" class="reset-button"> Reset </button>
     </form>
-    <NotecardSearch sources={user_sources}, user_tags={user_tags}, user={user}/>
+    <NotecardSearch
+      sources={user_sources},
+      tags={user_tags},
+      user={user}
+    />
   </div>
   <a href="notecards/tags" class="add-tag-button">
     <svg
@@ -250,7 +257,6 @@ const user_sources = get_user_sources()
     box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
     overflow: hidden;
   }
-
 
   .form {
     background: var(--color-surface-mixed-200);
