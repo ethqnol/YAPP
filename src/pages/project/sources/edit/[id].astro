@@ -27,10 +27,25 @@ let source: DatabaseSource = {
   primary_id: source_snapshot.id,
   source: source_snapshot.data() as Source,
 };
-console.log(source_snapshot.data())
+
 ---
 
 
 <ProjectLayout title="Edit Source">
     <Book data={source} client:visible/>
+    <button id="delete"> Delete </button>
 </ProjectLayout>
+
+<script>
+const delete_button = document.getElementById("delete");
+
+delete_button.addEventListener("click", async () => {
+  const response = await fetch(`/api/sources/${source.primary_id}`, {
+    method: "DELETE",
+  });
+
+  return Astro.redirect("/sources");
+
+});
+
+</script>

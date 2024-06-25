@@ -71,7 +71,7 @@
                         <option value="9">Dataset</option>
                     </select>
                 </div>
-                <Book />
+                <Book  on:save={display_popup} />
             </div>
         </div>
     {:else}

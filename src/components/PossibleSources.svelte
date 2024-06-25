@@ -71,6 +71,10 @@
             isbn: isbn,
             full_citation: "",
             student_id: "",
+            footnote_long: "",
+            footnote_short: "",
+            pages: null,
+            url: "",
         };
 
         const res = await fetch("/api/sources/add", {

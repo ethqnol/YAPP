@@ -76,6 +76,7 @@ function format_authors(authors: string[]): string {
 
 
 export function generate_long_footnote(source: Source): string {
+    console.log(source)
     let authors = source.authors.join(', ');
     let edition = source.edition ? `, ${source.edition} ed.` : '';
     let volume = source.volume ? `, vol. ${source.volume}` : '';
