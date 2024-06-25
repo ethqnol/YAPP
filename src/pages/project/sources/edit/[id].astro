@@ -1,0 +1,36 @@
+---
+import ProjectLayout from "../../../../layouts/ProjectLayout.astro"
+import Book from "../../../../components/citation_types/Book.svelte"
+import { get_user_session, app } from "../../../../firebase/server";
+import type DatabaseSource from "../../../../lib/source_database";
+import { getFirestore } from "firebase-admin/firestore";
+import type Source from "../../../../lib/source";
+
+const user = await get_user_session(Astro.cookies);
+if (!user) {
+  return Astro.redirect("/signin");
+}
+
+const { id } = Astro.params;
+if (!id) {
+  return Astro.redirect("/404");
+}
+const db = getFirestore(app);
+const sources_ref = db.collection("Sources");
+const source_snapshot = await sources_ref.doc(id).get();
+
+if (!source_snapshot.exists) {
+  return Astro.redirect("/404");
+}
+
+let source: DatabaseSource = {
+  primary_id: source_snapshot.id,
+  source: source_snapshot.data() as Source,
+};
+console.log(source_snapshot.data())
+---
+
+
+<ProjectLayout title="Edit Source">
+    <Book data={source} client:visible/>
+</ProjectLayout>

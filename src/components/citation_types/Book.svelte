@@ -1,30 +1,12 @@
 <script lang="ts">
     
 import type Source from '../../lib/source';
+import type DatabaseSource from '../../lib/source_database';
 import SourceType from '../../lib/source_type';
-export let data : any = null;
-let source : Source;
-if(data){
-  source = {
-    source_type: SourceType.BOOK,
-    title: data.title != "" ? data.title : "",
-    authors: data.author_name,
-    series: "",
-    series_num: null,
-    volume: null,
-    edition: null,
-    publishing_location: "",
-    publishing_company: "",
-    publishing_year: null,
-    doi: "",
-    isbn: "",
-    full_citation: "",
-    student_id: "",
-    pages: data.number_of_pages_median,
-    url: data.url
-  };
-} else {
-  source = {
+export let data : DatabaseSource | null = null;
+
+let source_id : string = data? data.primary_id : "";
+let source : Source = data ? data.source : {
     source_type: SourceType.BOOK,
     title: "",
     authors: [],
@@ -41,10 +23,38 @@ if(data){
     student_id: "",
     pages: null,
     url: ""
-  };
+};
+
+
+async function upload_source() {
+    if(source_id != "") {
+        let response = await fetch(`/api/source/${source_id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(source)
+        });
+        if(response.ok) {
+            console.log("Source updated");
+        } else {
+            console.log("Failed to update source");
+        }
+    } else {
+        let response = await fetch(`/api/source`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(source)
+        });
+        if(response.ok) {
+            console.log("Source created");
+        } else {
+            console.log("Failed to create source");
+        }
+    }
 }
-
-
 
 
 </script>
@@ -90,7 +100,7 @@ if(data){
         <label for="ISBN">ISBN</label>
         <input id="ISBN" type="text" placeholder="ISBN" bind:value={source.isbn}>
     </div>
-    <button id="ToggleManual" type="button" on:click={()=>console.log("hello wrold")}>Auto-citation</button>
+    <button id="ToggleManual" type="button" on:click={upload_source}>Auto-citation</button>
 </form>
 
 

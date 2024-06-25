@@ -48,6 +48,7 @@ if (search_query == "") {
     <th>Author</th>
     <th>Year</th>
     <th>Chicago Citation</th>
+    <th> Actions </th>
   </tr>
   {
     results.map((source: DatabaseSource) => (
@@ -56,6 +57,12 @@ if (search_query == "") {
         <td>{source.source.authors[0]}</td>
         <td>{source.source.publishing_year}</td>
         <td>{source.source.full_citation}</td>
+        <td>
+          <a href={`sources/edit/${source.primary_id}`}><svg class="w-[36px] h-[36px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
+          </svg>
+</a>
+        </td>
       </tr>
     ))
   }
@@ -63,13 +70,13 @@ if (search_query == "") {
 
 <style>
   td {
-    padding: 1rem;
+    padding: 0.75rem;
     text-align: left;
     border-bottom: 1px solid var(--color-surface-mixed-400);
   }
 
   th {
-    padding: 1rem;
+    padding: 0.75rem;
     text-align: left;
     border-bottom: 2px solid var(--color-surface-mixed-500);
   }
@@ -81,11 +88,11 @@ if (search_query == "") {
   }
 
   .source-info {
-    width: 96%;
+    width: 90%;
     background-color: var(--color-surface-mixed-400);
     position: relative;
     margin-top: 4rem;
-    left: 2%;
+    left: 5%;
     box-sizing: border-box;
     border-collapse: collapse;
     border-radius: 8px;
@@ -95,10 +102,24 @@ if (search_query == "") {
   .source-info tr:nth-child(even) {
     background-color: var(--color-surface-mixed-300);
   }
+  
+  .source-info tr {
+    border-bottom: 2px solid var(--color-surface-mixed-500);
+  }
 
   h1 {
     color: white;
     position: relative;
     top: 33.5vh;
   }
+  
+  a {
+    color: white;
+    text-decoration: none;
+  }
+  
+  a:hover {
+      color: var(--color-surface-mixed-600);
+  }
+  
 </style>

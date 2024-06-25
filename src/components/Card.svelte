@@ -86,12 +86,11 @@
 <div class="link-card">
     <a {href}>
         <h2>
-            {notecard.notecard.title}
-            <span>&rarr;</span>
+            {notecard.notecard.title.slice(0, 25) + (notecard.notecard.title.length > 25 ? "..." : "")}
         </h2>
         <p>
-            {notecard.notecard.quote.slice(0, 65) +
-                (notecard.notecard.quote.length > 65 ? "..." : "")}
+            {notecard.notecard.quote.slice(0, 40) +
+                (notecard.notecard.quote.length > 40 ? "..." : "")}
         </p>
         <p class="page-numbers">
             Page: {generate_page_number(
@@ -239,8 +238,8 @@
     .link-card {
         display: flex;
         flex-direction: column;
-        max-height: 18vh;
-        height: 18vh;
+        max-height: 22vh;
+        height: 22vh;
         padding: 1px;
         background-color: var(--color-surface-mixed-300);
         background-image: none;
@@ -256,9 +255,9 @@
         flex: 1;
         text-decoration: none;
         line-height: 1.4;
-        max-height: 16vh;
+        max-height: 20vh;
         overflow: hidden;
-        padding: calc(1.5rem - 1px);
+        padding: calc(0.5rem - 1px);
         border-radius: 8px 8px 0 0;
         color: white;
         background-color: #23262d;
@@ -271,6 +270,8 @@
         margin: 0;
         font-size: 1rem;
         transition: color 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        padding: 0;
+        margin: 0;
     }
     p {
         margin-top: 0.3rem;
@@ -381,13 +382,7 @@
         text-align: left;
         border: 1px solid rgba(255, 255, 255, 0.8);
     }
-    /* .move-menu label {
-        color: white;
-        font-size: 0.8rem;
-
-        cursor: pointer;
-    } */
-
+    
     .pile-icon:hover + .move-menu,
     .pile-icon:focus + .move-menu,
     .move-menu:hover,
