@@ -1,0 +1,169 @@
+---
+import type Task from "../lib/task.ts"
+import { app } from "../firebase/server";
+import { getFirestore } from "firebase-admin/firestore";
+import type DatabaseTask from "../lib/task_database.ts"
+import type { UserRecord } from "firebase-admin/auth";
+import TodoUnfinished from "./TodoUnfinished.astro";
+import TodoFinished from "./TodoFinished.astro";
+
+interface Props {
+  user: UserRecord;
+}
+
+const { user } = Astro.props;
+
+const db = getFirestore(app);
+const tasks_ref = db.collection("Tasks");
+
+const tasks_snapshot = await tasks_ref
+  .where("student_id", "==", user.uid)
+  .get();
+
+const user_tasks: DatabaseTask[] = tasks_snapshot.docs.map((doc) => ({
+  primary_id: doc.id,
+  task: doc.data(),
+})) as DatabaseTask[];
+
+let done_tasks : DatabaseTask[] = [];
+let undone_tasks : DatabaseTask[] = [];
+user_tasks.forEach((task: DatabaseTask) => {
+  if (task.task.completed) {
+    done_tasks.push(task);
+  } else {
+    undone_tasks.push(task);
+  }
+});
+---
+
+<div class="container">
+<div>
+{
+  undone_tasks.map((task : DatabaseTask) => (
+    <TodoUnfinished task={task} />
+  ))
+}
+
+<form method="post" action="/api/todo/add">
+    <label>
+      Task Name:
+      <input type="text" name="name" required />
+    </label>
+    <label>
+      Description:
+      <input type="text" name="description" required />
+    </label>
+    <label>
+      Due Date:
+      <input type="date" name="due_date" />
+    </label>
+    <label> 
+    <button type="submit">
+      <svg class="icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" viewBox="0 0 24 24">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 7.757v8.486M7.757 12h8.486M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+      </svg>
+      Add
+    </button>
+    </label>
+  </form>
+</div>
+
+<h2> Completed Tasks </h2>
+<div>
+{
+  undone_tasks.map((task : DatabaseTask) => (
+    <TodoFinished task={task} />
+  ))
+}
+</div>
+</div >
+
+<style> 
+    .container {
+        max-width: 80%;
+        width: 80%;
+        margin-left: 10%;
+    }
+    
+    form {
+      background-color: var(--color-surface-mixed-400);
+      border-radius: 4px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: row;
+      gap: 1rem;
+    }
+  
+  
+    form label {
+      margin-bottom: 1rem;
+      font-weight: bold;
+      font-size: 1rem;
+    }
+  
+    form input[type="text"],
+    form input[type="date"] {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+    
+    form input[type="text"]{
+        width: 90%;
+    } 
+    
+    form input[type="date"] {
+        width: 90%
+    }
+  
+    form button {
+      padding: 6px 20px;
+      margin-top: 18px;
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+    }
+  
+    form button .icon {
+      margin-right: 10px;
+    }
+    
+    h2 {
+        margin-top: 5rem;
+    }
+    
+    @media only screen and (max-width: 800px) {
+        form{
+            flex-direction: column;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            gap: 0.2rem;
+            padding: 0.1rem;
+        }
+        
+        form input {
+            width: 100%;
+        }
+        
+        form label {
+            width: 90%;
+            margin-bottom: 0.2rem;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        form button {
+            width: 100%;
+            margin: 0.2rem;
+        }
+
+    }
+</style>

@@ -81,7 +81,6 @@ function update_author(e: any, index: number) {
 
 function add_author() {
     source_authors= [...source_authors, ""];
-    console.log(source_authors)
 }
 
 function subtract_author(index: number) {

@@ -29,7 +29,6 @@ export const DELETE: APIRoute = async ({ request, cookies }) => {
     let current_tags: Tag[] = current_tags_snapshot.data()!.tags;
 
     let new_tags = current_tags.filter(tag => !tag_ids.includes(tag.tag_id));
-    console.log(new_tags, tag_ids)
     await tags_ref.doc(user.uid).update({
       tags: new_tags,
     });

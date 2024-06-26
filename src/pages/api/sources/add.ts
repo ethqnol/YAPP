@@ -11,7 +11,6 @@ export const POST: APIRoute = async ({ request, cookies }) => {
   if (!user) {
     return new Response("Unauthorized", { status: 403 });
   }
-  console.log(source)
   if (!source || !source.title || !source.authors || !source.publishing_location || !source.publishing_company) {
     return new Response("Missing required fields", {
       status: 400,
