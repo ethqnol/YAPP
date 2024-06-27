@@ -25,6 +25,20 @@ const user_tasks: DatabaseTask[] = tasks_snapshot.docs.map((doc) => ({
   task: doc.data(),
 })) as DatabaseTask[];
 
+
+user_tasks.sort((a, b) => {
+        if (!a.task.due_date && !b.task.due_date) {
+            return a.task.creation_date - b.task.creation_date;
+        }
+        if (!a.task.due_date) {
+            return -1;
+        }
+        if (!b.task.due_date) {
+            return 1;
+        }
+        return b.task.due_date - a.task.due_date;
+    });
+
 let done_tasks : DatabaseTask[] = [];
 let undone_tasks : DatabaseTask[] = [];
 user_tasks.forEach((task: DatabaseTask) => {
