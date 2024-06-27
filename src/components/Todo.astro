@@ -34,9 +34,11 @@ user_tasks.forEach((task: DatabaseTask) => {
     undone_tasks.push(task);
   }
 });
+
 ---
 
 <div class="container">
+<h1> To-Do List </h1>
 <div>
 {
   undone_tasks.map((task : DatabaseTask) => (
@@ -68,10 +70,10 @@ user_tasks.forEach((task: DatabaseTask) => {
   </form>
 </div>
 
-<h2> Completed Tasks </h2>
+<h2> {done_tasks.length > 0 ? "Completed Tasks" : ""} </h2>
 <div>
 {
-  undone_tasks.map((task : DatabaseTask) => (
+  done_tasks.map((task : DatabaseTask) => (
     <TodoFinished task={task} />
   ))
 }
@@ -83,6 +85,7 @@ user_tasks.forEach((task: DatabaseTask) => {
         max-width: 80%;
         width: 80%;
         margin-left: 10%;
+        margin-top: 1.8rem;
     }
     
     form {

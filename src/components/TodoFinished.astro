@@ -12,7 +12,7 @@ const { task } = Astro.props
   <table>
     <tr>
       <td class="complete-cell">
-        <form action={`/api/tasks/${task.primary_id}`} method="get">
+        <form action={`/api/todo/uncomplete/${task.primary_id}`} method="get">
           <button type="submit" class="complete-button">
           ✔
           </button>
@@ -78,18 +78,18 @@ const { task } = Astro.props
     margin-left: 1rem;
     justify-content: center;
     align-items: center;
-    width: 20px;
-    height: 20px;
-    border: 2px solid #4CAF50;
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--color-primary-100);
     border-radius: 50%;
     background-color: transparent;
     cursor: pointer;
-    color: lightgray;
+    color: gray;
     text-decoration: none;
   }
 
   .complete-button:hover {
-    border-color: #45a049;
+    border-color: var(--color-primary-300);
   }
 
   .icon {
