@@ -1,13 +1,16 @@
 ---
 import ProjectLayout from "../../../../layouts/ProjectLayout.astro";
-import { app } from "../../../../firebase/server";
+import { get_user_session, app } from "../../../../firebase/server";
 import ModifyNotecard from "../../../../components/ModifyNotecard.svelte";
 import type DatabaseSource from "../../../../lib/source_database";
 import type DatabaseNotecard from "../../../../lib/notecard_database";
 import { getFirestore } from "firebase-admin/firestore";
 import type Notecard from "../../../../lib/notecard";
 
-const {user} = Astro.locals;
+const user = await get_user_session(Astro.cookies);
+if (!user) {
+  return Astro.redirect("/signin");
+}
 const { id } = Astro.params;
 if (!id) {
   return Astro.redirect("/404");
