@@ -1,16 +1,13 @@
 ---
 import ProjectLayout from "../../../layouts/ProjectLayout.astro";
-import { get_user_session, app } from "../../../firebase/server";
+import { app } from "../../../firebase/server";
 import type { Props } from "astro/components/ViewTransitions.astro";
 import { getFirestore } from "firebase-admin/firestore";
 import type DatabaseSource from "../../../lib/source_database";
 import type Tag from "../../../lib/tags";
 import NotecardSearch from "../../../components/NotecardSearch.astro";
 
-const user = await get_user_session(Astro.cookies);
-if (!user) {
-  return Astro.redirect("/signin");
-}
+const {user} = Astro.locals;
 
 const db = getFirestore(app);
 

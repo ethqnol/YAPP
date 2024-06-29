@@ -1,22 +1,6 @@
 ---
 import ProjectLayout from '../../layouts/ProjectLayout.astro';
-import type SyllabusItem from '../../lib/syllabus';
-import { get_user_session } from '../../firebase/server';
 
-let task1 : SyllabusItem = {
-  task: "Get at least 20 notecards",
-  time: 12
-};
-
-let task2 : SyllabusItem = {
-  task: "Get at least 5 sources",
-  time: 4
-};
-
-const user = await get_user_session(Astro.cookies);
-if(!user) {
-  return Astro.redirect("/signin");
-}
 ---
 
 <ProjectLayout title="Syllabus">
