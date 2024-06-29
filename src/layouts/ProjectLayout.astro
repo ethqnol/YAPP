@@ -1,5 +1,7 @@
 ---
-import ToggleMode from '../components/ToggleMode.astro';
+import { get_user_session } from '../firebase/server';
+
+
 interface Props {
     title: string;
 }
