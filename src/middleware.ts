@@ -1,5 +1,5 @@
 import { defineMiddleware } from "astro:middleware";
-import { get_user_session } from "./firebase/server";}
+import  get_user_session  from "./lib/auth";
 
 
 export const onRequest =  defineMiddleware(async (context, next) => {
@@ -7,7 +7,7 @@ export const onRequest =  defineMiddleware(async (context, next) => {
   if (url_base === 'project') {
     const user = await get_user_session(context.cookies);
     if(!user) {
-      return Response.redirect('/signin');
+      return Response.redirect(new URL("/signin", context.url));
     }
     context.locals.user = user;
   }
