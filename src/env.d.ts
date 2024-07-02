@@ -22,6 +22,7 @@ declare global {
   namespace App {
     interface Locals {
       user: UserRecord;
+      url_path: string;
     }
   }
 }

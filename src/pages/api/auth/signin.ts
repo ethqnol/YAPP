@@ -4,7 +4,7 @@ import { getAuth } from "firebase-admin/auth";
 import { getFirestore } from "firebase-admin/firestore";
 
 export const GET: APIRoute = async ({ request, cookies, redirect }) => {
-  const AUTH = getAuth(app);
+  const auth = getAuth(app);
   /* Get token from request headers */
   const id_token = request.headers.get("Authorization")?.split("Bearer ")[1];
   if (!id_token) {
@@ -15,7 +15,7 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
   /* Verify id token */
 
   try {
-    await AUTH.verifyIdToken(id_token);
+    await auth.verifyIdToken(id_token);
   } catch (error) {
     return new Response(
       "Invalid token",
@@ -24,27 +24,27 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
   }
 
   //session length
-  const SESSION_COOKIE = await AUTH.createSessionCookie(id_token, {
+  const session_cookie = await auth.createSessionCookie(id_token, {
     expiresIn: parseInt(import.meta.env.SESSION_LEN),
   });
-  const DECODED_COOKIE = await AUTH.verifySessionCookie(SESSION_COOKIE);
-  const USER = await AUTH.getUser(DECODED_COOKIE.uid);
+  const decoded_cookie = await auth.verifySessionCookie(session_cookie);
+  const user = await auth.getUser(decoded_cookie.uid);
   const db = getFirestore(app);
   db.collection("Students")
-    .where("email", "==", USER.email)
+    .where("email", "==", user.email)
     .get()
     .then(querySnapshot => {
       if (!querySnapshot.empty) {
         querySnapshot.docs[0].ref.update({
-          google_id: USER.uid,
-          google_photo: USER.photoURL,
-          display_name: USER.displayName,
+          google_id: user.uid,
+          google_photo: user.photoURL,
+          display_name: user.displayName,
         })
       } else {
-        db.collection("Students").doc(USER.uid).set({
-          email: USER.email,
-          google_photo: USER.photoURL,
-          display_name: USER.displayName,
+        db.collection("Students").doc(user.uid).set({
+          email: user.email,
+          google_photo: user.photoURL,
+          display_name: user.displayName,
           streak: 1,
           awards: [],
           project_completion: 0.00,
@@ -58,8 +58,9 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
 
 
 
-  cookies.set("__session", SESSION_COOKIE, {
+  cookies.set("__session", session_cookie, {
     path: "/",
   });
+
   return redirect("/account");
 };
