@@ -94,59 +94,20 @@ Categories of Personal Information
 
 This table shows the categories of personal information we collect, and might have collected from you in the past 12 months.
 
-Category
-
-Examples
-
-Collected
-
-A. Identifiers
-
-Contact details (name, phone number, email, etc.), unique identifiers (UID), IP address
-
-YES
-
-B. Personal Information (CA)
-
-Name, contact information, education, employment history, financial information
-
-NO
-
-C. Protected Classifications
-
-Gender, age, race, ethnicity, national origin, other demographics
-
-NO
-
-D. Commercial Information
-
-Transaction information, purchase history, financial details, payment information
-
-NO
-
-E. Biometric Information
-
-Fingerprints, voiceprints
-
-NO
-
-F. Internet Activity
-
-Browsing history, search history, online behavior, interest data, interactions with websites/apps/systems/ads
-
-NO
-
-G. Geolocation Data
-
-Device location
-
-NO
-
-H. Audio/Electronic/Sensory Data
-
-Images, audio, video/call recordings related to business activities
-
-NO
+| Category | Examples | Collected |
+| --- | --- | --- |
+| A. Identifiers | Contact details (name, phone number, email, etc.), unique identifiers (UID), IP address | YES |
+| B. Personal Information (CA) | Name, contact information, education, employment history, financial information | NO  |
+| C. Protected Classifications | Gender, age, race, ethnicity, national origin, other demographics | NO  |
+| D. Commercial Information | Transaction information, purchase history, financial details, payment information | NO  |
+| E. Biometric Information | Fingerprints, voiceprints | NO  |
+| F. Internet Activity | Browsing history, search history, online behavior, interest data, interactions with websites/apps/systems/ads | NO  |
+| G. Geolocation Data | Device location | NO  |
+| H. Audio/Electronic/Sensory Data | Images, audio, video/call recordings related to business activities | NO  |
+| I. Professional/Employment Information | Business contact details (for business services), job title, work history, qualifications (if applying for a job) | NO  |
+| J. Education Information | Student records and directory information | NO  |
+| K. Inferences from Collected Data | Profiles or summaries about preferences and characteristics based on collected information | NO  |
+| L. Sensitive Personal Information | Not Collected | NO  |
 
 I. Professional/Employment Information
 
