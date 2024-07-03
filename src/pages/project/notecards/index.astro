@@ -59,7 +59,7 @@ const user_sources = get_user_sources()
     return user_sources;
   })
   .catch((error) => {
-    console.error("Error:", error);
+    console.error("Error while getting user sources", error);
   });
 ---
 
