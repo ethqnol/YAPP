@@ -25,7 +25,7 @@ export const GET: APIRoute = async ({ params, cookies, redirect }) => {
       completed : false,
     });
   } catch (error) {
-    return new Response("Something went wrong", {
+    return new Response("Error while uncompleting task", {
       status: 500,
     });
   }

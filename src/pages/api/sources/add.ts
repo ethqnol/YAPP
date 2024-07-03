@@ -28,7 +28,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       ...source,
     });
   } catch (error) {
-    return new Response("Something went wrong", {
+    return new Response("Error while adding source", {
       status: 500,
     });
   }

@@ -31,7 +31,7 @@ export const POST: APIRoute = async ({ request, params, cookies }) => {
       tags: tags,
     });
   } catch (error) {
-    return new Response("Something went wrong", {
+    return new Response("Error while updating tags", {
       status: 500,
     });
   }

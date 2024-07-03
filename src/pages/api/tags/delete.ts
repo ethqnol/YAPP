@@ -35,7 +35,7 @@ export const DELETE: APIRoute = async ({ request, cookies }) => {
     });
   } catch (error) {
     if (error instanceof Error) console.log(error.message);
-    return new Response("Something went wrong", {
+    return new Response("Error while deleting tags", {
       status: 500,
     });
   }

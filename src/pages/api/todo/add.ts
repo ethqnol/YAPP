@@ -36,7 +36,7 @@ export const POST: APIRoute = async ({ request, cookies, redirect }) => {
       ...task,
     });
   } catch (error) {
-    return new Response("Something went wrong", {
+    return new Response("Error while adding task", {
       status: 500,
     });
   }

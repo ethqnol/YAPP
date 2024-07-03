@@ -23,7 +23,7 @@ export const DELETE: APIRoute = async ({ params, cookies }) => {
     const db = getFirestore(app);
     await db.collection("Notecards").doc(notecard_id).delete();
   } catch (error) {
-    return new Response("Something went wrong", {
+    return new Response("Error while deleting notecard", {
       status: 500,
     });
   }

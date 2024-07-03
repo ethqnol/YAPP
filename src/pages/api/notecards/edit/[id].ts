@@ -31,7 +31,7 @@ export const POST: APIRoute = async ({ params, request, cookies }) => {
       ...notecard,
     });
   } catch (error) {
-    return new Response("Something went wrong", {
+    return new Response("Error while editing notecard", {
       status: 500,
     });
   }

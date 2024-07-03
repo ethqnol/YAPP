@@ -24,7 +24,7 @@ export const DELETE: APIRoute = async ({ params, cookies }) => {
 
   } catch (error) {
     if (error instanceof Error) console.log(error.message);
-    return new Response("Something went wrong", {
+    return new Response("Error while deleting source", {
       status: 500,
     });
   }
