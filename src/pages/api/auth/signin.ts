@@ -53,7 +53,7 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
       }
 
     }).catch(error => {
-      console.log(error);
+      console.log('Error fetching student from database: ', error);
     });
 
 
