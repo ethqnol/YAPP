@@ -6,6 +6,8 @@ import type DatabaseSource from "../../../../lib/source_database";
 import { getFirestore } from "firebase-admin/firestore";
 import type Source from "../../../../lib/source";
 
+
+
 const { id } = Astro.params;
 if (!id) {
   return Astro.redirect("/404");
@@ -29,7 +31,6 @@ let source: DatabaseSource = {
 <ProjectLayout title="Edit Source">
     <Book data={source} client:visible/>
     <button id="delete"> Delete </button>
-    <button id="edit"> Edit </button>
 </ProjectLayout>
 
 <script>
@@ -42,12 +43,6 @@ delete_button.addEventListener("click", async () => {
 
   return Astro.redirect("/sources");
 
-});
-
-const edit_button = document.getElementById("edit")!;
-
-edit_button.addEventListener("click", async () => {
-  return Astro.redirect("/sources");
 });
 
 </script>
