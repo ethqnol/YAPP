@@ -24,6 +24,13 @@ const { task } = Astro.props
       <td class="due-date-cell">
         <p><strong>Due: </strong>{task.task.due_date ? new Date(new Date(task.task.due_date).toDateString()).toLocaleDateString("en-US", { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }) : ""}</p>
       </td>
+      <td class="due-date-cell">
+        <form action={`/api/todo/delete/${task.primary_id}`} method="get">
+          <button type="submit" class="delete-btn">
+          🗑
+          </button>
+        </form>
+        </td>
     </tr>
   </table>
 </div>
@@ -39,6 +46,11 @@ const { task } = Astro.props
     color: gray;
     align-items: center;
     
+  }
+  
+  .delete-btn {
+      background-color: transparent;
+      border: none;
   }
 
   table {

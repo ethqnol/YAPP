@@ -6,6 +6,7 @@ import type DatabaseTask from "../lib/task_database.ts"
 import type { UserRecord } from "firebase-admin/auth";
 import TodoUnfinished from "./TodoUnfinished.astro";
 import TodoFinished from "./TodoFinished.astro";
+import TodoAdd from "./TodoAdd.svelte";
 
 interface Props {
   user: UserRecord;
@@ -51,6 +52,7 @@ user_tasks.forEach((task: DatabaseTask) => {
 
 ---
 
+
 <div class="container">
 <h1> To-Do List </h1>
 <div>
@@ -60,29 +62,7 @@ user_tasks.forEach((task: DatabaseTask) => {
   ))
 }
 
-<form method="post" action="/api/todo/add">
-    <label>
-      Task Name:
-      <input type="text" name="name" required />
-    </label>
-    <label>
-      Description:
-      <input type="text" name="description" required />
-    </label>
-    <label>
-      Due Date:
-      <input type="date" name="due_date" />
-    </label>
-    <label> 
-    <button type="submit">
-      <svg class="icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" viewBox="0 0 24 24">
-        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 7.757v8.486M7.757 12h8.486M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
-      </svg>
-      Add
-    </button>
-    </label>
-  </form>
-</div>
+<TodoAdd client:visible/>
 
 <h2> {done_tasks.length > 0 ? "Completed Tasks" : ""} </h2>
 <div>
@@ -94,6 +74,7 @@ user_tasks.forEach((task: DatabaseTask) => {
 </div>
 </div >
 
+
 <style> 
     .container {
         max-width: 80%;
@@ -102,55 +83,7 @@ user_tasks.forEach((task: DatabaseTask) => {
         margin-top: 1.8rem;
     }
     
-    form {
-      background-color: var(--color-surface-mixed-400);
-      border-radius: 4px;
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      display: flex;
-      flex-direction: row;
-      gap: 1rem;
-    }
-  
-  
-    form label {
-      margin-bottom: 1rem;
-      font-weight: bold;
-      font-size: 1rem;
-    }
-  
-    form input[type="text"],
-    form input[type="date"] {
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      font-size: 1rem;
-    }
-    
-    form input[type="text"]{
-        width: 90%;
-    } 
-    
-    form input[type="date"] {
-        width: 90%
-    }
-  
-    form button {
-      padding: 6px 20px;
-      margin-top: 18px;
-      background-color: #4CAF50;
-      color: #fff;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-    }
-  
-    form button .icon {
-      margin-right: 10px;
-    }
+
     
     h2 {
         margin-top: 5rem;
