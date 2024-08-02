@@ -1,8 +1,16 @@
 <script lang="ts">
     import Book from "./citation_types/Book.svelte";
+    import Case from "./citation_types/Case.svelte";
+    import Dataset from "./citation_types/Dataset.svelte";
+    import Journal from "./citation_types/Journal.svelte";
+    import Website from "./citation_types/Website.svelte";
+    import Letter from "./citation_types/Letter.svelte";
+    import Manuscript from "./citation_types/Manuscript.svelte";
+    import Newspaper from "./citation_types/Newspaper.svelte";
+    
     import SourceSearch from "./SourceSearch.svelte";
     import Popup from "./Popup.svelte";
-
+    let source_type: number = 0;
     let source_add_requested = false;
     let source_add_success = false;
     $: active_manual = true;
@@ -58,7 +66,7 @@
             <div class="form-group">
                 <label for="SourceType">Source Type</label>
                 <div class="custom-select">
-                    <select id="SourceType">
+                    <select id="SourceType" bind:value={source_type}>
                         <option value="0">Artwork</option>
                         <option value="1">Audio Recording</option>
                         <option value="2">Bill</option>
@@ -71,7 +79,9 @@
                         <option value="9">Dataset</option>
                     </select>
                 </div>
-                <Book  on:save={display_popup} />
+                {#if source_type == 4}
+                    <Book on:save={display_popup} />
+                {/if}
             </div>
         </div>
     {:else}

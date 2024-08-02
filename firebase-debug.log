@@ -1,0 +1,44 @@
+[debug] [2024-08-02T16:40:21.372Z] ----------------------------------------------------------------------
+[debug] [2024-08-02T16:40:21.374Z] Command:       /usr/local/bin/node /Users/ewu/Git-Repos/YAPP/node_modules/.bin/firebase deploy --only hosting
+[debug] [2024-08-02T16:40:21.374Z] CLI Version:   13.15.0
+[debug] [2024-08-02T16:40:21.374Z] Platform:      darwin
+[debug] [2024-08-02T16:40:21.374Z] Node Version:  v20.13.1
+[debug] [2024-08-02T16:40:21.374Z] Time:          Fri Aug 02 2024 12:40:21 GMT-0400 (Eastern Daylight Time)
+[debug] [2024-08-02T16:40:21.374Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-08-02T16:40:21.375Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2024-08-02T16:40:21.443Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-08-02T16:40:21.444Z] > authorizing via signed-in user (drinkfood.exe@gmail.com)
+[debug] [2024-08-02T16:40:21.444Z] [iam] checking project yapp-6e048 for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2024-08-02T16:40:21.444Z] > refreshing access token with scopes: []
+[debug] [2024-08-02T16:40:21.444Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2024-08-02T16:40:21.444Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2024-08-02T16:40:21.636Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2024-08-02T16:40:21.636Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
+[debug] [2024-08-02T16:40:21.651Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2024-08-02T16:40:21.651Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2024-08-02T16:40:21.662Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/yapp-6e048:testIamPermissions [none]
+[debug] [2024-08-02T16:40:21.662Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/yapp-6e048:testIamPermissions x-goog-quota-user=projects/yapp-6e048
+[debug] [2024-08-02T16:40:21.662Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/yapp-6e048:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2024-08-02T16:40:21.857Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/yapp-6e048:testIamPermissions 200
+[debug] [2024-08-02T16:40:21.857Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/yapp-6e048:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2024-08-02T16:40:21.858Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/yapp-6e048 [none]
+[debug] [2024-08-02T16:40:22.277Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/yapp-6e048 200
+[debug] [2024-08-02T16:40:31.257Z] ----------------------------------------------------------------------
+[debug] [2024-08-02T16:40:31.259Z] Command:       /usr/local/bin/node /Users/ewu/Git-Repos/YAPP/node_modules/.bin/firebase deploy --only hosting
+[debug] [2024-08-02T16:40:31.259Z] CLI Version:   13.15.0
+[debug] [2024-08-02T16:40:31.259Z] Platform:      darwin
+[debug] [2024-08-02T16:40:31.259Z] Node Version:  v20.13.1
+[debug] [2024-08-02T16:40:31.259Z] Time:          Fri Aug 02 2024 12:40:31 GMT-0400 (Eastern Daylight Time)
+[debug] [2024-08-02T16:40:31.259Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-08-02T16:40:31.293Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-08-02T16:40:31.293Z] > authorizing via signed-in user (drinkfood.exe@gmail.com)
+[debug] [2024-08-02T16:40:31.293Z] [iam] checking project yapp-6e048 for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2024-08-02T16:40:31.294Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/yapp-6e048:testIamPermissions [none]
+[debug] [2024-08-02T16:40:31.294Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/yapp-6e048:testIamPermissions x-goog-quota-user=projects/yapp-6e048
+[debug] [2024-08-02T16:40:31.294Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/yapp-6e048:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2024-08-02T16:40:31.611Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/yapp-6e048:testIamPermissions 200
+[debug] [2024-08-02T16:40:31.611Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/yapp-6e048:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2024-08-02T16:40:31.612Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/yapp-6e048 [none]
+[debug] [2024-08-02T16:40:31.952Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/yapp-6e048 200
