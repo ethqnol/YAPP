@@ -29,7 +29,7 @@
             task_add = true;
             if (response.ok) {
                 task_success = true;
-                //window.location.reload();
+                window.location.reload();
             } else {
                 error_msg = await response.text();
                 task_success = false;
