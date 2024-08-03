@@ -35,6 +35,8 @@
         z-index: 1001;
         background-color: #4bb543;
         border: 3px solid #fff;
+        max-height: 70vh;
+        overflow-y: auto;
     }
 
     .popup.success {

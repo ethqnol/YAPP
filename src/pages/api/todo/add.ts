@@ -6,34 +6,33 @@ import type Task from "../../../lib/task";
 
 
 export const POST: APIRoute = async ({ request, cookies, redirect }) => {
-  const form_data: FormData = await request.formData();
-  const name = form_data.get("name")?.toString();
-  const description = form_data.get("description")?.toString();
-  const due_date = form_data.get("due_date")?.toString();
+  const task : Task = await request.json();
   const user = await get_user_session(cookies);
   if (!user) {
     return new Response("Unauthorized", { status: 403 });
   }
 
-  if (!name || !description) {
-    return new Response("Missing required fields", {
+  if (!task.name || !task.description) {
+    return new Response("Missing Required Fields", {
       status: 400,
     });
   }
   
-  const task : Task = { student_id: user.uid, 
-                        name, 
-                        description,
-                        due_date: due_date ? new Date(due_date).getTime() : null,
-                        creation_date: new Date().getTime(),
-                        completed: false
-                      }
-  
+  let date = task.due_date ? (new Date(task.due_date) ? new Date(task.due_date).getTime() : null) : null;
+  const final_task: Task = {
+    student_id: user.uid,
+    name: task.name,
+    description: task.description,
+    due_date: date,
+    creation_date: new Date().getTime(),
+    completed: false
+  }
+
   try {
     const db = getFirestore(app);
     const tasks_ref = db.collection("Tasks");
     await tasks_ref.add({
-      ...task,
+      ...final_task,
     });
   } catch (error) {
     return new Response("Error while adding task", {
