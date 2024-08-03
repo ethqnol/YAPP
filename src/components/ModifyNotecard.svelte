@@ -58,149 +58,158 @@
     }
 </script>
 
-<div class="form-container">
-    {#if notecard_add}
-        <div class="overlay"></div>
-    {/if}
-
-    {#if notecard_add && notecard_success}
-        <Popup
-            msg="Success!"
-            path="/project/notecards"
-            success={true}
-            loc="Go To Notecards"
-        />
-    {:else if notecard_add && !notecard_success}
-        <Popup
-            msg="Failed to add notecard."
-            path="/project/notecards"
-            success={false}
-            error={error_msg}
-            loc="Go To Notecards"
-        />
-    {/if}
-    <form on:submit|preventDefault={handle_submit}>
-        <div class="form-group">
-            <label for="source">Source</label>
-            <select id="source" bind:value={selected_source}>
-                {#each sources as source}
-                    <option value={source.primary_id}
-                        >{`${source.source.title}; ${source.source.full_citation.slice(0, 50) + (source.source.full_citation.length > 50 ? "..." : "")}`}</option
-                    >
-                {/each}
-            </select>
+<div class = 'page-body'>
+    <div class = 'main-card'>
+        <div class = 'header-info'>
+            <input class = 'title-edit' placeholder = "Title" type = 'text' bind:value={title}>
+            <div class="source-info">
+                <div class = 'custom-select'>
+                    <select name="" id="">
+                        {#each sources as source}
+                            <option value={source.primary_id}
+                                >{`${source.source.title}; ${source.source.full_citation.slice(0, 50) + (source.source.full_citation.length > 50 ? "..." : "")}`}</option
+                            >
+                        {/each}
+                    </select>
+                </div>
+                <div class = 'page-range'>
+                    <input type="text" bind:value={start_page} placeholder='Start' class ='page-input'>
+                    -
+                    <input type="text" bind:value={end_page} placeholder='End' class ='page-input'>
+                </div>
+            </div>
         </div>
-
-        <div class="form-group">
-            <label for="title">Title</label>
-            <input id="title" bind:value={title} required />
+        <div class = 'main-body-info'>
+            <textarea class="quote-edit" placeholder="[Paste Quotation Here]" bind:value={quote} />
+            <textarea class="analysis-edit" placeholder="[Write Analysis Here]" bind:value={analysis}/>
         </div>
-        <div class="form-group">
-            <label for="quote">Quote</label>
-            <textarea id="quote" bind:value={quote} required />
-        </div>
-
-        <div class="form-group">
-            <label for="analysis">Analysis</label>
-            <textarea id="analysis" bind:value={analysis} required></textarea>
-        </div>
-
-        <div class="form-group">
-            <label for="startPage">Start Page</label>
-            <input
-                id="startPage"
-                type="number"
-                bind:value={start_page}
-                required
-            />
-        </div>
-
-        <div class="form-group">
-            <label for="endPage">End Page</label>
-            <input id="endPage" type="number" bind:value={end_page} required />
-        </div>
-
-        <button type="submit" class="submit-button">Submit</button>
-    </form>
+    </div>
 </div>
-
 <style>
-    .overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        z-index: 1000;
+
+    .page-body {
+        position: absolute;
+        left: var(--sidebar-width);
+        width: calc(100vw - var(--sidebar-width));
+        text-align: center;
     }
 
-    .form-container {
-        width: 100%;
+    .main-card {
+        display: grid;
+        position: absolute;
+        text-align: center;
+        box-shadow: inset 0 0 0 8px rgb(130, 130, 130);
+        top: 10vh;
+        height: 80vh;
+        width: 80%;
+        left: 10%;
+        background-color: var(--color-surface-mixed-300);
+        border-radius: 16px;
         color: white;
-        margin: 0rem auto;
-        background-color: #20232a;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-        display: flex;
-        right: 0.5rem;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
     }
 
-    form {
-        width: calc(100vw - 2rem - 20vw);
-        max-width: calc(100vw - 2rem - 20vw);
-    }
-    .form-group {
-        margin-bottom: 20px;
-    }
-
-    .form-group label {
-        display: block;
-        margin-bottom: 8px;
-        font-size: 16px;
-        font-weight: 600;
-        color: #ffffff;
-    }
-
-    .form-group input,
-    .form-group textarea {
-        width: 100%;
-        padding: 12px;
-        font-size: 14px;
-        border: 1px solid #cccccc;
+    .header-info {
+        width: 100%; 
+        height: 35%;
+        color: white;
         border-radius: 4px;
-        box-sizing: border-box;
-        transition: border-color 0.3s;
+        border-bottom: 8px rgb(130, 130, 130) solid;
     }
 
-    .form-group input:focus,
-    .form-group textarea:focus {
-        border-color: #007bff;
-        outline: none;
+    textarea {
+        color: white;
+        padding: 15px;
+        resize: none;
+        font-size: large;
     }
 
-    .form-group textarea {
-        resize: vertical;
-        min-height: 120px;
-    }
-
-    .submit-button {
+    .title-edit {
+        width: 85%;
+        margin-top: 2%;
+        font-size: x-large;
         display: inline-block;
-        width: 100%;
-        padding: 12px;
-        font-size: 16px;
-        color: #ffffff;
-        background-color: #007bff;
+        text-align: center;
+        background-color: transparent;
+        margin-bottom: 0;
+        border-radius: 7px;
         border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: background-color 0.3s;
+        color: white;
+        font-weight: bold
     }
 
-    .submit-button:hover {
-        background-color: #0056b3;
+    .source-info {
+        display: inline-flex;
+        width: auto;
+        padding: 0;
+        margin-top: 1.5rem;
+    }
+
+    .custom-select {
+        width: 85%;
+        display: inline;
+        height: 1.5rem;
+        margin-top: 0;
+        padding: 0;
+        margin-left: 0;
+        margin-right: 0;
+        margin-bottom: 1rem;
+    }
+
+    .custom-select select{
+        appearance: none;
+        text-align: center;
+        width: auto;
+        max-width: 90%;
+        margin: none;
+        padding: 0;
+        background-color: transparent;
+        border: none;
+        border-radius: 0.25rem;
+        color: white;
+        cursor: pointer;
+        text-align: center;
+    }
+
+    .page-range {
+        display: flex;
+        flex-wrap: nowrap;
+        height: 1.3rem;
+        padding: 0px;
+    }
+
+    .page-input {
+        background-color: transparent;
+        border: solid rgb(130, 130, 130) 2px;
+        border-radius: 7px;
+        color: white;
+        text-align: center;
+        padding: 0px;
+        width: auto;
+    }
+    .quote-edit {
+        position: absolute;
+        left: 0;
+        width: 65%;
+        height: 78%;
+        padding: 1rem;
+        box-sizing: border-box;
+        border-radius: 0 0 0 16px;
+        border: none;
+        border-right: solid rgb(130, 130, 130) 10px;
+        background-color: transparent;
+        top: 22%;
+    }
+
+    .analysis-edit {
+        position: absolute;
+        left: 65%;
+        width: 35%;
+        height: 78%;
+        border-radius: 0 0 16px 0;
+        border: none;
+        padding: 1rem;
+        box-sizing: border-box;
+        background-color: transparent;
+        top: 22%;
     }
 </style>
