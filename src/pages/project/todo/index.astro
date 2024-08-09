@@ -1,10 +1,25 @@
 ---
 import ProjectLayout from '../../../layouts/ProjectLayout.astro';
-import Todo from '../../../components/Todo.astro'
+import Todo from '../../../components/Todo.svelte'
+import { app } from "../../../firebase/server";
+import { getFirestore } from "firebase-admin/firestore";
+import type DatabaseTask from "../../../lib/task_database";
 
 const {user} = Astro.locals
+
+const db = getFirestore(app);
+const tasks_ref = db.collection("Tasks");
+
+const tasks_snapshot = await tasks_ref
+  .where("student_id", "==", user.uid)
+  .get();
+
+const user_tasks: DatabaseTask[] = tasks_snapshot.docs.map((doc) => ({
+  primary_id: doc.id,
+  task: doc.data(),
+})) as DatabaseTask[];
 ---
 
 <ProjectLayout title="To-Do">
-    <Todo user={user} />
+    <Todo user_tasks={user_tasks} client:visible />
 </ProjectLayout>
