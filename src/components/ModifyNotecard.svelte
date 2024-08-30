@@ -73,9 +73,9 @@
                     </select>
                 </div>
                 <div class = 'page-range'>
-                    <input type="text" bind:value={start_page} placeholder='Start' class ='page-input'>
+                    <input type="text" bind:value={start_page} placeholder='Start Page' class ='page-input'>
                     -
-                    <input type="text" bind:value={end_page} placeholder='End' class ='page-input'>
+                    <input type="text" bind:value={end_page} placeholder='End Page' class ='page-input'>
                 </div>
             </div>
         </div>
@@ -110,7 +110,7 @@
 
     .header-info {
         width: 100%; 
-        height: 35%;
+        height: 31%;
         color: white;
         border-radius: 4px;
         border-bottom: 8px rgb(130, 130, 130) solid;
@@ -119,6 +119,7 @@
     textarea {
         color: white;
         padding: 15px;
+        height: calc(100% - 31%);
         resize: none;
         font-size: large;
     }
@@ -190,26 +191,26 @@
         position: absolute;
         left: 0;
         width: 65%;
-        height: 78%;
+        height: 81%;
         padding: 1rem;
         box-sizing: border-box;
         border-radius: 0 0 0 16px;
         border: none;
         border-right: solid rgb(130, 130, 130) 10px;
         background-color: transparent;
-        top: 22%;
+        top: 19%;
     }
 
     .analysis-edit {
         position: absolute;
         left: 65%;
         width: 35%;
-        height: 78%;
+        height: 81%;
         border-radius: 0 0 16px 0;
         border: none;
         padding: 1rem;
         box-sizing: border-box;
         background-color: transparent;
-        top: 22%;
+        top: 19%;
     }
 </style>
