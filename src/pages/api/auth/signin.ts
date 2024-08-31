@@ -1,4 +1,5 @@
 import type { APIRoute } from "astro";
+import type User from "../../../lib/user";
 import { app } from "../../../firebase/server";
 import { getAuth } from "firebase-admin/auth";
 import { getFirestore } from "firebase-admin/firestore";
@@ -30,16 +31,35 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
   const decoded_cookie = await auth.verifySessionCookie(session_cookie);
   const user = await auth.getUser(decoded_cookie.uid);
   const db = getFirestore(app);
-  db.collection("Students")
+
+
+
+  db.collection("Users")
     .where("email", "==", user.email)
     .get()
     .then(querySnapshot => {
+      let date = new Date().getHours();
+      let current_streak = 0;
       if (!querySnapshot.empty) {
+        let query = querySnapshot.docs[0].ref.get().then(doc => {
+          let user = doc.data() as User;
+          if (Number(user.last_login) - date >= 24) {
+            current_streak = 1;
+          } else {
+            current_streak = user.streak + 1;
+          }
+
+        });
+
         querySnapshot.docs[0].ref.update({
           google_id: user.uid,
           google_photo: user.photoURL,
           display_name: user.displayName,
+          last_login: date.toString(),
+          streak: current_streak,
         })
+
+
       } else {
         db.collection("Students").doc(user.uid).set({
           email: user.email,
@@ -48,12 +68,16 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
           streak: 1,
           awards: [],
           project_completion: 0.00,
+          last_login: (new Date()).getSeconds().toString(),
+          teacher_id: "",
+          class_id: "",
           //teacher_id and class_id are initialized when a USER gets added or joins a class
         })
       }
 
+
     }).catch(error => {
-      console.log('Error fetching student from database: ', error);
+      console.log('Error fetching user from database: ', error);
     });
 
 
@@ -62,5 +86,5 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
     path: "/",
   });
 
-  return redirect("/account");
+  return redirect("/project/sources");
 };
