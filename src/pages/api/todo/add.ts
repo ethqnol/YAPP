@@ -25,7 +25,8 @@ export const POST: APIRoute = async ({ request, cookies, redirect }) => {
     description: task.description,
     due_date: date,
     creation_date: new Date().getTime(),
-    completed: false
+    completed: false,
+    syllabus_id: "",
   }
 
   try {

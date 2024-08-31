@@ -10,7 +10,7 @@
     let task_success = false;
 
     let error_msg: string = "";
-    
+
     async function add_task() {
         const new_task = {
             name,
@@ -45,10 +45,9 @@
             task_add = false;
         }
     }
-    
-    
+
     export let user_tasks: DatabaseTask[] = [];
-    
+
     user_tasks.sort((a, b) => {
         if (!a.task.due_date && !b.task.due_date) {
             return a.task.creation_date - b.task.creation_date;
@@ -71,43 +70,46 @@
             undone_tasks.push(task);
         }
     });
-    
-    async function complete_task(task_id : string) {
+
+    async function complete_task(task_id: string) {
         complete(task_id);
         const response = await fetch(`/api/todo/complete/${task_id}`, {
             method: "GET",
         });
-        
-        if(!response.ok) uncomplete(task_id);
 
+        if (!response.ok) uncomplete(task_id);
     }
-    
-    function complete(task_id : string) {
+
+    function complete(task_id: string) {
         const task = user_tasks.find((task) => task.primary_id === task_id);
         if (task) {
             task.task.completed = true;
             done_tasks.push(task);
-            undone_tasks = undone_tasks.filter((task) => task.primary_id !== task_id);
-        }  
+            undone_tasks = undone_tasks.filter(
+                (task) => task.primary_id !== task_id,
+            );
+        }
     }
-    
-    async function uncomplete_task(task_id : string) {
+
+    async function uncomplete_task(task_id: string) {
         uncomplete(task_id);
         const response = await fetch(`/api/todo/uncomplete/${task_id}`, {
             method: "GET",
         });
         if (!response.ok) complete(task_id);
     }
-    
-    function uncomplete(task_id : string) {
+
+    function uncomplete(task_id: string) {
         const task = user_tasks.find((task) => task.primary_id === task_id);
         if (task) {
             task.task.completed = false;
             undone_tasks.push(task);
-            done_tasks = done_tasks.filter((task) => task.primary_id !== task_id);
-        }  
+            done_tasks = done_tasks.filter(
+                (task) => task.primary_id !== task_id,
+            );
+        }
     }
-    
+
     async function delete_all_completed() {
         const response = await fetch(`/api/todo/delete`, {
             method: "GET",
@@ -123,15 +125,14 @@
     <div>
         {#each undone_tasks as task}
             <form
-                
                 on:submit|preventDefault={async () => {
                     await complete_task(task.primary_id);
                 }}
-                
-                class={task.task.due_date != null &&
+                class={(task.task.due_date != null &&
                 new Date().getTime() >= task.task.due_date
                     ? "overdue task"
-                    : "task not-overdue"}
+                    : "task not-overdue") +
+                    (task.task.syllabus_id == "" ? "" : " syllabus")}
             >
                 <div class="task-header">
                     <div class="task-title">
@@ -158,76 +159,74 @@
             </form>
         {/each}
     </div>
-        {#if task_add && !task_success}
-            <Popup
-                msg="Failed to add notecard."
-                path="/project/notecards"
-                success={false}
-                error={error_msg}
-                loc="Go To Notecards"
-            />
-        {/if}
-        
-        <form on:submit|preventDefault={add_task} id="add-task-form">
-            <label>
-                Task Name:
-                <input type="text" name="name" required bind:value={name} />
-            </label>
-            <label>
-                Description:
-                <input
-                    type="text"
-                    name="description"
-                    required
-                    bind:value={description}
-                />
-            </label>
-            <label>
-                Due Date:
-                <input type="date" name="due_date" bind:value={due_date} />
-            </label>
-            <label>
-                <button type="submit">
-                    <svg
-                        class="icon"
-                        aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="32"
-                        height="32"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            stroke="currentColor"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M12 7.757v8.486M7.757 12h8.486M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                        />
-                    </svg>
-                    Add
-                </button>
-            </label>
-        </form>
+    {#if task_add && !task_success}
+        <Popup
+            msg="Failed to add notecard."
+            path="/project/notecards"
+            success={false}
+            error={error_msg}
+            loc="Go To Notecards"
+        />
+    {/if}
 
+    <form on:submit|preventDefault={add_task} id="add-task-form">
+        <label>
+            Task Name:
+            <input type="text" name="name" required bind:value={name} />
+        </label>
+        <label>
+            Description:
+            <input
+                type="text"
+                name="description"
+                required
+                bind:value={description}
+            />
+        </label>
+        <label>
+            Due Date:
+            <input type="date" name="due_date" bind:value={due_date} />
+        </label>
+        <label>
+            <button type="submit">
+                <svg
+                    class="icon"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="32"
+                    height="32"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 7.757v8.486M7.757 12h8.486M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                    />
+                </svg>
+                Add
+            </button>
+        </label>
+    </form>
 
     <h2>{done_tasks.length > 0 ? "Completed Tasks" : ""}</h2>
-    <button class="delete-all-completed" on:click={delete_all_completed}> Permanently Delete All Completed Tasks </button>
+    <button class="delete-all-completed" on:click={delete_all_completed}>
+        Permanently Delete All Completed Tasks
+    </button>
     <div>
         {#each done_tasks as task}
             <form
-                
                 on:submit|preventDefault={async () => {
                     await uncomplete_task(task.primary_id);
                 }}
-                
                 class="task-done"
             >
                 <div class="task-header-done">
                     <div class="task-title-done">
-                        <button class="checkbox-done">
-                            ✔
-                            </button><div id="task-name-done">{task.task.name}</div>
+                        <button class="checkbox-done"> ✔ </button>
+                        <div id="task-name-done">{task.task.name}</div>
                     </div>
                 </div>
                 <div class="task-body-done">
@@ -263,7 +262,7 @@
     h2 {
         margin-top: 5rem;
     }
-    
+
     .delete-all-completed {
         background-color: var(--color-surface-mixed-400);
         border: none;
@@ -275,11 +274,11 @@
         color: white;
         font-weight: bold;
     }
-    
+
     .delete-all-completed:hover {
         background-color: var(--color-surface-mixed-500);
     }
-    
+
     #add-task-form {
         background-color: var(--color-surface-mixed-400);
         border-radius: 4px;
@@ -338,12 +337,12 @@
             gap: 0.2rem;
             padding: 0.1rem;
         }
-        
+
         #add-task-form input,
         form input {
             width: 100%;
         }
-        
+
         #add-task-form label,
         form label {
             width: 90%;
@@ -351,12 +350,16 @@
             align-items: center;
             justify-content: center;
         }
-        
+
         #add-task-form button,
         form button {
             width: 100%;
             margin: 0.2rem;
         }
+    }
+    
+    .syllabus {
+        border: 2px solid var(--color-primary-200);
     }
 
     .task {
@@ -410,11 +413,11 @@
         margin-right: 10px;
         transition: 0.8s cubic-bezier(0.075, 0.82, 0.165, 1);
     }
-    
+
     .checkbox:hover {
         background-color: var(--color-primary-200);
     }
-    
+
     .task {
         background-color: #454750;
         border: 1px solid #8f9197;
@@ -426,7 +429,7 @@
         align-items: center;
         justify-content: space-between;
     }
-    
+
     .checkbox-done {
         display: flex;
         justify-content: center;
@@ -442,11 +445,11 @@
         text-decoration: none;
         transition: 0.8s cubic-bezier(0.075, 0.82, 0.165, 1);
     }
-    
+
     .checkbox-done:hover {
         background-color: lightgray;
     }
-    
+
     .overdue {
         border: 2px solid red;
     }
@@ -466,7 +469,7 @@
     #task-name-done {
         text-decoration: line-through;
     }
-    
+
     .task-done {
         background-color: #3f3f3f;
         border: 1px solid #8f9197;
@@ -491,6 +494,4 @@
         margin-left: 20px;
         text-decoration: line-through;
     }
-
-    
 </style>

@@ -5,4 +5,5 @@ export default interface Task {
   due_date: number | null;
   creation_date: number;
   completed: boolean;
+  syllabus_id: string;
 }

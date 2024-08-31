@@ -57,6 +57,7 @@
                         type="text"
                         bind:value={class_name_new}
                         placeholder="Enter class name"
+                        required
                     />
                 </label>
                 <label>
@@ -65,6 +66,7 @@
                         type="number"
                         bind:value={class_section_new}
                         placeholder="Enter section number"
+                        required
                     />
                 </label>
                 <div class="popup-actions">

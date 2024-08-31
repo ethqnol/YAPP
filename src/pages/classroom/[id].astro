@@ -1,0 +1,67 @@
+---
+import ClassLayout from "../../layouts/ClassLayout.astro";
+import type User from "../../lib/user";
+import type DatabaseUser from "../../lib/user_database";
+import { app } from "../../firebase/server";
+import { getFirestore } from "firebase-admin/firestore";
+import type DatabaseTask from "../../lib/task_database";
+import StudentList from "../../components/StudentList.svelte";
+import SyllabusEditor from "../../components/SyllabusEditor.svelte";
+
+const { id } = Astro.params;
+if (!id) {
+  return Astro.redirect("/404");
+}
+
+
+const db = getFirestore(app);
+const student_ref = db.collection("Students");
+const student_snapshot = await student_ref
+  .where("class_id", "==", id)
+  .get();
+
+const students_list : DatabaseUser[] = student_snapshot.docs.map((doc) => ({
+    primary_id: doc.id,
+    user: doc.data(),
+})) as DatabaseUser[];
+
+const todo_ref = db.collection("Tasks");
+const tasks_ref = await todo_ref
+  .where("syllabus_id", "==", id)
+  .get();
+
+const syllabus_list : DatabaseTask[] = tasks_ref.docs.map((doc) => ({
+    primary_id: doc.id,
+    task: doc.data(),
+})) as DatabaseTask[];
+
+---
+
+<ClassLayout title="Classroom">
+    <div class="classroom-page">
+        <div class="sidebar">
+            <StudentList students={students_list} client:visible/>
+            <SyllabusEditor syllabus={syllabus_list} class_id={id} client:visible>
+        </div>
+        <div class="content">
+            <h1>Classroom Management</h1>
+            <p>Manage students and syllabus items for your class.</p>
+        </div>
+    </div>
+</ClassLayout>
+
+<style>
+    .classroom-page {
+        display: flex;
+    }
+    .sidebar {
+        width: 20%;
+        background-color: var(--color-surface-mixed-200);
+        padding: 1rem;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .content {
+        width: 80%;
+        padding: 2rem;
+    }
+</style>
