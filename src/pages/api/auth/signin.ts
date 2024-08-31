@@ -37,11 +37,11 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
   db.collection("Users")
     .where("email", "==", user.email)
     .get()
-    .then(querySnapshot => {
+    .then(query_snapshot => {
       let date = new Date().getHours();
       let current_streak = 0;
-      if (!querySnapshot.empty) {
-        let query = querySnapshot.docs[0].ref.get().then(doc => {
+      if (!query_snapshot.empty) {
+        let query = query_snapshot.docs[0].ref.get().then(doc => {
           let user = doc.data() as User;
           if (Number(user.last_login) - date >= 24) {
             current_streak = 1;
@@ -51,7 +51,7 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
 
         });
 
-        querySnapshot.docs[0].ref.update({
+        query_snapshot.docs[0].ref.update({
           google_id: user.uid,
           google_photo: user.photoURL,
           display_name: user.displayName,

@@ -1,7 +1,3 @@
-// Done for now.
-// Place = Court,
-// Series = Reporter,
-// SeriesNum = Reporter Volume
 
 <script lang="ts">
     
@@ -11,7 +7,10 @@
     export let data : DatabaseSource | null = null;
     import { createEventDispatcher } from "svelte";
     
-    
+    // Done for now.
+    // Place = Court,
+    // Series = Reporter,
+    // SeriesNum = Reporter Volume
     
     const dispatch = createEventDispatcher();
     

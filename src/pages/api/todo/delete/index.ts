@@ -12,8 +12,8 @@ export const GET: APIRoute = async ({ cookies, redirect }) => {
   try {
     const db = getFirestore(app);
     const tasks_ref = db.collection("Tasks");
-    await tasks_ref.where("completed", "==", true).get().then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
+    await tasks_ref.where("completed", "==", true).get().then((query_snapshot) => {
+      query_snapshot.forEach((doc) => {
         tasks_ref.doc(doc.id).delete();
       });
     });

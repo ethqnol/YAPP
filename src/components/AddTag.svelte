@@ -81,10 +81,7 @@
         }
     }
 </script>
-
-{#if tag_add}
-    <div class="overlay"></div>
-{/if}
+    
 
 {#if tag_add && tag_success}
     <Popup
@@ -101,7 +98,6 @@
         success={false}
         loc="Okay"
     />
-    <div class="overlay"></div>
 {/if}
 
 {#if tag_delete && !tag_delete_success}
@@ -112,7 +108,7 @@
         error={error_msg}
         loc="Okay"
     />
-    <div class="overlay"></div>
+
 {/if}
 
 <div id="Page">
@@ -234,16 +230,6 @@
         width: 100%;
         text-align: center;
         align-items: center;
-    }
-
-    .overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        z-index: 1000;
     }
 
     table {

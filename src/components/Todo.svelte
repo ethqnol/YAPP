@@ -73,13 +73,13 @@
     });
     
     async function complete_task(task_id : string) {
-        
+        complete(task_id);
         const response = await fetch(`/api/todo/complete/${task_id}`, {
             method: "GET",
         });
-        if (response.ok) {
-            complete(task_id);
-        }
+        
+        if(!response.ok) uncomplete(task_id);
+
     }
     
     function complete(task_id : string) {
@@ -92,13 +92,11 @@
     }
     
     async function uncomplete_task(task_id : string) {
-        
+        uncomplete(task_id);
         const response = await fetch(`/api/todo/uncomplete/${task_id}`, {
             method: "GET",
         });
-        if (response.ok) {
-            uncomplete(task_id);
-        }
+        if (!response.ok) complete(task_id);
     }
     
     function uncomplete(task_id : string) {
@@ -161,7 +159,6 @@
         {/each}
     </div>
         {#if task_add && !task_success}
-            <div class="overlay"></div>
             <Popup
                 msg="Failed to add notecard."
                 path="/project/notecards"
@@ -327,15 +324,6 @@
         display: flex;
         align-items: center;
     }
-    .overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        z-index: 1000;
-    }
     #add-task-form button .icon {
         margin-right: 10px;
     }
@@ -420,8 +408,12 @@
         border-radius: 50%;
         display: inline-block;
         margin-right: 10px;
+        transition: 0.8s cubic-bezier(0.075, 0.82, 0.165, 1);
     }
     
+    .checkbox:hover {
+        background-color: var(--color-primary-200);
+    }
     
     .task {
         background-color: #454750;
@@ -448,6 +440,11 @@
         margin-right: 10px;
         border: 2px solid gray;
         text-decoration: none;
+        transition: 0.8s cubic-bezier(0.075, 0.82, 0.165, 1);
+    }
+    
+    .checkbox-done:hover {
+        background-color: lightgray;
     }
     
     .overdue {

@@ -1,13 +1,14 @@
 <script lang="ts">
     import type DatabaseNotecard from "../lib/notecard_database.ts";
     import Popup from "./Popup.svelte";
+    import Loading from "./Loading.svelte";
     import type DatabaseSource from "../lib/source_database.ts";
     export let notecard: DatabaseNotecard | null = null;
     export let sources: DatabaseSource[] = [];
 
     let notecard_add = false;
     let notecard_success = false;
-
+    let load = false;
     let error_msg: string = "";
     let quote = notecard ? notecard.notecard.quote : "";
     let analysis = notecard ? notecard.notecard.analysis : "";
@@ -32,6 +33,7 @@
         };
 
         try {
+            load = true
             const response = await fetch(
                 `/api/notecards/${notecard ? "edit/" + notecard.primary_id : "add"}`,
                 {
@@ -44,8 +46,12 @@
             );
 
             notecard_add = true;
+            load = false
             if (response.ok) {
                 notecard_success = true;
+                window.location.href = "/project/notecards";
+            } else {
+                error_msg = await response.text()
             }
         } catch (error) {
             console.error("Error:", error);
@@ -58,159 +64,224 @@
     }
 </script>
 
-<div class = 'page-body'>
-    <div class = 'main-card'>
-        <div class = 'header-info'>
-            <input class = 'title-edit' placeholder = "Title" type = 'text' bind:value={title}>
+{#if load}
+    <Loading />
+{/if}
+
+{#if notecard_add && !notecard_success}
+    <Popup
+        msg="Failed to add notecard."
+        path="/project/notecards"
+        error={error_msg}
+        success={false}
+        loc="Okay"
+    />
+{/if}
+<div class="page-body">
+    <div class="main-card">
+        <div class="header-info">
+            <input class="title-edit" placeholder="Title" type="text" bind:value={title}>
             <div class="source-info">
-                <div class = 'custom-select'>
-                    <select name="" id="">
+                <div class="custom-select">
+                    <select name="" id="" bind:value={selected_source}>
                         {#each sources as source}
-                            <option value={source.primary_id}
-                                >{`${source.source.title}; ${source.source.full_citation.slice(0, 50) + (source.source.full_citation.length > 50 ? "..." : "")}`}</option
-                            >
+                            <option value={source.primary_id}>
+                                {`${source.source.title}; ${source.source.full_citation.slice(0, 50) + (source.source.full_citation.length > 50 ? "..." : "")}`}
+                            </option>
                         {/each}
                     </select>
                 </div>
-                <div class = 'page-range'>
-                    <input type="text" bind:value={start_page} placeholder='Start Page' class ='page-input'>
-                    -
-                    <input type="text" bind:value={end_page} placeholder='End Page' class ='page-input'>
+                <div class="page-range">
+                    <input type="number" bind:value={start_page} placeholder="Start Page" class="page-input">
+                    <hr>
+                    <input type="number" bind:value={end_page} placeholder="End Page" class="page-input">
                 </div>
             </div>
         </div>
-        <div class = 'main-body-info'>
+        <div class="main-body-info">
             <textarea class="quote-edit" placeholder="[Paste Quotation Here]" bind:value={quote} />
             <textarea class="analysis-edit" placeholder="[Write Analysis Here]" bind:value={analysis}/>
         </div>
+        <div class="actions">
+            <a href="/project/notecards" class="cancel-btn">Cancel</a>
+            <button class="submit-btn" on:click={handle_submit}>Submit</button>
+        </div>
     </div>
 </div>
-<style>
 
-    .page-body {
-        position: absolute;
-        left: var(--sidebar-width);
-        width: calc(100vw - var(--sidebar-width));
-        text-align: center;
+<style>
+    :global(body) {
+        font-family: 'Inter', sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #1f1f1f;
+        color: #f5f5f5;
     }
 
+    .page-body {
+        position: relative;
+        padding: 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    hr {
+        width: 10px;
+        height: 2px;
+        background-color: white;
+        border: none;
+    }
     .main-card {
         display: grid;
-        position: absolute;
-        text-align: center;
-        box-shadow: inset 0 0 0 8px rgb(130, 130, 130);
-        top: 10vh;
-        height: 80vh;
-        width: 80%;
-        left: 10%;
+        grid-template-rows: auto 1fr auto;
+        position: relative;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        margin-top: 20px;
         background-color: var(--color-surface-mixed-300);
         border-radius: 16px;
-        color: white;
+        overflow: hidden;
+        color: #f5f5f5;
     }
 
     .header-info {
-        width: 100%; 
-        height: 31%;
-        color: white;
-        border-radius: 4px;
-        border-bottom: 8px rgb(130, 130, 130) solid;
-    }
-
-    textarea {
-        color: white;
-        padding: 15px;
-        height: calc(100% - 31%);
-        resize: none;
-        font-size: large;
+        padding: 20px;
+        border-bottom: 1px solid var(--color-surface-mixed-500);
     }
 
     .title-edit {
-        width: 85%;
-        margin-top: 2%;
-        font-size: x-large;
-        display: inline-block;
-        text-align: center;
+        width: 100%;
+        padding: 10px;
+        font-size: 1.25rem;
         background-color: transparent;
-        margin-bottom: 0;
-        border-radius: 7px;
         border: none;
-        color: white;
-        font-weight: bold
+        border-bottom: 2px solid var(--color-primary-400);
+        color: #f5f5f5;
+        outline: none;
+        transition: border-bottom-color 0.3s;
+    }
+
+    .title-edit:focus {
+        border-bottom-color: var(--color-primary-500);
     }
 
     .source-info {
-        display: inline-flex;
-        width: auto;
-        padding: 0;
-        margin-top: 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 15px;
     }
 
     .custom-select {
-        width: 85%;
-        display: inline;
-        height: 1.5rem;
-        margin-top: 0;
-        padding: 0;
-        margin-left: 0;
-        margin-right: 0;
-        margin-bottom: 1rem;
+        flex: 1;
+        margin-right: 10px;
     }
 
-    .custom-select select{
-        appearance: none;
-        text-align: center;
-        width: auto;
-        max-width: 90%;
-        margin: none;
-        padding: 0;
-        background-color: transparent;
+    .custom-select select {
+        width: 100%;
+        padding: 10px;
+        border-radius: 4px;
+        background-color: #2c2c2c;
+        color: #f5f5f5;
         border: none;
-        border-radius: 0.25rem;
-        color: white;
+        outline: none;
         cursor: pointer;
-        text-align: center;
     }
 
     .page-range {
         display: flex;
-        flex-wrap: nowrap;
-        height: 1.3rem;
-        padding: 0px;
+        align-items: center;
     }
 
     .page-input {
-        background-color: transparent;
-        border: solid rgb(130, 130, 130) 2px;
-        border-radius: 7px;
-        color: white;
-        text-align: center;
-        padding: 0px;
-        width: auto;
-    }
-    .quote-edit {
-        position: absolute;
-        left: 0;
-        width: 65%;
-        height: 81%;
-        padding: 1rem;
-        box-sizing: border-box;
-        border-radius: 0 0 0 16px;
+        color-scheme: dark !important;
+        width: 40px;
+        padding: 10px;
+        background-color: #2c2c2c;
         border: none;
-        border-right: solid rgb(130, 130, 130) 10px;
+        border-radius: 4px;
+        color: #f5f5f5;
+        text-align: center;
+        margin: 0 5px;
+        outline: none;
+    }
+
+    .main-body-info {
+        display: flex;
+        height: 100%;
+    }
+
+    textarea {
+        padding: 20px;
+        font-size: 1rem;
         background-color: transparent;
-        top: 19%;
+        border: none;
+        height: 40vh;
+        color: #f5f5f5;
+        resize: none;
+        outline: none;
+    }
+
+    .quote-edit {
+        flex: 2;
+        border-right: 2px solid var(--color-surface-mixed-500);
     }
 
     .analysis-edit {
-        position: absolute;
-        left: 65%;
-        width: 35%;
-        height: 81%;
-        border-radius: 0 0 16px 0;
+        flex: 1;
+    }
+
+    .actions {
+        display: flex;
+        justify-content: flex-end;
+        padding: 20px;
+        border-top: 1px solid var(--color-surface-mixed-500);
+    }
+
+    .cancel-btn, .submit-btn {
+        padding: 10px 20px;
+        border-radius: 4px;
+        text-decoration: none;
+        color: #f5f5f5;
+        font-weight: bold;
+        text-align: center;
+        transition: background-color 0.3s;
+    }
+
+    .cancel-btn {
+        background-color: #ff5f57;
+        margin-right: 10px;
+        font-size: 1rem;
+    }
+
+    .cancel-btn:hover {
+        background-color: red;
+    }
+
+    .submit-btn {
+        background-color: #28a745;
+        font-size: 1rem;
         border: none;
-        padding: 1rem;
-        box-sizing: border-box;
-        background-color: transparent;
-        top: 19%;
+        cursor: pointer;
+    }
+
+    .submit-btn:hover {
+        background-color: #218838;
+    }
+
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background-color: var(--color-surface-mixed-300);
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background-color: var(--color-primary-400);
+        border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background-color: var(--color-primary-500);
     }
 </style>

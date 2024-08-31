@@ -1,6 +1,7 @@
 <script lang="ts">
     import type Source from "../lib/source";
     import SourceType from "../lib/source_type";
+    import Loading from "./Loading.svelte";
     import { createEventDispatcher } from "svelte";
     export let data: any;
     let author: string;
@@ -42,13 +43,13 @@
     } else {
         publisher = "Unknown";
     }
-
+    let loading = false;
     function expand() {
         expanded = !expanded;
     }
 
     const source_added = () => {
-        dispatch("save", true);
+        window.location.href = "/project/sources";
     };
 
     const source_add_fail = () => {
@@ -56,6 +57,7 @@
     };
 
     async function generate_citation() {
+        loading = true;
         let source: Source = {
             source_type: SourceType.BOOK,
             title: data.title,
@@ -84,6 +86,7 @@
             },
             body: JSON.stringify(source),
         });
+        loading = false;
         if (res.ok) {
             source_added();
         } else {
@@ -91,7 +94,9 @@
         }
     }
 </script>
-
+    {#if loading}
+<Loading />
+{/if}
 <li class="link-card">
     <button class="current-book" on:click={expand}>
         <div class="container">

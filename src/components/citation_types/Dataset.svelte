@@ -1,7 +1,3 @@
-// Done for now.
-// Edition = Version,
-// Publisher = Repository
-// Place = Repo Location
 
 <script lang="ts">
     
@@ -11,7 +7,11 @@
     export let data : DatabaseSource | null = null;
     import { createEventDispatcher } from "svelte";
     
-    
+    // Done for now.
+    // Edition = Version,
+    // Publisher = Repository
+    // Place = Repo Location
+ 
     
     const dispatch = createEventDispatcher();
     

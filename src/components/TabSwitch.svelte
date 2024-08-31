@@ -10,7 +10,7 @@
     
     import SourceSearch from "./SourceSearch.svelte";
     import Popup from "./Popup.svelte";
-    let source_type: number = 0;
+    let source_type: string = "0";
     let source_add_requested = false;
     let source_add_success = false;
     $: active_manual = true;
@@ -28,18 +28,8 @@
 </script>
 
 <div id="Page">
-    {#if source_add_requested}
-        <div class="overlay"></div>
-    {/if}
 
-    {#if source_add_success && source_add_requested}
-        <Popup
-            msg="Success!"
-            path="/project/sources"
-            success={true}
-            loc="Go To Sources"
-        />
-    {:else if source_add_requested && !source_add_success}
+    {#if source_add_requested && !source_add_success}
         <Popup
             msg="Failed to add source."
             path="/project/sources"
@@ -67,20 +57,34 @@
                 <label for="SourceType">Source Type</label>
                 <div class="custom-select">
                     <select id="SourceType" bind:value={source_type}>
-                        <option value="0">Artwork</option>
-                        <option value="1">Audio Recording</option>
-                        <option value="2">Bill</option>
-                        <option value="3">Blogpost</option>
-                        <option value="4">Book</option>
-                        <option value="5">Book Section</option>
-                        <option value="6">Case</option>
-                        <option value="7">Software</option>
-                        <option value="8">Conference Paper</option>
-                        <option value="9">Dataset</option>
+                        <option value="0">Book</option>
+                        <option value="1">Case</option>
+                        <option value="2">Dataset</option>
+                        <option value="3">Journal</option>
+                        <option value="4">Website</option>
+                        <option value="5">Letter</option>
+                        <option value="6">Manuscript</option>
+                        <option value="7">Newspaper</option>
                     </select>
                 </div>
-                {#if source_type == 4}
+                {#if Number(source_type) == 0}
                     <Book on:save={display_popup} />
+                {:else if Number(source_type) == 1}
+                    <Case on:save={display_popup} />
+                {:else if Number(source_type) == 2}
+                    <Dataset on:save={display_popup} />
+                {:else if Number(source_type) == 3}
+                    <Journal on:save={display_popup} />
+                {:else if Number(source_type) == 4}
+                    <Website on:save={display_popup} />
+                {:else if Number(source_type) == 5}
+                    <Letter on:save={display_popup} />
+                {:else if Number(source_type) == 6}
+                    <Manuscript on:save={display_popup} />
+                {:else if Number(source_type) == 7}
+                    <Newspaper on:save={display_popup} />
+                {:else}
+                    <p>Unknown source type</p>
                 {/if}
             </div>
         </div>
@@ -169,13 +173,4 @@
         border-color: var(--color-surface-mixed-400);
     }
 
-    .overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        z-index: 1000;
-    }
 </style>

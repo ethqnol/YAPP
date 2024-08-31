@@ -1,0 +1,161 @@
+---
+import ProjectLayout from '../../../layouts/ProjectLayout.astro';
+import JoinClass from '../../../components/JoinClass.svelte';
+import { app } from "../../../firebase/server";
+import { getFirestore } from "firebase-admin/firestore";
+import type DatabaseClass from '../../../lib/class_database';
+import type Class from '../../../lib/class';
+
+
+
+let is_in_class = false; 
+
+const { user } = Astro.locals;
+const db = getFirestore(app);
+const class_ref = db.collection('Class');
+const user_snapshot = await db.collection("Students").doc(user.uid).get();
+const user_data = user_snapshot.data()!;
+
+let class_data : DatabaseClass | null = null;
+
+if (user_data.class_id != "") {
+  const class_snapshot = await class_ref.doc(user_data.class_id).get();
+  if (class_snapshot.exists) {
+    is_in_class = true;
+    class_data = {
+      primary_id: class_snapshot.id,
+      class: class_snapshot.data()! as Class
+    }
+  } else {
+    is_in_class = false;
+  }
+} else {
+  is_in_class = false;
+}
+
+
+---
+
+<ProjectLayout title="Join a Class">
+  
+  
+  {is_in_class ? (
+  
+    <div class="class-info">
+      <h2>{class_data!.class.class_name} - Section {class_data!.class.section_number!}</h2>
+      <p>Instructor: {class_data!.class.teacher_name!}</p>
+    </div>
+  ) : (
+    <>
+        <h1 class="page-title">Join a Class</h1>
+        <JoinClass client:visible />
+    </>
+  )}
+</ProjectLayout>
+
+<style>
+  .page-title {
+    text-align: center;
+    color: var(--color-primary-500);
+    margin-top: 2rem;
+    font-size: 2rem;
+  }
+
+  .class-info {
+    text-align: center;
+    background-color: var(--color-surface-mixed-200);
+    padding: 2rem;
+    border-radius: 8px;
+    margin: 2rem auto;
+    max-width: 600px;
+    color: white;
+  }
+
+  .join-class-button {
+    display: block;
+    margin: 2rem auto;
+    padding: 10px 20px;
+    background-color: var(--color-primary-400);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease-in-out;
+  }
+
+  .join-class-button:hover {
+    background-color: var(--color-primary-600);
+  }
+
+  .popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+
+  .popup-content {
+    background-color: var(--color-surface-mixed-200);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 400px;
+    color: white;
+  }
+
+  .popup-content h2 {
+    margin-top: 0;
+    color: var(--color-primary-400);
+  }
+
+  .popup-content label {
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  .popup-content input {
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid var(--color-surface-mixed-400);
+    margin-top: 0.5rem;
+  }
+
+  .popup-actions {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .popup-actions button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  .popup-actions .cancel-button {
+    background-color: var(--color-surface-mixed-500);
+  }
+
+  .popup-actions .cancel-button:hover {
+    background-color: var(--color-surface-mixed-600);
+  }
+
+  .popup-actions button:not(.cancel-button) {
+    background-color: var(--color-primary-400);
+    color: white;
+  }
+
+  .popup-actions button:not(.cancel-button):hover {
+    background-color: var(--color-primary-600);
+  }
+</style>

@@ -6,35 +6,49 @@
     export let loc: string;
 </script>
 
-{#if success}
-    <div class="popup success">
-        <p>{msg}</p>
-        <a href={path}>{loc}</a>
-    </div>
-{:else}
-    <div class="popup failure">
-        <p>{msg}</p>
-        {#if error != ""}
-            <p>{error}</p>
-        {/if}
-        <a href={path}>{loc}</a>
-    </div>
-{/if}
-
+<div class="overlay">
+    {#if success}
+        <div class="popup success">
+            <p>{msg}</p>
+            <a href={path}>{loc}</a>
+        </div>
+    {:else}
+        <div class="popup failure">
+            <p>{msg}</p>
+            {#if error != ""}
+                <p>{error}</p>
+            {/if}
+            <a href={path}>{loc}</a>
+        </div>
+    {/if}
+</div>
 <style>
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+    
     .popup {
         position: fixed;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
         padding: 1.5rem 2rem;
-        border-radius: 8px;
+        border-radius: 4px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         color: #fff;
         text-align: center;
         z-index: 1001;
         background-color: #4bb543;
-        border: 3px solid #fff;
+        border: 3px solid whitesmoke;
         max-height: 70vh;
         overflow-y: auto;
     }

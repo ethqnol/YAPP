@@ -1,4 +1,4 @@
-// Done for now.
+
 <script lang="ts">
     
     import type Source from '../../lib/source';
@@ -7,7 +7,7 @@
     export let data : DatabaseSource | null = null;
     import { createEventDispatcher } from "svelte";
     
-    
+   // Done for now. 
     
     const dispatch = createEventDispatcher();
     
