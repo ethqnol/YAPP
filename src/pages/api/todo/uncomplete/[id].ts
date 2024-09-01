@@ -17,7 +17,7 @@ export const GET: APIRoute = async ({ params, cookies, redirect }) => {
     });
   }
 
-  
+
   try {
     const db = getFirestore(app);
     await db.collection("Tasks").doc(tasks_id).get().then((doc) => {
@@ -26,12 +26,12 @@ export const GET: APIRoute = async ({ params, cookies, redirect }) => {
           status: 404,
         })
       } else {
-        if(doc.data()!.syllabus_id != ""){
+        if (doc.data()!.syllabus_id != "") {
           db.collection("Syllabus").doc(doc.data()!.syllabus_id).update({
             completed_num: firebase.firestore.FieldValue.increment(-1)
           });
         }
-        doc.ref.update({completed: false}); 
+        doc.ref.update({ completed: false });
       }
     });
   } catch (error) {

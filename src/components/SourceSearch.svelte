@@ -1,10 +1,10 @@
-<script>
+<script lang="ts">
     import PossibleSources from "./PossibleSources.svelte";
     let book_input = "";
-    let book_data = [];
+    let book_data : any[] = [];
     let loading = false;
     let query_sent = false;
-    async function searchBook(query) {
+    async function search_book(query : string) {
         const response = await fetch(
             `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&fields=*&limit=8`,
         );
@@ -13,12 +13,31 @@
 
         return data;
     }
+    function is_doi(doi: string): boolean {
+      const doiRegex = /^10.\d{4,9}[-._;()/:A-Z0-9]+$/i;
+      return doiRegex.test(doi);
+    }
+    
+    async function doi_search(doi: string) {
+      const response = await fetch(`https://api.crossref.org/works/${doi}`);
+      const unwrapped = await response.json();
+      let data = unwrapped.message;
+      //console.log(data)
+      return data;
+    }
 
-    async function handleSearch() {
+    async function handle_search() {
         loading = true;
         query_sent = true;
-        book_data = await searchBook(book_input);
-        loading = false;
+        book_input = book_input.trim();
+        if(is_doi(book_input)){
+          book_data = [await doi_search(book_input)];
+          loading = false;
+        } else {
+          book_data = await search_book(book_input);
+          loading = false;
+        }
+        
     }
 </script>
 
@@ -32,7 +51,7 @@
         <form
             class="FormGroup"
             id="SearchBar"
-            on:submit|preventDefault={handleSearch}
+            on:submit|preventDefault={handle_search}
         >
             <input
                 type="text"
@@ -40,7 +59,7 @@
                 placeholder="Enter an ISBN, DOI, or arXiv ID"
                 bind:value={book_input}
             />
-            <button on:click={handleSearch}> Search </button>
+            <button on:click={handle_search}> Search </button>
         </form>
     </div>
 

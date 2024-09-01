@@ -4,6 +4,7 @@
     import Loading from "./Loading.svelte";
     import { createEventDispatcher } from "svelte";
     export let data: any;
+    console.log(data)
     let author: string;
     let isbn: string;
     let publisher: string;
@@ -13,36 +14,75 @@
     const dispatch = createEventDispatcher();
 
     let expanded = false;
-
-    if (data.author_name) {
-        author = data.author_name.join(" ");
+    if(!data.DOI) {
+      if (data.author_name) {
+          author = data.author_name.join(" ");
+      } else {
+          author = "Unknown";
+      }
+  
+      if (data.isbn) {
+          isbn = data.isbn[0];
+      } else {
+          isbn = "Unknown";
+      }
+  
+      if (data.publish_place) {
+          publishing_city = data.publish_place[0];
+      } else {
+          publishing_city = "Unknown";
+      }
+  
+      if (data.publish_date) {
+          publish_year = data.publish_year[0];
+      } else {
+          publish_year = "Unknown";
+      }
+  
+      if (data.publisher) {
+          publisher = data.publisher[0];
+      } else {
+          publisher = "Unknown";
+      }
     } else {
-        author = "Unknown";
+      if (data.editor) {
+        console.log(data.editor)
+          author = data.editor.map((author : any) => `${author.given} ${author.family}`).join(',');
+      } 
+      
+      if (data.author) {
+          author = data.author.map((author : any)  => `${author.given} ${author.family}`).join(',');
+      } 
+  
+      if (!data.author && !data.editor) {
+          author = "Unknown";
+      }
+      
+      if (data.ISBN) {
+          isbn = data.ISBN[0];
+      } else {
+          isbn = "Unknown";
+      }
+  
+      if (data.publish_place) {
+          publishing_city = data.publish_place[0];
+      } else {
+          publishing_city = "Unknown";
+      }
+  
+      if (data.published) {
+          publish_year = data.published["date-parts"][0][0];
+      } else {
+          publish_year = "Unknown";
+      }
+  
+      if (data.publisher) {
+          publisher = data.publisher;
+      } else {
+          publisher = "Unknown";
+      }
     }
-
-    if (data.isbn) {
-        isbn = data.isbn[0];
-    } else {
-        isbn = "Unknown";
-    }
-
-    if (data.publish_place) {
-        publishing_city = data.publish_place[0];
-    } else {
-        publishing_city = "Unknown";
-    }
-
-    if (data.publish_date) {
-        publish_year = data.publish_year[0];
-    } else {
-        publish_year = "Unknown";
-    }
-
-    if (data.publisher) {
-        publisher = data.publisher[0];
-    } else {
-        publisher = "Unknown";
-    }
+    
     let loading = false;
     function expand() {
         expanded = !expanded;
@@ -61,7 +101,7 @@
         let source: Source = {
             source_type: SourceType.BOOK,
             title: data.title,
-            authors: data.author_name,
+            authors: author.split(","),
             series: "",
             series_num: null,
             volume: null,
