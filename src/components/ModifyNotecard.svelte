@@ -33,7 +33,7 @@
         };
 
         try {
-            load = true;
+            load = true
             const response = await fetch(
                 `/api/notecards/${notecard ? "edit/" + notecard.primary_id : "add"}`,
                 {
@@ -46,12 +46,12 @@
             );
 
             notecard_add = true;
-            load = false;
+            load = false
             if (response.ok) {
                 notecard_success = true;
                 window.location.href = "/project/notecards";
             } else {
-                error_msg = await response.text();
+                error_msg = await response.text()
             }
         } catch (error) {
             console.error("Error:", error);
@@ -80,12 +80,7 @@
 <div class="page-body">
     <div class="main-card">
         <div class="header-info">
-            <input
-                class="title-edit"
-                placeholder="Title"
-                type="text"
-                bind:value={title}
-            />
+            <input class="title-edit" placeholder="Title" type="text" bind:value={title}>
             <div class="source-info">
                 <div class="custom-select">
                     <select name="" id="" bind:value={selected_source}>
@@ -97,33 +92,15 @@
                     </select>
                 </div>
                 <div class="page-range">
-                    <input
-                        type="number"
-                        bind:value={start_page}
-                        placeholder="Start Page"
-                        class="page-input"
-                    />
-                    <hr />
-                    <input
-                        type="number"
-                        bind:value={end_page}
-                        placeholder="End Page"
-                        class="page-input"
-                    />
+                    <input type="number" bind:value={start_page} placeholder="Start Page" class="page-input">
+                    <hr>
+                    <input type="number" bind:value={end_page} placeholder="End Page" class="page-input">
                 </div>
             </div>
         </div>
         <div class="main-body-info">
-            <textarea
-                class="quote-edit"
-                placeholder="[Paste Quotation Here]"
-                bind:value={quote}
-            />
-            <textarea
-                class="analysis-edit"
-                placeholder="[Write Analysis Here]"
-                bind:value={analysis}
-            />
+            <textarea class="quote-edit" placeholder="[Paste Quotation Here]" bind:value={quote} />
+            <textarea class="analysis-edit" placeholder="[Write Analysis Here]" bind:value={analysis}/>
         </div>
         <div class="actions">
             <a href="/project/notecards" class="cancel-btn">Cancel</a>
@@ -134,7 +111,7 @@
 
 <style>
     :global(body) {
-        font-family: "Inter", sans-serif;
+        font-family: 'Inter', sans-serif;
         margin: 0;
         padding: 0;
         background-color: #1f1f1f;
@@ -260,8 +237,7 @@
         border-top: 1px solid var(--color-surface-mixed-500);
     }
 
-    .cancel-btn,
-    .submit-btn {
+    .cancel-btn, .submit-btn {
         padding: 10px 20px;
         border-radius: 4px;
         text-decoration: none;

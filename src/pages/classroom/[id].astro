@@ -5,7 +5,7 @@ import { app } from "../../firebase/server";
 import { getFirestore } from "firebase-admin/firestore";
 import StudentList from "../../components/StudentList.svelte";
 import SyllabusEditor from "../../components/SyllabusEditor.svelte";
-import type DatabaseSyllabus from "../../lib/syllabus_database";
+import type DatabaseSyllabus from "../../lib/syllabus_database"
 
 const { id } = Astro.params;
 if (!id) {
@@ -14,7 +14,9 @@ if (!id) {
 
 const db = getFirestore(app);
 const student_ref = db.collection("Students");
-const student_snapshot = await student_ref.where("class_id", "==", id).get();
+const student_snapshot = await student_ref
+  .where("class_id", "==", id)
+  .get();
 
 const students_list: DatabaseUser[] = student_snapshot.docs.map((doc) => ({
   primary_id: doc.id,
@@ -22,7 +24,9 @@ const students_list: DatabaseUser[] = student_snapshot.docs.map((doc) => ({
 })) as DatabaseUser[];
 
 const syllabus_ref = db.collection("Syllabus");
-const syllabus_snapshot = await syllabus_ref.where("class_id", "==", id).get();
+const syllabus_snapshot = await syllabus_ref
+  .where("class_id", "==", id)
+  .get();
 
 const syllabus_list: DatabaseSyllabus[] = syllabus_snapshot.docs.map((doc) => ({
   primary_id: doc.id,
@@ -38,17 +42,13 @@ const syllabus_list: DatabaseSyllabus[] = syllabus_snapshot.docs.map((doc) => ({
   <div class="classroom-page">
     <div class="student-syllabus-container">
       <StudentList students={students_list} client:visible />
-      <SyllabusEditor
-        syllabus={syllabus_list}
-        class_id={id}
-        class_size={students_list.length}
-        client:visible
-      />
+      <SyllabusEditor syllabus={syllabus_list} class_id={id} class_size={students_list.length} client:visible />
     </div>
   </div>
 </ClassLayout>
 
 <style>
+
   .classroom-page {
     display: flex;
     justify-content: center;

@@ -1,10 +1,12 @@
 ---
-import ProjectLayout from "../../../../layouts/ProjectLayout.astro";
-import Book from "../../../../components/citation_types/Book.svelte";
+import ProjectLayout from "../../../../layouts/ProjectLayout.astro"
+import Book from "../../../../components/citation_types/Book.svelte"
 import { app } from "../../../../firebase/server";
 import type DatabaseSource from "../../../../lib/source_database";
 import { getFirestore } from "firebase-admin/firestore";
 import type Source from "../../../../lib/source";
+
+
 
 const { id } = Astro.params;
 if (!id) {
@@ -22,21 +24,25 @@ let source: DatabaseSource = {
   primary_id: source_snapshot.id,
   source: source_snapshot.data() as Source,
 };
+
 ---
 
+
 <ProjectLayout title="Edit Source">
-  <Book data={source} client:visible />
-  <button id="delete"> Delete </button>
+    <Book data={source} client:visible/>
+    <button id="delete"> Delete </button>
 </ProjectLayout>
 
 <script>
-  const delete_button = document.getElementById("delete")!;
+const delete_button = document.getElementById("delete")!;
 
-  delete_button.addEventListener("click", async () => {
-    const response = await fetch(`/api/sources/${Astro.params.id}`, {
-      method: "DELETE",
-    });
-
-    return Astro.redirect("/sources");
+delete_button.addEventListener("click", async () => {
+  const response = await fetch(`/api/sources/${Astro.params.id}`, {
+    method: "DELETE",
   });
+
+  return Astro.redirect("/sources");
+
+});
+
 </script>

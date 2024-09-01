@@ -1,4 +1,6 @@
 ---
+
+
 interface Props {
     title: string;
 }
@@ -60,7 +62,25 @@ const { title } = Astro.props;
                         >
                     </li>
                     <li class="home">
-                        <a href="/account"
+                        <a href="/account"><svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                          <path fill-rule="evenodd" d="M12 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4h-4Z" clip-rule="evenodd"/>
+                        </svg>
+
+                        User Profile</a
+                    >
+                    
+                    <li class="home">
+                        <a href="/classroom"> <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                          <path fill-rule="evenodd" d="M11 4.717c-2.286-.58-4.16-.756-7.045-.71A1.99 1.99 0 0 0 2 6v11c0 1.133.934 2.022 2.044 2.007 2.759-.038 4.5.16 6.956.791V4.717Zm2 15.081c2.456-.631 4.198-.829 6.956-.791A2.013 2.013 0 0 0 22 16.999V6a1.99 1.99 0 0 0-1.955-1.993c-2.885-.046-4.76.13-7.045.71v15.081Z" clip-rule="evenodd"/>
+                        </svg>
+                        Classes You Own</a
+                    >
+                    
+                </ul>
+                <div class="divider"></div>
+                <ul>
+                    <li>
+                        <a href="/project/sources" data-astro-prefetch="tap"
                             ><svg
                                 class="w-6 h-6 text-gray-800 dark:text-white"
                                 aria-hidden="true"
@@ -72,413 +92,344 @@ const { title } = Astro.props;
                             >
                                 <path
                                     fill-rule="evenodd"
-                                    d="M12 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4h-4Z"
+                                    d="M6 2a2 2 0 0 0-2 2v15a3 3 0 0 0 3 3h12a1 1 0 1 0 0-2h-2v-2h2a1 1 0 0 0 1-1V4a2 2 0 0 0-2-2h-8v16h5v2H7a1 1 0 1 1 0-2h1V2H6Z"
                                     clip-rule="evenodd"></path>
                             </svg>
-
-                            User Profile</a
+                            Sources</a
                         >
-
-                        <li class="home">
-                            <a href="/classroom">
-                                <svg
-                                    class="w-6 h-6 text-gray-800 dark:text-white"
-                                    aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="24"
-                                    height="24"
-                                    fill="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        fill-rule="evenodd"
-                                        d="M11 4.717c-2.286-.58-4.16-.756-7.045-.71A1.99 1.99 0 0 0 2 6v11c0 1.133.934 2.022 2.044 2.007 2.759-.038 4.5.16 6.956.791V4.717Zm2 15.081c2.456-.631 4.198-.829 6.956-.791A2.013 2.013 0 0 0 22 16.999V6a1.99 1.99 0 0 0-1.955-1.993c-2.885-.046-4.76.13-7.045.71v15.081Z"
-                                        clip-rule="evenodd"></path>
-                                </svg>
-                                Classes You Own</a
-                            >
-                        </li>
-                        <div class="divider"></div>
-                        <ul>
-                            <li>
-                                <a
-                                    href="/project/sources"
-                                    data-astro-prefetch="tap"
-                                    ><svg
-                                        class="w-6 h-6 text-gray-800 dark:text-white"
-                                        aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="24"
-                                        height="24"
-                                        fill="currentColor"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path
-                                            fill-rule="evenodd"
-                                            d="M6 2a2 2 0 0 0-2 2v15a3 3 0 0 0 3 3h12a1 1 0 1 0 0-2h-2v-2h2a1 1 0 0 0 1-1V4a2 2 0 0 0-2-2h-8v16h5v2H7a1 1 0 1 1 0-2h1V2H6Z"
-                                            clip-rule="evenodd"></path>
-                                    </svg>
-                                    Sources</a
-                                >
-                            </li>
-                            <li>
-                                <a
-                                    href="/project/notecards"
-                                    data-astro-prefetch="tap"
-                                >
-                                    <svg
-                                        class="w-6 h-6 text-gray-800 dark:text-white"
-                                        aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="24"
-                                        height="24"
-                                        fill="currentColor"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path
-                                            fill-rule="evenodd"
-                                            d="M2 6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6Zm4.996 2a1 1 0 0 0 0 2h.01a1 1 0 1 0 0-2h-.01ZM11 8a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2h-6Zm-4.004 3a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2h-.01ZM11 11a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2h-6Zm-4.004 3a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2h-.01ZM11 14a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2h-6Z"
-                                            clip-rule="evenodd"></path>
-                                    </svg>
-                                    Notecards</a
-                                >
-                            </li>
-                            <li>
-                                <a
-                                    href="/project/progress"
-                                    data-astro-prefetch="tap"
-                                >
-                                    <svg
-                                        class="w-6 h-6 text-gray-800 dark:text-white"
-                                        aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="24"
-                                        height="24"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path
-                                            stroke="currentColor"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M4 4.5V19a1 1 0 0 0 1 1h15M7 14l4-4 4 4 5-5m0 0h-3.207M20 9v3.207"
-                                        ></path>
-                                    </svg>
-                                    Progress</a
-                                >
-                            </li>
-
-                            <li>
-                                <a
-                                    href="/project/todo"
-                                    data-astro-prefetch="tap"
-                                >
-                                    <svg
-                                        class="w-6 h-6 text-gray-800 dark:text-white"
-                                        aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="24"
-                                        height="24"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path
-                                            stroke="currentColor"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2.6"
-                                            d="M12 6h8m-8 6h8m-8 6h8M4 16a2 2 0 1 1 3.321 1.5L4 20h5M4 5l2-1v6m-2 0h4"
-                                        ></path>
-                                    </svg>
-
-                                    To Do</a
-                                >
-                            </li>
-                            <li>
-                                <a
-                                    href="/project/classroom"
-                                    data-astro-prefetch="tap"
-                                >
-                                    <svg
-                                        class="w-6 h-6 text-gray-800 dark:text-white"
-                                        aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="24"
-                                        height="24"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path
-                                            stroke="currentColor"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M12 6.03v13m0-13c-2.819-.831-4.715-1.076-8.029-1.023A.99.99 0 0 0 3 6v11c0 .563.466 1.014 1.03 1.007 3.122-.043 5.018.212 7.97 1.023m0-13c2.819-.831 4.715-1.076 8.029-1.023A.99.99 0 0 1 21 6v11c0 .563-.466 1.014-1.03 1.007-3.122-.043-5.018.212-7.97 1.023"
-                                        ></path>
-                                    </svg>
-
-                                    Classroom</a
-                                >
-                            </li>
-                        </ul>
-
-                        <button class="toggle-btn" id="toggle-btn">
+                    </li>
+                    <li>
+                        <a href="/project/notecards" data-astro-prefetch="tap">
                             <svg
-                                class="w-[48px] h-[48px] text-gray-800 dark:text-white"
+                                class="w-6 h-6 text-gray-800 dark:text-white"
                                 aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg"
-                                width="40"
-                                height="40"
+                                width="24"
+                                height="24"
+                                fill="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M2 6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6Zm4.996 2a1 1 0 0 0 0 2h.01a1 1 0 1 0 0-2h-.01ZM11 8a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2h-6Zm-4.004 3a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2h-.01ZM11 11a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2h-6Zm-4.004 3a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2h-.01ZM11 14a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2h-6Z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                            Notecards</a
+                        >
+                    </li>
+                    <li>
+                        <a href="/project/progress" data-astro-prefetch="tap">
+                            <svg
+                                class="w-6 h-6 text-gray-800 dark:text-white"
+                                aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
                                 fill="none"
                                 viewBox="0 0 24 24"
                             >
                                 <path
                                     stroke="currentColor"
                                     stroke-linecap="round"
-                                    stroke-width="2.2"
-                                    d="M5 7h14M5 12h14M5 17h14"></path>
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M4 4.5V19a1 1 0 0 0 1 1h15M7 14l4-4 4 4 5-5m0 0h-3.207M20 9v3.207"
+                                ></path>
                             </svg>
-                        </button>
+                            Progress</a
+                        >
                     </li>
-                    <div id="page">
-                        <slot />
-                    </div>
+                  
+                    <li>
+                        <a href="/project/todo" data-astro-prefetch="tap">
+                            <svg
+                                class="w-6 h-6 text-gray-800 dark:text-white"
+                                aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke="currentColor"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2.6"
+                                    d="M12 6h8m-8 6h8m-8 6h8M4 16a2 2 0 1 1 3.321 1.5L4 20h5M4 5l2-1v6m-2 0h4"
+                                ></path>
+                            </svg>
+
+                            To Do</a
+                        >
+                    </li>
+                    <li>
+                        <a href="/project/classroom" data-astro-prefetch="tap">
+                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.03v13m0-13c-2.819-.831-4.715-1.076-8.029-1.023A.99.99 0 0 0 3 6v11c0 .563.466 1.014 1.03 1.007 3.122-.043 5.018.212 7.97 1.023m0-13c2.819-.831 4.715-1.076 8.029-1.023A.99.99 0 0 1 21 6v11c0 .563-.466 1.014-1.03 1.007-3.122-.043-5.018.212-7.97 1.023"/>
+                        </svg>
+
+                            Classroom</a
+                        >
+                    </li>
+                    
+
                 </ul>
+                
+                <button class="toggle-btn" id="toggle-btn">
+                    <svg
+                        class="w-[48px] h-[48px] text-gray-800 dark:text-white"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="40"
+                        height="40"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-width="2.2"
+                            d="M5 7h14M5 12h14M5 17h14"></path>
+                    </svg>
+                </button>
             </nav>
+            <div id="page">
+                <slot />
+            </div>
         </div>
-        <style>
-            .nav.collapsed {
-                width: 4.2rem;
-                font-size: 0;
-            }
-
-            .website-name {
-                font-size: 1.5rem;
-                padding: 0;
-            }
-
-            .website-name-collapse {
-                font-size: 0;
-            }
-
-            .nav.collapsed ~ #page {
-                margin-left: 4.2rem;
-                width: calc(100vw - 1.5rem - 4.2rem);
-                max-width: calc(100vw - 1.5rem - 4.2rem);
-            }
-
-            .nav svg {
-                padding-right: 1rem;
-                flex: none;
-            }
-            .home {
-                margin: 0rem, 0.8rem;
-            }
-            .nav {
-                width: 12vw;
-                height: 100vh;
-                display: flex;
-                flex-direction: column;
-                position: fixed;
-                left: 0;
-                top: 0;
-                background-color: rgb(18, 34, 58);
-                color: white;
-                border-radius: 10px;
-            }
-
-            .nav .logo {
-                display: flex;
-                align-items: center;
-                padding: 10px 15px;
-                gap: 0rem;
-            }
-
-            .nav .logo svg {
-                padding-right: 0.5rem;
-            }
-
-            .nav .divider {
-                height: 2px;
-                background-color: rgba(255, 255, 255, 0.1);
-                margin: 0;
-                padding: 0px;
-            }
-
-            .nav ul {
-                list-style-type: none;
-                padding: 0;
-                margin: 0.3rem;
-            }
-
-            .nav li {
-                padding: 5px;
-                border-radius: 10px;
-                margin: 0.5rem 0.8rem;
-                transition: background-color 0.3s;
-            }
-
-            .nav li:hover {
-                background-color: rgba(255, 255, 255, 0.1);
-            }
-
-            .nav a {
-                text-decoration: none;
-                display: flex;
-                align-items: center;
-                color: inherit;
-            }
-
-            .active {
-                background-color: rgb(var(--accent-light), 0.2);
-            }
-
-            .nav i {
-                margin-right: 10px;
-            }
-            html {
-                font-family: system-ui, sans-serif;
-                background: #13151a;
-                background-size: 224px;
-                overflow-y: scroll;
-            }
-            *::-webkit-scrollbar {
-                width: 16px;
-            }
-
-            *::-webkit-scrollbar-track {
-                background: var(--color-surface-mixed-500);
-            }
-
-            *::-webkit-scrollbar-thumb {
-                background-color: var(--color-surface-mixed-300);
-                border-radius: 10px;
-                border: 3px solid var(--color-surface-mixed-500);
-            }
-            .page-container {
-                display: flex;
-                flex-direction: row;
-                margin: 0;
-                left: 0;
-            }
-            #page {
-                width: calc(100vw - 1.5rem - 12vw);
-                max-width: calc(100vw - 1.5rem - 12vw);
-                text-align: center;
-                align-items: center;
-                color: white;
-                margin-left: 12vw;
-            }
-
-            .toggle-btn {
-                padding: 0;
-                margin: 0;
-                background-color: var(--color-surface-mixed-400);
-                display: flex;
-                position: fixed;
-                bottom: 1.5rem;
-                left: calc(2.1rem - 0.05rem - 22px);
-                text-align: center;
-                border-radius: 100%;
-                padding: 0.1rem;
-                text-decoration: none;
-                color: white;
-                font-weight: 800;
-                transition: 0.2s;
-                box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-                border: none;
-            }
-            .toggle-btn:hover {
-                background-color: var(--color-surface-mixed-300);
-                scale: 1.1;
-            }
-
-            .toggle-btn svg {
-                padding: 0.1rem;
-            }
-            :root {
-                --accent: 136, 58, 234;
-                --accent-light: 224, 204, 250;
-                --accent-dark: 49, 10, 101;
-                --accent-gradient: linear-gradient(
-                    90deg,
-                    rgba(46, 126, 133, 1) 13%,
-                    rgba(0, 0, 121, 1) 61%,
-                    rgba(160, 239, 255, 1) 100%
-                );
-                --navbar-height: 8vh;
-                --sidebar-width: 10vw;
-
-                --color-primary-100: #127dff;
-                --color-primary-200: #4e8aff;
-                --color-primary-300: #6d98ff;
-                --color-primary-400: #87a6ff;
-                --color-primary-500: #9db4ff;
-                --color-primary-600: #b3c2ff;
-                /** CSS DARK THEME SURFACE COLORS */
-                --color-surface-100: #121212;
-                --color-surface-200: #282828;
-                --color-surface-300: #3f3f3f;
-                --color-surface-400: #575757;
-                --color-surface-500: #717171;
-                --color-surface-600: #8b8b8b;
-                /** CSS DARK THEME MIXED SURFACE COLORS */
-                --color-surface-mixed-100: #191c26;
-                --color-surface-mixed-200: #2e313a;
-                --color-surface-mixed-300: #454750;
-                --color-surface-mixed-400: #5d5f67;
-                --color-surface-mixed-500: #76777e;
-                --color-surface-mixed-600: #8f9197;
-            }
-
-            @media only screen and (max-width: 1200px) {
-                .website-name {
-                    font-size: 0;
-                }
-
-                .nav {
-                    width: 4.2rem;
-                    font-size: 0;
-                }
-
-                #page {
-                    margin-left: 4.2rem;
-                    width: calc(100vw - 1.5rem - 4.2rem);
-                    max-width: calc(100vw - 1.5rem - 4.2rem);
-                }
-                .toggle-btn {
-                    display: none;
-                }
-            }
-        </style>
-
-        <script>
-            let current_main_path = window.location.pathname
-                .split("/")
-                .slice(0, 3)
-                .join("/");
-            const links = document.querySelectorAll("#sidebar li");
-            links.forEach((link) => {
-                let link_path = link.querySelector("a")!.getAttribute("href");
-
-                if (link_path === current_main_path) {
-                    link.classList.add("active");
-                } else {
-                    link.classList.remove("active");
-                }
-            });
-
-            document
-                .getElementById("toggle-btn")!
-                .addEventListener("click", function () {
-                    let sidebar = document.getElementById("sidebar")!;
-                    let website_name = document.getElementById("website-name")!;
-
-                    website_name.classList.toggle("website-name-collapse");
-                    website_name.classList.toggle("website-name");
-                    sidebar.classList.toggle("collapsed");
-                });
-        </script>
     </body>
 </html>
+<style>
+    .nav.collapsed {
+        width: 4.2rem;
+        font-size: 0;
+    }
+
+    .website-name {
+        font-size: 1.5rem;
+        padding: 0;
+    }
+
+    .website-name-collapse {
+        font-size: 0;
+    }
+
+    .nav.collapsed ~ #page {
+        margin-left: 4.2rem;
+        width: calc(100vw - 1.5rem - 4.2rem);
+        max-width: calc(100vw - 1.5rem - 4.2rem);
+    }
+
+    .nav svg {
+        padding-right: 1rem;
+        flex: none;
+    }
+    .home {
+        margin: 0rem, 0.8rem;
+    }
+    .nav {
+        width: 12vw;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        left: 0;
+        top: 0;
+        background-color: rgb(18, 34, 58);
+        color: white;
+        border-radius: 10px;
+    }
+
+    .nav .logo {
+        display: flex;
+        align-items: center;
+        padding: 10px 15px;
+        gap: 0rem;
+    }
+
+    .nav .logo svg {
+        padding-right: 0.5rem;
+    }
+
+    .nav .divider {
+        height: 2px;
+        background-color: rgba(255, 255, 255, 0.1);
+        margin: 0;
+        padding: 0px;
+    }
+
+    .nav ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0.3rem;
+    }
+
+    .nav li {
+        padding: 5px;
+        border-radius: 10px;
+        margin: 0.5rem 0.8rem;
+        transition: background-color 0.3s;
+    }
+
+    .nav li:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .nav a {
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        color: inherit;
+    }
+
+    .active {
+        background-color: rgb(var(--accent-light), 0.2);
+    }
+
+    .nav i {
+        margin-right: 10px;
+    }
+    html {
+        font-family: system-ui, sans-serif;
+        background: #13151a;
+        background-size: 224px;
+        overflow-y: scroll;
+    }
+    *::-webkit-scrollbar {
+        width: 16px;
+    }
+
+    *::-webkit-scrollbar-track {
+        background: var(--color-surface-mixed-500);
+    }
+
+    *::-webkit-scrollbar-thumb {
+        background-color: var(--color-surface-mixed-300);
+        border-radius: 10px;
+        border: 3px solid var(--color-surface-mixed-500);
+    }
+    .page-container {
+        display: flex;
+        flex-direction: row;
+        margin: 0;
+        left: 0;
+    }
+    #page {
+        width: calc(100vw - 1.5rem - 12vw);
+        max-width: calc(100vw - 1.5rem - 12vw);
+        text-align: center;
+        align-items: center;
+        color: white;
+        margin-left: 12vw;
+    }
+
+    .toggle-btn {
+        padding: 0;
+        margin: 0;
+        background-color: var(--color-surface-mixed-400);
+        display: flex;
+        position: fixed;
+        bottom: 1.5rem;
+        left: calc(2.1rem - 0.05rem - 22px);
+        text-align: center;
+        border-radius: 100%;
+        padding: 0.1rem;
+        text-decoration: none;
+        color: white;
+        font-weight: 800;
+        transition: 0.2s;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        border: none;
+    }
+    .toggle-btn:hover {
+        background-color: var(--color-surface-mixed-300);
+        scale: 1.1;
+    }
+
+    .toggle-btn svg {
+        padding: 0.1rem;
+    }
+    :root {
+        --accent: 136, 58, 234;
+        --accent-light: 224, 204, 250;
+        --accent-dark: 49, 10, 101;
+        --accent-gradient: linear-gradient(
+            90deg,
+            rgba(46, 126, 133, 1) 13%,
+            rgba(0, 0, 121, 1) 61%,
+            rgba(160, 239, 255, 1) 100%
+        );
+        --navbar-height: 8vh;
+        --sidebar-width: 10vw;
+
+        --color-primary-100: #127dff;
+        --color-primary-200: #4e8aff;
+        --color-primary-300: #6d98ff;
+        --color-primary-400: #87a6ff;
+        --color-primary-500: #9db4ff;
+        --color-primary-600: #b3c2ff;
+        /** CSS DARK THEME SURFACE COLORS */
+        --color-surface-100: #121212;
+        --color-surface-200: #282828;
+        --color-surface-300: #3f3f3f;
+        --color-surface-400: #575757;
+        --color-surface-500: #717171;
+        --color-surface-600: #8b8b8b;
+        /** CSS DARK THEME MIXED SURFACE COLORS */
+        --color-surface-mixed-100: #191c26;
+        --color-surface-mixed-200: #2e313a;
+        --color-surface-mixed-300: #454750;
+        --color-surface-mixed-400: #5d5f67;
+        --color-surface-mixed-500: #76777e;
+        --color-surface-mixed-600: #8f9197;
+    }
+
+    @media only screen and (max-width: 1200px) {
+        .website-name {
+            font-size: 0;
+        }
+
+        .nav {
+            width: 4.2rem;
+            font-size: 0;
+        }
+
+        #page {
+            margin-left: 4.2rem;
+            width: calc(100vw - 1.5rem - 4.2rem);
+            max-width: calc(100vw - 1.5rem - 4.2rem);
+        }
+        .toggle-btn {
+            display: none;
+        }
+    }
+</style>
+
+<script>
+    let current_main_path = window.location.pathname
+        .split("/")
+        .slice(0, 3)
+        .join("/");
+    const links = document.querySelectorAll("#sidebar li");
+    links.forEach((link) => {
+        let link_path = link.querySelector("a")!.getAttribute("href");
+
+        if (link_path === current_main_path) {
+            link.classList.add("active");
+        } else {
+            link.classList.remove("active");
+        }
+    });
+
+    document
+        .getElementById("toggle-btn")!
+        .addEventListener("click", function () {
+            let sidebar = document.getElementById("sidebar")!;
+            let website_name = document.getElementById("website-name")!;
+
+            website_name.classList.toggle("website-name-collapse");
+            website_name.classList.toggle("website-name");
+            sidebar.classList.toggle("collapsed");
+        });
+</script>

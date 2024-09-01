@@ -17,7 +17,7 @@ export const GET: APIRoute = async ({ params, cookies, redirect }) => {
     });
   }
 
-
+  
   try {
     const db = getFirestore(app);
     const tasks_ref = db.collection("Tasks");

@@ -8,7 +8,7 @@ export const GET: APIRoute = async ({ cookies, redirect }) => {
   const user = await get_user_session(cookies);
   if (!user) {
     return new Response("Unauthorized", { status: 403 });
-  }
+  }  
   try {
     const db = getFirestore(app);
     const tasks_ref = db.collection("Tasks");

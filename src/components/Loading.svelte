@@ -2,6 +2,7 @@
     <div class="loader"></div>
 </div>
 
+
 <style>
     .loading-screen {
         position: fixed;

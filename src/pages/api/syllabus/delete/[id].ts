@@ -26,7 +26,7 @@ export const GET: APIRoute = async ({ params, cookies, redirect }) => {
         batch.delete(doc.ref);
       });
     });
-
+    
     batch.delete(db.collection("Syllabus").doc(syllabus_id));
     await batch.commit();
   } catch (error) {

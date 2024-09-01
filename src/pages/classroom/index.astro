@@ -1,24 +1,24 @@
 ---
-import ClassLayout from "../../layouts/ClassLayout.astro";
-import type DatabaseClass from "../../lib/class_database";
-import Classroom from "../../components/Classroom.svelte";
-import { getFirestore } from "firebase-admin/firestore";
-import { app } from "../../firebase/server";
+import ClassLayout from '../../layouts/ClassLayout.astro';
+import type DatabaseClass from '../../lib/class_database';
+import Classroom from "../../components/Classroom.svelte"
+import { getFirestore } from 'firebase-admin/firestore';
+import { app } from '../../firebase/server';
 
-const { user } = Astro.locals;
+const {user} = Astro.locals;
 
-const db = getFirestore(app);
-const class_ref = db.collection("Class");
+const db = getFirestore(app)
+const class_ref = db.collection("Class")
 const class_snapshot = await class_ref
-  .where("teacher_id", "==", user.uid)
-  .get();
+    .where("teacher_id", "==", user.uid)
+    .get();
 
-const classes: DatabaseClass[] = class_snapshot.docs.map((doc) => ({
+const classes: DatabaseClass[] = class_snapshot.docs.map(doc => ({
   primary_id: doc.id,
   class: doc.data(),
 })) as DatabaseClass[];
 ---
 
 <ClassLayout title="Classroom">
-  <Classroom classes={classes} client:visible />
+  <Classroom classes={classes} client:visible/>
 </ClassLayout>

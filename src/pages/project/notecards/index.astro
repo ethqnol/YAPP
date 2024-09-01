@@ -7,7 +7,7 @@ import type DatabaseSource from "../../../lib/source_database";
 import type Tag from "../../../lib/tags";
 import NotecardSearch from "../../../components/NotecardSearch.astro";
 
-const { user } = Astro.locals;
+const {user} = Astro.locals;
 
 const db = getFirestore(app);
 
@@ -107,9 +107,15 @@ const user_sources = get_user_sources()
       <button type="submit" class="submit-button"> Search </button>
       <button type="reset" class="reset-button"> Reset </button>
     </form>
-    <NotecardSearch sources={user_sources} , tags={user_tags} , user={user} />
+    <NotecardSearch
+      sources={user_sources},
+      tags={user_tags},
+      user={user}
+    />
   </div>
-
+  
+  
+  
   <a href="notecards/tags" class="add-tag-button">
     <svg
       class="w-[40px] h-[40px] text-gray-800 dark:text-white"

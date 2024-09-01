@@ -86,8 +86,7 @@
 <div class="link-card">
     <a {href}>
         <h2>
-            {notecard.notecard.title.slice(0, 25) +
-                (notecard.notecard.title.length > 25 ? "..." : "")}
+            {notecard.notecard.title.slice(0, 25) + (notecard.notecard.title.length > 25 ? "..." : "")}
         </h2>
         <p>
             {notecard.notecard.quote.slice(0, 40) +
@@ -383,7 +382,7 @@
         text-align: left;
         border: 1px solid rgba(255, 255, 255, 0.8);
     }
-
+    
     .pile-icon:hover + .move-menu,
     .pile-icon:focus + .move-menu,
     .move-menu:hover,

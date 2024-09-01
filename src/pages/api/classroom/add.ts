@@ -6,7 +6,7 @@ import type Class from "../../../lib/class.ts";
 import Hashids from 'hashids'
 
 export const POST: APIRoute = async ({ request, cookies }) => {
-  let new_class: Class = await request.json();
+  let new_class : Class = await request.json();
   const user = await get_user_session(cookies);
   if (!user) {
     return new Response("Unauthorized", { status: 403 });
@@ -20,8 +20,8 @@ export const POST: APIRoute = async ({ request, cookies }) => {
   new_class.teacher_id = user.uid;
   new_class.teacher_name = user.displayName!
   new_class.class_code = (new Hashids().encode(Date.now())).toString().toUpperCase();
-
-
+  
+  
   try {
     const db = getFirestore(app);
     const classes_ref = db.collection("Class");
