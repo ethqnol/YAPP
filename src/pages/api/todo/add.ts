@@ -6,7 +6,7 @@ import type Task from "../../../lib/task";
 
 
 export const POST: APIRoute = async ({ request, cookies, redirect }) => {
-  const task : Task = await request.json();
+  const task: Task = await request.json();
   const user = await get_user_session(cookies);
   if (!user) {
     return new Response("Unauthorized", { status: 403 });
@@ -17,7 +17,7 @@ export const POST: APIRoute = async ({ request, cookies, redirect }) => {
       status: 400,
     });
   }
-  
+
   let date = task.due_date ? (new Date(task.due_date) ? new Date(task.due_date).getTime() : null) : null;
   const final_task: Task = {
     student_id: user.uid,

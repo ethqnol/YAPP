@@ -5,7 +5,7 @@ import ModifyNotecard from "../../../../components/ModifyNotecard.svelte";
 import type DatabaseSource from "../../../../lib/source_database";
 import { getFirestore } from "firebase-admin/firestore";
 
-const {user} = Astro.locals;
+const { user } = Astro.locals;
 const db = getFirestore(app);
 const sources_ref = db.collection("Sources");
 const sources_snapshot = await sources_ref

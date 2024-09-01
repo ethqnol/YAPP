@@ -22,6 +22,7 @@
         </div>
     {/if}
 </div>
+
 <style>
     .overlay {
         position: fixed;
@@ -35,7 +36,7 @@
         align-items: center;
         z-index: 9999;
     }
-    
+
     .popup {
         position: fixed;
         top: 50%;

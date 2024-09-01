@@ -1,12 +1,9 @@
 ---
 interface Props {
-    error: unknown
+    error: unknown;
 }
 
-const { error } = Astro.props
-
+const { error } = Astro.props;
 ---
- 
-<div>{error instanceof Error ? error.message : 'Unknown error'}</div>
 
-
+<div>{error instanceof Error ? error.message : "Unknown error"}</div>

@@ -7,7 +7,7 @@ import type DatabaseNotecard from "../../../../lib/notecard_database";
 import { getFirestore } from "firebase-admin/firestore";
 import type Notecard from "../../../../lib/notecard";
 
-const {user} = Astro.locals;
+const { user } = Astro.locals;
 const { id } = Astro.params;
 if (!id) {
   return Astro.redirect("/404");

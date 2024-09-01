@@ -32,8 +32,8 @@
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              task: new_item,
-              class_id: class_id,
+                task: new_item,
+                class_id: class_id,
             }),
         });
 
@@ -61,6 +61,7 @@
         }
     }
 </script>
+
 {#if loading}
     <Loading />
 {/if}
@@ -112,13 +113,17 @@
             </label>
             <div class="popup-actions">
                 <button on:click={add_item}>Add Task</button>
-                <button class="cancel-button" on:click={toggle_task_adding}>Cancel</button>
+                <button class="cancel-button" on:click={toggle_task_adding}
+                    >Cancel</button
+                >
             </div>
         </div>
     </div>
 {/if}
 <div class="container">
-    <button class="add-button" on:click={toggle_task_adding}>Add Syllabus Item</button>
+    <button class="add-button" on:click={toggle_task_adding}
+        >Add Syllabus Item</button
+    >
     <table>
         <thead>
             <tr>
@@ -135,8 +140,15 @@
                     <td>{task.syllabus.name}</td>
                     <td>{task.syllabus.description}</td>
                     <td>{task.syllabus.due_date}</td>
-                    <td>{task.syllabus.completed_num+"/"+class_size}</td>
-                    <td><button class="delete-button" on:click={() => delete_syllabus_item(task.primary_id)}>Delete</button></td>
+                    <td>{task.syllabus.completed_num + "/" + class_size}</td>
+                    <td
+                        ><button
+                            class="delete-button"
+                            on:click={() =>
+                                delete_syllabus_item(task.primary_id)}
+                            >Delete</button
+                        ></td
+                    >
                 </tr>
             {/each}
         </tbody>
@@ -233,7 +245,10 @@
         border-radius: 8px;
         margin-bottom: 1.5rem;
         display: inline-block;
-        transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
+        transition:
+            background-color 0.3s,
+            transform 0.2s,
+            box-shadow 0.2s;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
@@ -250,7 +265,6 @@
         background-color: var(--color-surface-mixed-300);
         border-radius: 8px;
         overflow: hidden;
-        
     }
 
     thead {
@@ -258,14 +272,14 @@
         color: white;
     }
 
-    th, td {
+    th,
+    td {
         padding: 0.75rem;
         text-align: left;
         border-bottom: 1px solid var(--color-surface-400);
         border-left: 2px solid var(--color-surface-400);
         border-right: 2px solid var(--color-surface-400);
     }
-
 
     .delete-button {
         background-color: red;
@@ -274,12 +288,13 @@
         padding: 0.5rem 1rem;
         cursor: pointer;
         border-radius: 4px;
-        transition: background-color 0.3s, transform 0.2s;
+        transition:
+            background-color 0.3s,
+            transform 0.2s;
     }
 
     .delete-button:hover {
         background-color: lightred;
         transform: scale(1.02);
     }
-
 </style>

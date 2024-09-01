@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { app  } from "../../../../firebase/server";
+import { app } from "../../../../firebase/server";
 import get_user_session from "../../../../lib/auth.ts";
 import { getFirestore } from "firebase-admin/firestore";
 import type Source from "../../../../lib/source.ts";

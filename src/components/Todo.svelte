@@ -130,12 +130,11 @@
                 on:submit|preventDefault={async () => {
                     await complete_task(task.primary_id);
                 }}
-                class={(task.task.due_date != null &&
+                class={task.task.due_date != null &&
                 new Date().getTime() >= task.task.due_date
                     ? "overdue task"
-                    : "task not-overdue")}
-                
-                id={(task.task.syllabus_id == "" ? "" : "syllabus")}
+                    : "task not-overdue"}
+                id={task.task.syllabus_id == "" ? "" : "syllabus"}
             >
                 <div class="task-header">
                     <div class="task-title">
@@ -171,11 +170,10 @@
             loc="Go To Notecards"
         />
     {/if}
-    
+
     {#if loading}
         <Loading />
     {/if}
-    
 
     <form on:submit|preventDefault={add_task} id="add-task-form">
         <label>
@@ -365,7 +363,7 @@
             margin: 0.2rem;
         }
     }
-    
+
     #syllabus {
         border: 2px solid blue;
     }
