@@ -28,7 +28,7 @@ export const GET: APIRoute = async ({ params, cookies, redirect }) => {
     });
   }
 
-  return redirect("/project/todo")
+  return redirect("/classroom")
 };
 
 

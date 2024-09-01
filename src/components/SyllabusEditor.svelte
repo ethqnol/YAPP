@@ -19,19 +19,22 @@
         description: "",
         due_date: null,
         creation_date: new Date().getTime(),
-        syllabus_id: class_id,
+        syllabus_id: "",
         completed: false,
     };
 
     async function add_item() {
         task_adding = true;
         loading = true;
-        const response = await fetch("/api/syllabus", {
+        const response = await fetch("/api/syllabus/add", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ name: new_item }),
+            body: JSON.stringify({
+              task: new_item,
+              class_id: class_id,
+            }),
         });
 
         if (response.ok) {
@@ -44,7 +47,7 @@
 
     async function delete_syllabus_item(primary_id: string) {
         loading = true;
-        const response = await fetch(`/api/syllabus/${primary_id}`, {
+        const response = await fetch(`/api/syllabus/delete/${primary_id}`, {
             method: "GET",
         });
 
@@ -58,7 +61,6 @@
         }
     }
 </script>
-
 {#if loading}
     <Loading />
 {/if}
@@ -85,7 +87,7 @@
     <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions (because of reasons) -->
     <div class="popup-overlay" on:click={toggle_task_adding}>
         <div class="popup-content" on:click|stopPropagation>
-            <h2>Add New Class</h2>
+            <h2>Add New Task</h2>
             <label>
                 Task Name:
                 <input
@@ -97,7 +99,6 @@
             </label>
             <label>
                 Task Description:
-
                 <input
                     type="text"
                     required
@@ -107,22 +108,17 @@
             </label>
             <label>
                 Due Date:
-
                 <input type="date" required bind:value={new_item.due_date} />
             </label>
             <div class="popup-actions">
-                <button on:click={add_item}>Add Class</button>
-                <button class="cancel-button" on:click={toggle_task_adding}
-                    >Cancel</button
-                >
+                <button on:click={add_item}>Add Task</button>
+                <button class="cancel-button" on:click={toggle_task_adding}>Cancel</button>
             </div>
         </div>
     </div>
 {/if}
 <div class="container">
-    <button class="add-button" on:click={toggle_task_adding}
-        >Add Syllabus Item</button
-    >
+    <button class="add-button" on:click={toggle_task_adding}>Add Syllabus Item</button>
     <table>
         <thead>
             <tr>
@@ -138,14 +134,7 @@
                     <td>{task.task.name}</td>
                     <td>{task.task.description}</td>
                     <td>{task.task.due_date}</td>
-                    <td
-                        ><button
-                            class="delete-button"
-                            on:click={() =>
-                                delete_syllabus_item(task.primary_id)}
-                            >Delete</button
-                        ></td
-                    >
+                    <td><button class="delete-button" on:click={() => delete_syllabus_item(task.primary_id)}>Delete</button></td>
                 </tr>
             {/each}
         </tbody>
@@ -223,8 +212,14 @@
     .popup-actions button:not(.cancel-button):hover {
         background-color: var(--color-primary-600);
     }
+
     .container {
-        margin: 1rem;
+        margin: 2rem auto;
+        max-width: 900px;
+        padding: 2rem;
+        background-color: var(--color-surface-300);
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
 
     .add-button {
@@ -233,52 +228,53 @@
         color: white;
         padding: 0.75rem 1.5rem;
         cursor: pointer;
-        border-radius: 4px;
-        margin-bottom: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
         display: inline-block;
+        transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
     .add-button:hover {
         background-color: var(--color-primary-600);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
     }
 
     table {
         width: 100%;
         border-collapse: collapse;
         margin-top: 1rem;
+        background-color: var(--color-surface-mixed-300);
+        border-radius: 8px;
+        overflow: hidden;
     }
 
-    th,
-    td {
-        padding: 0.75rem;
-        text-align: left;
-        border-bottom: 1px solid #ddd;
-    }
-
-    th {
+    thead {
         background-color: var(--color-primary-500);
         color: white;
     }
 
+    th, td {
+        padding: 1rem;
+        text-align: left;
+        border-bottom: 1px solid var(--color-surface-300);
+    }
+
+
     .delete-button {
-        background-color: var(--color-danger-500);
+        background-color: red;
         border: none;
         color: white;
-        padding: 0.5rem;
+        padding: 0.5rem 1rem;
         cursor: pointer;
         border-radius: 4px;
+        transition: background-color 0.3s, transform 0.2s;
     }
 
     .delete-button:hover {
-        background-color: var(--color-danger-600);
+        background-color: lightred;
+        transform: scale(1.02);
     }
 
-    .error {
-        color: red;
-        margin-top: 1rem;
-    }
-
-    .loading {
-        margin-top: 1rem;
-    }
 </style>

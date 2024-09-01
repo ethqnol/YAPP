@@ -156,7 +156,7 @@
         flex-direction: column;
         align-items: center;
         justify-content: space-between;
-        height: 150px; /* Fixed height for uniform size */
+        height: 150px; 
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         transition: transform 0.3s ease-in-out;
     }

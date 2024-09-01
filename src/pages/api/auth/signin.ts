@@ -38,12 +38,12 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
     .where("email", "==", user.email)
     .get()
     .then(query_snapshot => {
-      let date = new Date().getHours();
+      let date = new Date().getTime();
       let current_streak = 0;
       if (!query_snapshot.empty) {
         let query = query_snapshot.docs[0].ref.get().then(doc => {
           let user = doc.data() as User;
-          if (Number(user.last_login) - date >= 24) {
+          if (Number(user.last_login) - date >= 24 * 3600000) {
             current_streak = 1;
           } else {
             current_streak = user.streak + 1;
@@ -68,7 +68,7 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
           streak: 1,
           awards: [],
           project_completion: 0.00,
-          last_login: (new Date()).getSeconds().toString(),
+          last_login: (new Date()).getTime().toString(),
           teacher_id: "",
           class_id: "",
           //teacher_id and class_id are initialized when a USER gets added or joins a class

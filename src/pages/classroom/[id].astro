@@ -1,6 +1,5 @@
 ---
 import ClassLayout from "../../layouts/ClassLayout.astro";
-import type User from "../../lib/user";
 import type DatabaseUser from "../../lib/user_database";
 import { app } from "../../firebase/server";
 import { getFirestore } from "firebase-admin/firestore";
@@ -13,55 +12,88 @@ if (!id) {
   return Astro.redirect("/404");
 }
 
-
 const db = getFirestore(app);
 const student_ref = db.collection("Students");
 const student_snapshot = await student_ref
   .where("class_id", "==", id)
   .get();
 
-const students_list : DatabaseUser[] = student_snapshot.docs.map((doc) => ({
-    primary_id: doc.id,
-    user: doc.data(),
+const students_list: DatabaseUser[] = student_snapshot.docs.map((doc) => ({
+  primary_id: doc.id,
+  user: doc.data(),
 })) as DatabaseUser[];
 
-const todo_ref = db.collection("Tasks");
-const tasks_ref = await todo_ref
-  .where("syllabus_id", "==", id)
+const syllabus_ref = db.collection("Syllabus");
+const syllabus_snapshot = await syllabus_ref
+  .where("class_id", "==", id)
   .get();
 
-const syllabus_list : DatabaseTask[] = tasks_ref.docs.map((doc) => ({
-    primary_id: doc.id,
-    task: doc.data(),
+const syllabus_list: DatabaseTask[] = syllabus_snapshot.docs.map((doc) => ({
+  primary_id: doc.id,
+  task: doc.data(),
 })) as DatabaseTask[];
-
 ---
 
 <ClassLayout title="Classroom">
-    <div class="classroom-page">
-        <div class="sidebar">
-            <StudentList students={students_list} client:visible/>
-            <SyllabusEditor syllabus={syllabus_list} class_id={id} client:visible>
-        </div>
-        <div class="content">
-            <h1>Classroom Management</h1>
-            <p>Manage students and syllabus items for your class.</p>
-        </div>
+  <div class="content">
+    <h1>Classroom Management</h1>
+    <p>Manage students and syllabus items for your class.</p>
+  </div>
+  <div class="classroom-page">
+    <div class="student-syllabus-container">
+      <StudentList students={students_list} client:visible />
+      <SyllabusEditor syllabus={syllabus_list} class_id={id} client:visible />
     </div>
+  </div>
 </ClassLayout>
 
 <style>
-    .classroom-page {
-        display: flex;
+
+  .classroom-page {
+    display: flex;
+    justify-content: center;
+    background-color: var(--color-surface-200);
+    padding: 2rem;
+    color: var(--color-primary-600);
+  }
+
+  .content {
+    text-align: center;
+    padding: 2rem;
+    color: var(--color-primary-400);
+    background-color: var(--color-surface-mixed-200);
+    border-radius: 8px;
+    margin-bottom: 2rem;
+  }
+
+  .content h1 {
+    margin-bottom: 1rem;
+    color: var(--accent);
+  }
+
+  .content p {
+    color: var(--color-primary-100);
+  }
+
+  .student-syllabus-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2rem;
+    width: 100%;
+    max-width: 1200px;
+  }
+
+  .student-syllabus-container > * {
+    background-color: var(--color-surface-mixed-100);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+  }
+
+  @media (min-width: 768px) {
+    .student-syllabus-container {
+      flex-direction: row;
     }
-    .sidebar {
-        width: 20%;
-        background-color: var(--color-surface-mixed-200);
-        padding: 1rem;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-    .content {
-        width: 80%;
-        padding: 2rem;
-    }
+  }
 </style>
