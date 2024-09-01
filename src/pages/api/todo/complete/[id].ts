@@ -2,7 +2,7 @@ import type { APIRoute } from "astro";
 import { app } from "../../../../firebase/server";
 import get_user_session from "../../../../lib/auth";
 import { getFirestore } from "firebase-admin/firestore";
-
+import firebase from "firebase-admin";
 
 export const GET: APIRoute = async ({ params, cookies, redirect }) => {
   const tasks_id: string | undefined = params.id;
@@ -17,12 +17,22 @@ export const GET: APIRoute = async ({ params, cookies, redirect }) => {
     });
   }
 
-  
+
   try {
     const db = getFirestore(app);
-    const tasks_ref = db.collection("Tasks");
-    await tasks_ref.doc(tasks_id).update({
-      completed : true,
+    await db.collection("Tasks").doc(tasks_id).get().then((doc) => {
+      if (!doc.exists) {
+        return new Response("Task not found", {
+          status: 404,
+        })
+      } else {
+        if(doc.data()!.syllabus_id != ""){
+          db.collection("Syllabus").doc(doc.data()!.syllabus_id).update({
+            completed_num: firebase.firestore.FieldValue.increment(1)
+          });
+        }
+        doc.ref.update({completed: true}); 
+      }
     });
   } catch (error) {
     return new Response("Error while completing task", {

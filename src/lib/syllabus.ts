@@ -6,4 +6,5 @@ export default interface Syllabus {
   creation_date: number;
   completed: boolean;
   class_id: string;
+  completed_num: number;
 }

@@ -3,9 +3,9 @@ import ClassLayout from "../../layouts/ClassLayout.astro";
 import type DatabaseUser from "../../lib/user_database";
 import { app } from "../../firebase/server";
 import { getFirestore } from "firebase-admin/firestore";
-import type DatabaseTask from "../../lib/task_database";
 import StudentList from "../../components/StudentList.svelte";
 import SyllabusEditor from "../../components/SyllabusEditor.svelte";
+import type DatabaseSyllabus from "../../lib/syllabus_database"
 
 const { id } = Astro.params;
 if (!id) {
@@ -28,10 +28,10 @@ const syllabus_snapshot = await syllabus_ref
   .where("class_id", "==", id)
   .get();
 
-const syllabus_list: DatabaseTask[] = syllabus_snapshot.docs.map((doc) => ({
+const syllabus_list: DatabaseSyllabus[] = syllabus_snapshot.docs.map((doc) => ({
   primary_id: doc.id,
-  task: doc.data(),
-})) as DatabaseTask[];
+  syllabus: doc.data(),
+})) as DatabaseSyllabus[];
 ---
 
 <ClassLayout title="Classroom">
@@ -42,7 +42,7 @@ const syllabus_list: DatabaseTask[] = syllabus_snapshot.docs.map((doc) => ({
   <div class="classroom-page">
     <div class="student-syllabus-container">
       <StudentList students={students_list} client:visible />
-      <SyllabusEditor syllabus={syllabus_list} class_id={id} client:visible />
+      <SyllabusEditor syllabus={syllabus_list} class_id={id} class_size={students_list.length} client:visible />
     </div>
   </div>
 </ClassLayout>

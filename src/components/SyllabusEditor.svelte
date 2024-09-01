@@ -1,11 +1,11 @@
 <script lang="ts">
-    import type DatabaseTask from "../lib/task_database";
     import type Task from "../lib/task";
     import Popup from "../components/Popup.svelte";
     import Loading from "../components/Loading.svelte";
-    export let syllabus: DatabaseTask[] = [];
+    import type DatabaseSyllabus from "../lib/syllabus_database";
+    export let syllabus: DatabaseSyllabus[] = [];
     export let class_id: string;
-
+    export let class_size: number;
     let error_msg = "";
     let loading = false;
     let task_adding = false;
@@ -125,15 +125,17 @@
                 <th>Task Name</th>
                 <th>Description</th>
                 <th>Due Date</th>
+                <th> # Of Completions </th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
             {#each syllabus as task (task.primary_id)}
                 <tr>
-                    <td>{task.task.name}</td>
-                    <td>{task.task.description}</td>
-                    <td>{task.task.due_date}</td>
+                    <td>{task.syllabus.name}</td>
+                    <td>{task.syllabus.description}</td>
+                    <td>{task.syllabus.due_date}</td>
+                    <td>{task.syllabus.completed_num+"/"+class_size}</td>
                     <td><button class="delete-button" on:click={() => delete_syllabus_item(task.primary_id)}>Delete</button></td>
                 </tr>
             {/each}
@@ -248,6 +250,7 @@
         background-color: var(--color-surface-mixed-300);
         border-radius: 8px;
         overflow: hidden;
+        
     }
 
     thead {
@@ -256,9 +259,11 @@
     }
 
     th, td {
-        padding: 1rem;
+        padding: 0.75rem;
         text-align: left;
-        border-bottom: 1px solid var(--color-surface-300);
+        border-bottom: 1px solid var(--color-surface-400);
+        border-left: 2px solid var(--color-surface-400);
+        border-right: 2px solid var(--color-surface-400);
     }
 
 

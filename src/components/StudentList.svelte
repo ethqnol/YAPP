@@ -11,6 +11,20 @@
             (student) => student.primary_id !== primary_id,
         );
     };
+
+    function time_ago(last_login: number): string {
+        const now = new Date().getTime();
+        const diff_in_millis = now - last_login;
+        const diff_in_minutes = Math.floor(diff_in_millis / 60000); // Convert milliseconds to minutes
+        const hours = Math.floor(diff_in_minutes / 60);
+        const minutes = diff_in_minutes % 60;
+
+        if (hours > 0) {
+            return `${hours} hour${hours !== 1 ? "s" : ""} ${minutes} minute${minutes !== 1 ? "s" : ""} ago`;
+        } else {
+            return `${minutes} minute${minutes !== 1 ? "s" : ""} ago`;
+        }
+    }
 </script>
 
 <div class="container">
@@ -20,7 +34,6 @@
                 <th>Photo</th>
                 <th>Name</th>
                 <th>Email</th>
-                <th>Streak</th>
                 <th>Awards</th>
                 <th>Project Completion</th>
                 <th>Last Login</th>
@@ -39,10 +52,9 @@
                     >
                     <td>{student.user.display_name}</td>
                     <td>{student.user.email}</td>
-                    <td>{student.user.streak}</td>
                     <td>{student.user.awards.join(", ")}</td>
                     <td>{student.user.project_completion}%</td>
-                    <td>{new Date(Number(student.user.last_login))}</td>
+                    <td>{time_ago(Number(student.user.last_login))}</td>
                     <td
                         ><button
                             class="delete-button"
@@ -80,6 +92,8 @@
         padding: 0.75rem;
         text-align: left;
         border-bottom: 1px solid var(--color-surface-400);
+        border-left: 2px solid var(--color-surface-400);
+        border-right: 2px solid var(--color-surface-400);
     }
 
     th {

@@ -19,7 +19,7 @@ export const POST: APIRoute = async ({ request, cookies, redirect }) => {
   }
   const db = getFirestore(app);
   let batch = db.batch();
-  let tasks: Task[] = [];
+
   try {
     const todo_ref = db.collection("Tasks")
     const syllabus_ref = db.collection("Syllabus")
@@ -31,13 +31,15 @@ export const POST: APIRoute = async ({ request, cookies, redirect }) => {
       creation_date: new Date().getTime(),
       completed: false,
       class_id: class_id,
+      completed_num: 0,
       user_id: user.uid
     });
     await db.collection("Students")
-      .where("class_id", "==", task.syllabus_id)
+      .where("class_id", "==", class_id)
       .get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
+          console.log(doc.data())
           batch.set(todo_ref.doc(), {
             student_id: doc.id,
             name: task.name,

@@ -21,7 +21,7 @@ export const GET: APIRoute = async ({ params, cookies, redirect }) => {
   let batch = db.batch();
   try {
     const todo_ref = db.collection("Tasks")
-    todo_ref.where("syllabus_id", "==", syllabus_id).get().then((querySnapshot) => {
+    await todo_ref.where("syllabus_id", "==", syllabus_id).get().then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
         batch.delete(doc.ref);
       });

@@ -1,7 +1,7 @@
 <script lang="ts">
     import type DatabaseTask from "../lib/task_database.ts";
     import Popup from "./Popup.svelte";
-
+    import Loading from "./Loading.svelte";
     let name: string = "";
     let description: string = "";
     let due_date: string = "";
@@ -10,8 +10,9 @@
     let task_success = false;
 
     let error_msg: string = "";
-
+    let loading = false;
     async function add_task() {
+        loading = true;
         const new_task = {
             name,
             description,
@@ -28,6 +29,7 @@
             });
 
             task_add = true;
+            loading = false;
             if (response.ok) {
                 task_success = true;
                 window.location.reload();
@@ -131,8 +133,9 @@
                 class={(task.task.due_date != null &&
                 new Date().getTime() >= task.task.due_date
                     ? "overdue task"
-                    : "task not-overdue") +
-                    (task.task.syllabus_id == "" ? "" : " syllabus")}
+                    : "task not-overdue")}
+                
+                id={(task.task.syllabus_id == "" ? "" : "syllabus")}
             >
                 <div class="task-header">
                     <div class="task-title">
@@ -168,6 +171,11 @@
             loc="Go To Notecards"
         />
     {/if}
+    
+    {#if loading}
+        <Loading />
+    {/if}
+    
 
     <form on:submit|preventDefault={add_task} id="add-task-form">
         <label>
@@ -358,8 +366,8 @@
         }
     }
     
-    .syllabus {
-        border: 2px solid var(--color-primary-200);
+    #syllabus {
+        border: 2px solid blue;
     }
 
     .task {
