@@ -1,10 +1,10 @@
 <script lang="ts">
     import PossibleSources from "./PossibleSources.svelte";
     let book_input = "";
-    let book_data : any[] = [];
+    let book_data: any[] = [];
     let loading = false;
     let query_sent = false;
-    async function search_book(query : string) {
+    async function search_book(query: string) {
         const response = await fetch(
             `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&fields=*&limit=8`,
         );
@@ -14,30 +14,29 @@
         return data;
     }
     function is_doi(doi: string): boolean {
-      const doiRegex = /^10.\d{4,9}[-._;()/:A-Z0-9]+$/i;
-      return doiRegex.test(doi);
+        const doiRegex = /^10.\d{4,9}[-._;()/:A-Z0-9]+$/i;
+        return doiRegex.test(doi);
     }
-    
+
     async function doi_search(doi: string) {
-      const response = await fetch(`https://api.crossref.org/works/${doi}`);
-      const unwrapped = await response.json();
-      let data = unwrapped.message;
-      //console.log(data)
-      return data;
+        const response = await fetch(`https://api.crossref.org/works/${doi}`);
+        const unwrapped = await response.json();
+        let data = unwrapped.message;
+        //console.log(data)
+        return data;
     }
 
     async function handle_search() {
         loading = true;
         query_sent = true;
         book_input = book_input.trim();
-        if(is_doi(book_input)){
-          book_data = [await doi_search(book_input)];
-          loading = false;
+        if (is_doi(book_input)) {
+            book_data = [await doi_search(book_input)];
+            loading = false;
         } else {
-          book_data = await search_book(book_input);
-          loading = false;
+            book_data = await search_book(book_input);
+            loading = false;
         }
-        
     }
 </script>
 

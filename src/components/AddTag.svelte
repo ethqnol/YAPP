@@ -81,7 +81,6 @@
         }
     }
 </script>
-    
 
 {#if tag_add && tag_success}
     <Popup
@@ -108,7 +107,6 @@
         error={error_msg}
         loc="Okay"
     />
-
 {/if}
 
 <div id="Page">
