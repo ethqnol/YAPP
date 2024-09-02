@@ -10,11 +10,9 @@ import Layout from "../layouts/Layout.astro";
 			alt="Prudential center under a moon"
 		/>
 		<h1>The <span class="text-gradient">YAPP</span>ENING</h1>
-		<p class="instructions">
-			<strong>Pending:</strong> Due May 12th, Research Paper Final Draft
-		</p>
+
 		<ul role="list" class="link-card-grid">
-			<div><a href="/documentation"> Documentation </a></div>
+			<div><a href="https://yappening.github.io"> Documentation </a></div>
 			<div>
 				<a href="/project/sources">
 					Go To Project <strong>→</strong>
@@ -61,27 +59,7 @@ import Layout from "../layouts/Layout.astro";
 		background-size: 400%;
 		background-position: 0%;
 	}
-	.instructions {
-		margin-bottom: 2rem;
-		border: 1px solid rgba(var(--accent-light), 25%);
-		background: linear-gradient(
-			rgba(var(--accent-dark), 66%),
-			rgba(var(--accent-dark), 33%)
-		);
-		padding: 1.5rem;
-		border-radius: 8px;
-	}
-	.instructions code {
-		font-size: 0.8em;
-		font-weight: bold;
-		background: rgba(var(--accent-light), 12%);
-		color: rgb(var(--accent-light));
-		border-radius: 4px;
-		padding: 0.3em 0.4em;
-	}
-	.instructions strong {
-		color: rgb(var(--accent-light));
-	}
+
 
 	.link-card-grid {
 		display: flex;
@@ -94,7 +72,7 @@ import Layout from "../layouts/Layout.astro";
 
 	.link-card-grid div {
 		border-radius: 0.4rem;
-		background-color: var(--color-surface-mixed-300);
+		background-color: var(--color-surface-mixed-600);
 		color: white;
 		text-decoration: none;
 		padding: 0.8rem;
@@ -104,11 +82,10 @@ import Layout from "../layouts/Layout.astro";
 		width: 100%;
 		text-decoration: none;
 		line-height: 1.4;
-		padding: calc(0.9rem - 1px);
+		padding: calc(1.2rem - 1px);
 		border-radius: 0.4rem;
 		color: white;
-		background-color: #23262d;
-		opacity: 0.8;
+		background-color: #121212B3;
 	}
 
 	.link-card-grid div {
@@ -117,8 +94,8 @@ import Layout from "../layouts/Layout.astro";
 		transition: background-position 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 		box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
 		border-radius: 0.4rem;
-		background-color: var(--color-surface-mixed-500);
-		padding: 2px;
+		background-color: rgba(0,0,0,0.4);
+		padding: 3px;
 		background-image: none;
 		background-size: 400%;
 		border-radius: 7px;
@@ -131,5 +108,6 @@ import Layout from "../layouts/Layout.astro";
 	}
 	.link-card-grid div:is(:hover, :focus-within) h2 {
 		color: rgb(var(--accent-light));
+		opacity: 75%;
 	}
 </style>
