@@ -1,7 +1,9 @@
 import type { APIRoute } from "astro";
-import { app } from "../../../firebase/server";
+import { app } from "../../../firebase/client";
+import { collection, query, where, getDocs, updateDoc, doc } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
+import "firebase/firestore";
 import get_user_session from "../../../lib/auth.ts";
-import { getFirestore } from "firebase-admin/firestore";
 
 export const POST: APIRoute = async ({ request, cookies }) => {
   let class_code = await request.json();
@@ -17,24 +19,20 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 
   try {
     const db = getFirestore(app);
-    db.collection("Class")
-      .where("class_code", "==", class_code.class_code)
-      .get()
+    getDocs(query(collection(db, "Class"), where("class_code", "==", class_code.class_code)))
       .then((query_snapshot) => {
         if (query_snapshot.empty) {
           return new Response("Class Code Invalid", {
             status: 400,
           })
         } else {
-          let query = query_snapshot.docs[0].ref.get().then(doc => {
-            let id = doc.id;
-            let teacher_id = doc.data()!.teacher_id;
-            db.collection("Students")
-              .doc(user.uid)
-              .update({
-                class_id: id,
-                teacher_id: teacher_id,
-              })
+          let document = query_snapshot.docs[0];
+          let id = document.id;
+          let teacher_id = document.data()!.teacher_id;
+          let user_doc = doc(db, "Students", user.uid)
+          updateDoc(user_doc, {
+            class_id: id,
+            teacher_id: teacher_id,
           })
         }
       })

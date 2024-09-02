@@ -1,8 +1,10 @@
 import type { APIRoute } from "astro";
-import { app } from "../../../../firebase/server";
+import { app } from "../../../../firebase/client";
+import { writeBatch, query, where, getDocs, collection, doc } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
+import "firebase/firestore";
 import get_user_session from "../../../../lib/auth";
-import { getFirestore } from "firebase-admin/firestore";
-import type Task from "../../../../lib/task";
+
 
 
 export const GET: APIRoute = async ({ params, cookies, redirect }) => {
@@ -18,16 +20,17 @@ export const GET: APIRoute = async ({ params, cookies, redirect }) => {
     });
   }
   const db = getFirestore(app);
-  let batch = db.batch();
+  let batch = writeBatch(db);
   try {
-    const todo_ref = db.collection("Tasks")
-    await todo_ref.where("syllabus_id", "==", syllabus_id).get().then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        batch.delete(doc.ref);
+    const todo_ref = collection(db, "Tasks")
+    await getDocs(query(todo_ref, where("syllabus_id", "==", syllabus_id)))
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          batch.delete(doc.ref);
+        });
       });
-    });
-    
-    batch.delete(db.collection("Syllabus").doc(syllabus_id));
+
+    batch.delete(doc(db, "Syllabus", syllabus_id));
     await batch.commit();
   } catch (error) {
     return new Response("Error while adding task", {

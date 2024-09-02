@@ -1,16 +1,17 @@
 ---
 import ProjectLayout from "../../../../layouts/ProjectLayout.astro";
-import { app } from "../../../../firebase/server";
+
 import ModifyNotecard from "../../../../components/ModifyNotecard.svelte";
 import type DatabaseSource from "../../../../lib/source_database";
-import { getFirestore } from "firebase-admin/firestore";
+import { app } from "../../../../firebase/client";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
+import "firebase/firestore";
 
 const {user} = Astro.locals;
 const db = getFirestore(app);
-const sources_ref = db.collection("Sources");
-const sources_snapshot = await sources_ref
-  .where("student_id", "==", user.uid)
-  .get();
+const sources_ref = query(collection(db, "Sources"), where("student_id", "==", user.uid));
+const sources_snapshot = await getDocs(sources_ref)
 const user_sources: DatabaseSource[] = sources_snapshot.docs.map((doc) => ({
   primary_id: doc.id,
   source: doc.data(),

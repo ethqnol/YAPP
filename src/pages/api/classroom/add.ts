@@ -1,7 +1,9 @@
 import type { APIRoute } from "astro";
-import { app } from "../../../firebase/server";
 import get_user_session from "../../../lib/auth.ts";
-import { getFirestore } from "firebase-admin/firestore";
+import { app } from "../../../firebase/client";
+import { collection, addDoc } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
+import "firebase/firestore";
 import type Class from "../../../lib/class.ts";
 import Hashids from 'hashids'
 
@@ -24,8 +26,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
   
   try {
     const db = getFirestore(app);
-    const classes_ref = db.collection("Class");
-    await classes_ref.add({
+    await addDoc(collection(db, "Class"), {
       ...new_class,
     });
   } catch (error) {

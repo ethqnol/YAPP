@@ -1,7 +1,9 @@
 import type { APIRoute } from "astro";
-import { app } from "../../../firebase/server";
+import { app } from "../../../firebase/client";
+import { collection, addDoc } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
+import "firebase/firestore";
 import get_user_session from "../../../lib/auth.ts";
-import { getFirestore } from "firebase-admin/firestore";
 import type Notecard from "../../../lib/notecard.ts";
 
 
@@ -21,10 +23,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 
   try {
     const db = getFirestore(app);
-    const notecards_ref = db.collection("Notecards");
-    await notecards_ref.add({
-      ...notecard,
-    });
+    const notecards_ref = addDoc(collection(db, "Notecards"), {...notecard});
   } catch (error) {
     return new Response("Error while adding notecard", {
       status: 500,

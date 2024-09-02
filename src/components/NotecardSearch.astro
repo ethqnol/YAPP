@@ -1,12 +1,16 @@
 ---
-import { app } from "../firebase/server";
-import { getFirestore } from "firebase-admin/firestore";
+import { app } from "../firebase/client";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
+import "firebase/firestore";
 import type DatabaseNotecard from "../lib/notecard_database.ts";
 import type { UserRecord } from "firebase-admin/auth";
 import type Tag from "../lib/tags.ts";
 import type DatabaseSource from "../lib/source_database.ts";
 import Card from "./Card.svelte";
 import Fuse, { type FuseResult } from "fuse.js";
+
+
 
 const db = getFirestore(app);
 interface Props {
@@ -16,8 +20,8 @@ interface Props {
 }
 
 const { user, tags, sources } = Astro.props;
-const notecards_ref = db.collection("Notecards");
-let notecard_query = notecards_ref.where("student_id", "==", user.uid);
+const notecards_ref = query(collection(db, "Notecards"), where("student_id", "==", user.uid));
+let notecard_query = notecards_ref;
 const source_query: string | null = Astro.url.searchParams.get("source")
   ? Astro.url.searchParams.get("source")
   : null;
@@ -26,18 +30,18 @@ const tag_query: string[] | null = Astro.url.searchParams.get("tags")
   : null;
 
 if (source_query) {
-  notecard_query = notecard_query.where("source_id", "==", source_query);
+  notecard_query = query(notecard_query, where("source_id", "==", source_query));
 }
 
 if (tag_query != null && tag_query.length > 0) {
-  notecard_query = notecard_query.where(
+  notecard_query = query(notecard_query, where(
     "tags",
     "array-contains-any",
     tag_query,
-  );
+  ));
 }
 
-const notecards_snapshot = await notecard_query.get();
+const notecards_snapshot = await getDocs(notecard_query);
 
 const user_notecards: DatabaseNotecard[] = notecards_snapshot.docs.map(
   (doc) => ({

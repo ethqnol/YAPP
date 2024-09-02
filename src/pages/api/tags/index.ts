@@ -1,9 +1,12 @@
 import type { APIRoute } from "astro";
-import { app } from "../../../firebase/server";
 import get_user_session from "../../../lib/auth.ts";
-import { getFirestore } from "firebase-admin/firestore";
+import { app } from "../../../firebase/client";
+import { setDoc, doc, getDoc, deleteDoc } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
+import "firebase/firestore";
 import type Tag from "../../../lib/tags.ts";
 import Hashids from 'hashids'
+import { updateDoc } from "firebase/firestore/lite";
 
 export const POST: APIRoute = async ({ request, cookies }) => {
   let user_tag: Tag = await request.json();
@@ -28,17 +31,19 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 
   try {
     const db = getFirestore(app);
-    const tags_ref = db.collection("Tags");
-    const current_tags_snapshot = await tags_ref.doc(user.uid).get();
-    if (!current_tags_snapshot.exists) {
-      tags_ref.doc(user.uid).set({ tags: [user_tag] });
-      return new Response("tag added successfully", { status: 200 })
-    }
-
-    let current_tags: Tag[] = current_tags_snapshot.data()!.tags;
-    current_tags.push(user_tag)
-    await tags_ref.doc(user.uid).update({
-      tags: current_tags,
+    const tags_ref = doc(db, "Tags", user.uid);
+    getDoc(tags_ref).then((doc) => {
+      if (!doc.exists) {
+        setDoc(tags_ref, { tags: [user_tag] });
+        return new Response("tag added successfully", { status: 200 })
+      } else {
+        let current_tags_snapshot = doc;
+        let current_tags: Tag[] = current_tags_snapshot.data()!.tags;
+        current_tags.push(user_tag)
+        updateDoc(tags_ref, {
+          tags: current_tags,
+        });
+      }
     });
   } catch (error) {
     return new Response("Error while adding tag", {

@@ -1,10 +1,12 @@
 ---
 import ProjectLayout from "../../../../layouts/ProjectLayout.astro";
-import { app } from "../../../../firebase/server";
 import ModifyNotecard from "../../../../components/ModifyNotecard.svelte";
 import type DatabaseSource from "../../../../lib/source_database";
 import type DatabaseNotecard from "../../../../lib/notecard_database";
-import { getFirestore } from "firebase-admin/firestore";
+import { app } from "../../../../firebase/client";
+import { collection, query, where, getDocs, getDoc, doc } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
+import "firebase/firestore";
 import type Notecard from "../../../../lib/notecard";
 
 const {user} = Astro.locals;
@@ -14,17 +16,15 @@ if (!id) {
 }
 
 const db = getFirestore(app);
-const sources_ref = db.collection("Sources");
-const sources_snapshot = await sources_ref
-  .where("student_id", "==", user.uid)
-  .get();
+const sources_ref = query(collection(db, "Sources"), where("student_id", "==", user.uid));
+const sources_snapshot = await getDocs(sources_ref)
 const user_sources: DatabaseSource[] = sources_snapshot.docs.map((doc) => ({
   primary_id: doc.id,
   source: doc.data(),
 })) as DatabaseSource[];
 
-const notecards_ref = db.collection("Notecards");
-const notecards_snapshot = await notecards_ref.doc(id).get();
+const notecards_ref = doc(db, "Notecards", id);
+const notecards_snapshot = await getDoc(notecards_ref);
 
 if (!notecards_snapshot.exists) {
   return Astro.redirect("/404");

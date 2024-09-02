@@ -1,41 +1,19 @@
 ---
-import { app } from "../firebase/server";
 import { getAuth, type DecodedIdToken } from "firebase-admin/auth";
 import Layout from "../layouts/ClassLayout.astro";
 import type DatabaseUsers from "../lib/user_database";
 import Setting from "../components/Setting.svelte";
-import { getFirestore } from "firebase-admin/firestore";
+import { app } from "../firebase/client";
+import { doc, getDoc } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
+import firebase from "firebase/compat/app";
 
-const auth = getAuth(app);
+const {user} = Astro.locals
 
-if (!Astro.cookies.has("__session")) {
-  return Astro.redirect("/signin");
-}
-const session_cookie = Astro.cookies.get("__session")?.value;
-
-if (!session_cookie) {
-  return Astro.redirect("/signin");
-}
-
-const decodedCookie: null | DecodedIdToken = await auth
-  .verifySessionCookie(session_cookie, true)
-  .then((decodedToken) => {
-    return decodedToken;
-  })
-  .catch((error) => {
-    console.log(error);
-    return null;
-  });
-
-if (!decodedCookie) {
-  return Astro.redirect("/signin");
-}
-
-const user = await auth.getUser(decodedCookie.uid);
 
 let db = getFirestore(app);
-let user_ref = db.collection("Students").doc(user.uid);
-let user_snapshot = await user_ref.get();
+let user_ref = doc(db, "Students", user.uid);
+let user_snapshot = await getDoc(user_ref);
 let user_data = {primary_id: user_snapshot.id, user: user_snapshot.data()} as DatabaseUsers;
 
 const joke = await fetch("https://official-joke-api.appspot.com/jokes/programming/random")
@@ -49,8 +27,8 @@ const joke = await fetch("https://official-joke-api.appspot.com/jokes/programmin
     <div id="board">
 
       <div id="profile-section">
-        <img src={user.photoURL} id="profile-pic" alt="Profile Picture" />
-        <h1>{user.displayName}</h1>
+        <img src={user_data.user.google_photo} id="profile-pic" alt="Profile Picture" />
+        <h1>{user_data.user.display_name}</h1>
       </div>
       
       <div id="nav-buttons">

@@ -1,3 +1,4 @@
+/// <reference path="../.astro/types.d.ts" />
 /// <reference types="astro/client" />
 
 import type { UserRecord } from "firebase-functions/v1/auth";

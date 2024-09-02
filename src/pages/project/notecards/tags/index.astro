@@ -1,15 +1,17 @@
 ---
 import AddTag from "../../../../components/AddTag.svelte";
-import { getFirestore } from "firebase-admin/firestore";
-import { app } from "../../../../firebase/server.ts";
+import { app } from "../../../../firebase/client";
+import { doc, getDoc } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
+import "firebase/firestore";
 import type Tag from "../../../../lib/tags";
 import ProjectLayout from "../../../../layouts/ProjectLayout.astro";
 
 const {user} = Astro.locals;
 
 const db = getFirestore(app);
-const tags_ref = db.collection("Tags");
-const tags_snapshot = await tags_ref.doc(user.uid).get();
+const tags_ref = doc(db, "Tags", user.uid);
+const tags_snapshot = await getDoc(tags_ref);
 const user_tags: Tag[] = tags_snapshot.data()
   ? (tags_snapshot.data()!.tags as Tag[])
   : [];

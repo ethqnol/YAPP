@@ -1,8 +1,10 @@
 
 import type { APIRoute } from "astro";
-import { app } from "../../../../firebase/server";
 import get_user_session from "../../../../lib/auth.ts";
-import { getFirestore } from "firebase-admin/firestore";
+import { app } from "../../../../firebase/client";
+import { updateDoc, doc, getDoc } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
+import "firebase/firestore";
 import type Notecard from "../../../../lib/notecard.ts";
 
 
@@ -27,8 +29,15 @@ export const POST: APIRoute = async ({ params, request, cookies }) => {
 
   try {
     const db = getFirestore(app);
-    await db.collection("Notecards").doc(params.id).update({
-      ...notecard,
+    let notecard_ref = doc(db, "Notecards", params.id);
+    getDoc(notecard_ref).then((doc) => {
+      if ((doc.data() as Notecard).student_id == user.uid) {
+        updateDoc(notecard_ref, { ...notecard });
+      } else {
+        return new Response("Not authorized to perform this action", {
+          status: 403,
+        });
+      }
     });
   } catch (error) {
     return new Response("Error while editing notecard", {

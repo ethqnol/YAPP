@@ -2,16 +2,16 @@
 import ClassLayout from '../../layouts/ClassLayout.astro';
 import type DatabaseClass from '../../lib/class_database';
 import Classroom from "../../components/Classroom.svelte"
-import { getFirestore } from 'firebase-admin/firestore';
-import { app } from '../../firebase/server';
+import { app } from "../../firebase/client";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
+import "firebase/firestore";
 
 const {user} = Astro.locals;
 
 const db = getFirestore(app)
-const class_ref = db.collection("Class")
-const class_snapshot = await class_ref
-    .where("teacher_id", "==", user.uid)
-    .get();
+const class_ref = query(collection(db, "Class"), where("teacher_id", "==", user.uid));
+const class_snapshot = await getDocs(class_ref);
 
 const classes: DatabaseClass[] = class_snapshot.docs.map(doc => ({
   primary_id: doc.id,

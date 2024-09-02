@@ -1,7 +1,9 @@
 import type { APIRoute } from "astro";
-import { app } from "../../../../firebase/server";
+import { app } from "../../../../firebase/client";
+import { getDoc, doc, where, getDocs, updateDoc } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
+import "firebase/firestore";
 import get_user_session from "../../../../lib/auth.ts";
-import { getFirestore } from "firebase-admin/firestore";
 import type Tag from "../../../../lib/tags.ts";
 
 
@@ -26,9 +28,15 @@ export const POST: APIRoute = async ({ request, params, cookies }) => {
 
   try {
     const db = getFirestore(app);
-    const notecards_ref = db.collection("Notecards");
-    await notecards_ref.doc(notecard_id).update({
-      tags: tags,
+    const notecards_ref = doc(db, "Notecards", notecard_id);
+    getDoc(notecards_ref).then((doc) => {
+      if (doc.id == user.uid) {
+        updateDoc(notecards_ref, { tags: tags })
+      } else {
+        return new Response("Not authorized to perform this action", {
+          status: 403,
+        });
+      }
     });
   } catch (error) {
     return new Response("Error while updating tags", {

@@ -1,8 +1,10 @@
 ---
 import ClassLayout from "../../layouts/ClassLayout.astro";
 import type DatabaseUser from "../../lib/user_database";
-import { app } from "../../firebase/server";
-import { getFirestore } from "firebase-admin/firestore";
+import { app } from "../../firebase/client";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
+import "firebase/firestore";
 import StudentList from "../../components/StudentList.svelte";
 import SyllabusEditor from "../../components/SyllabusEditor.svelte";
 import type DatabaseSyllabus from "../../lib/syllabus_database"
@@ -13,20 +15,16 @@ if (!id) {
 }
 
 const db = getFirestore(app);
-const student_ref = db.collection("Students");
-const student_snapshot = await student_ref
-  .where("class_id", "==", id)
-  .get();
+const student_ref = query(collection(db, "Students"), where("class_id", "==", id));
+const student_snapshot = await getDocs(student_ref);
 
 const students_list: DatabaseUser[] = student_snapshot.docs.map((doc) => ({
   primary_id: doc.id,
   user: doc.data(),
 })) as DatabaseUser[];
 
-const syllabus_ref = db.collection("Syllabus");
-const syllabus_snapshot = await syllabus_ref
-  .where("class_id", "==", id)
-  .get();
+const syllabus_ref = query(collection(db, "Syllabus"), where("class_id", "==", id));
+const syllabus_snapshot = await getDocs(syllabus_ref);
 
 const syllabus_list: DatabaseSyllabus[] = syllabus_snapshot.docs.map((doc) => ({
   primary_id: doc.id,

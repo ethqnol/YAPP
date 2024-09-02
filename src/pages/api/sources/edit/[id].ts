@@ -1,7 +1,9 @@
 import type { APIRoute } from "astro";
-import { app  } from "../../../../firebase/server";
+import { app } from "../../../../firebase/client";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
+import "firebase/firestore";
 import get_user_session from "../../../../lib/auth.ts";
-import { getFirestore } from "firebase-admin/firestore";
 import type Source from "../../../../lib/source.ts";
 
 export const POST: APIRoute = async ({ params, request, cookies }) => {
@@ -25,8 +27,15 @@ export const POST: APIRoute = async ({ params, request, cookies }) => {
 
   try {
     const db = getFirestore(app);
-    await db.collection("sources").doc(params.id).update({
-      ...source,
+    const sources_ref = doc(db, "sources", params.id);
+    getDoc(sources_ref).then((doc) => {
+      if ((doc.data() as Source).student_id == user.uid) {
+        updateDoc(sources_ref, { ...source });
+      } else {
+        return new Response("Not authorized to perform this action", {
+          status: 403,
+        });
+      }
     });
   } catch (error) {
     return new Response("Error while editing source", {

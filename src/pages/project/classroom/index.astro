@@ -1,8 +1,10 @@
 ---
 import ProjectLayout from '../../../layouts/ProjectLayout.astro';
 import JoinClass from '../../../components/JoinClass.svelte';
-import { app } from "../../../firebase/server";
-import { getFirestore } from "firebase-admin/firestore";
+import { app } from "../../../firebase/client";
+import { collection, query, where, getDocs, getDoc, doc } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
+import "firebase/firestore";
 import type DatabaseClass from '../../../lib/class_database';
 import type Class from '../../../lib/class';
 
@@ -12,15 +14,14 @@ let is_in_class = false;
 
 const { user } = Astro.locals;
 const db = getFirestore(app);
-const class_ref = db.collection('Class');
-const user_snapshot = await db.collection("Students").doc(user.uid).get();
+const user_snapshot = await getDoc(doc(db, "Students", user.uid));
 const user_data = user_snapshot.data()!;
 
 let class_data : DatabaseClass | null = null;
 
 if (user_data.class_id != "") {
-  const class_snapshot = await class_ref.doc(user_data.class_id).get();
-  if (class_snapshot.exists) {
+  const class_snapshot = await getDoc(doc(user_data.class_id));
+  if (class_snapshot.exists()) {
     is_in_class = true;
     class_data = {
       primary_id: class_snapshot.id,
@@ -43,7 +44,7 @@ if (user_data.class_id != "") {
   
     <div class="class-info">
       <h2>{class_data!.class.class_name} - Section {class_data!.class.section_number!}</h2>
-      <p>Instructor: {class_data!.class.teacher_name!}</p>
+      <p>Teacher: {class_data!.class.teacher_name!}</p>
     </div>
   ) : (
     <>

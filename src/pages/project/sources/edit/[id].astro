@@ -1,9 +1,11 @@
 ---
 import ProjectLayout from "../../../../layouts/ProjectLayout.astro"
 import Book from "../../../../components/citation_types/Book.svelte"
-import { app } from "../../../../firebase/server";
 import type DatabaseSource from "../../../../lib/source_database";
-import { getFirestore } from "firebase-admin/firestore";
+import { doc, getDoc } from "firebase/firestore";
+import { app } from "../../../../firebase/client";
+import { getFirestore } from "firebase/firestore";
+import "firebase/firestore";
 import type Source from "../../../../lib/source";
 
 
@@ -13,10 +15,10 @@ if (!id) {
   return Astro.redirect("/404");
 }
 const db = getFirestore(app);
-const sources_ref = db.collection("Sources");
-const source_snapshot = await sources_ref.doc(id).get();
+const sources_ref = doc(db, "Sources", id);
+const source_snapshot = await getDoc(sources_ref);
 
-if (!source_snapshot.exists) {
+if (!source_snapshot.exists()) {
   return Astro.redirect("/404");
 }
 

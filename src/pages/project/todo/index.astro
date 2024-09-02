@@ -1,18 +1,18 @@
 ---
 import ProjectLayout from '../../../layouts/ProjectLayout.astro';
 import Todo from '../../../components/Todo.svelte'
-import { app } from "../../../firebase/server";
-import { getFirestore } from "firebase-admin/firestore";
 import type DatabaseTask from "../../../lib/task_database";
-
+import { app } from "../../../firebase/client";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
+import "firebase/firestore";
 const {user} = Astro.locals
 
-const db = getFirestore(app);
-const tasks_ref = db.collection("Tasks");
 
-const tasks_snapshot = await tasks_ref
-  .where("student_id", "==", user.uid)
-  .get();
+const db = getFirestore(app);
+const tasks_ref = query(collection(db, "Tasks"), where("student_id", "==", user.uid));
+
+const tasks_snapshot = await getDocs(tasks_ref)
 
 const user_tasks: DatabaseTask[] = tasks_snapshot.docs.map((doc) => ({
   primary_id: doc.id,

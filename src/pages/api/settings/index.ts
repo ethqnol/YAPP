@@ -1,7 +1,9 @@
 import type { APIRoute } from "astro";
-import { app } from "../../../firebase/server";
+import { app } from "../../../firebase/client";
+import {  doc, getDoc, updateDoc } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
+import "firebase/firestore";
 import get_user_session from "../../../lib/auth";
-import { getFirestore } from "firebase-admin/firestore";
 
 
 export const POST: APIRoute = async ({ request, cookies, redirect }) => {
@@ -19,14 +21,21 @@ export const POST: APIRoute = async ({ request, cookies, redirect }) => {
   const db = getFirestore(app);
 
   try {
-    await db.collection("Students")
-      .doc(user.uid)
-      .update({
-        allow_teacher_view: allow_teacher_view,
-        allow_public_streak_record: allow_public_streak_record,
-        allow_public_progress_view: allow_public_progress_view,
-        allow_public_awards_record: allow_public_awards_record
-      })
+    let student_ref = doc(db, "Students", user.uid);
+    getDoc(student_ref).then((doc) => {
+      if(doc.id == user.uid) {
+        updateDoc(student_ref, {
+          allow_teacher_view: allow_teacher_view,
+          allow_public_streak_record: allow_public_streak_record,
+          allow_public_progress_view: allow_public_progress_view,
+          allow_public_awards_record: allow_public_awards_record
+        })
+      } else {
+        return new Response("Not authorized to perform this action", {
+          status: 403,
+        });
+      }
+    })
   } catch (error) {
     return new Response("Error while adding task", {
       status: 500,

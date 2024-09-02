@@ -1,8 +1,10 @@
 ---
-import { app } from "../firebase/server";
 import type DatabaseSource from "../lib/source_database";
-import { getFirestore } from "firebase-admin/firestore";
 import type { UserRecord } from "firebase-admin/auth";
+import { app } from "../firebase/client";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
+import "firebase/firestore";
 
 interface Props {
   user: UserRecord;
@@ -13,10 +15,8 @@ const { user } = Astro.props;
 import Fuse, { type FuseResult } from "fuse.js";
 
 const db = getFirestore(app);
-const sources_ref = db.collection("Sources");
-const sources_snapshot = await sources_ref
-  .where("student_id", "==", user.uid)
-  .get();
+const sources_ref = query(collection(db, "Sources"), where("student_id", "==", user.uid));
+const sources_snapshot = await getDocs(sources_ref);
 const user_sources: DatabaseSource[] = sources_snapshot.docs.map((doc) => ({
   primary_id: doc.id,
   source: doc.data(),

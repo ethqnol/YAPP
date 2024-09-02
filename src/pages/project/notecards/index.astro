@@ -1,8 +1,10 @@
 ---
 import ProjectLayout from "../../../layouts/ProjectLayout.astro";
-import { app } from "../../../firebase/server";
 import type { Props } from "astro/components/ViewTransitions.astro";
-import { getFirestore } from "firebase-admin/firestore";
+import { app } from "../../../firebase/client";
+import { collection, query, where, doc, getDoc, getDocs } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
+import "firebase/firestore";
 import type DatabaseSource from "../../../lib/source_database";
 import type Tag from "../../../lib/tags";
 import NotecardSearch from "../../../components/NotecardSearch.astro";
@@ -12,11 +14,9 @@ const {user} = Astro.locals;
 const db = getFirestore(app);
 
 async function get_user_tags() {
-  const tags_ref = db.collection("Tags");
+  const tags_ref = doc(db, "Tags", user.uid);
 
-  return tags_ref
-    .doc(user!.uid)
-    .get()
+  return getDoc(tags_ref)
     .then((tags_snapshot) => {
       const user_tags = tags_snapshot.data()?.tags || [];
       return user_tags;
@@ -36,11 +36,9 @@ const user_tags = get_user_tags()
   });
 
 async function get_user_sources() {
-  const sources_ref = db.collection("Sources");
+  const sources_ref = query(collection(db, "Sources"), where("student_id", "==", user!.uid));
 
-  return sources_ref
-    .where("student_id", "==", user!.uid)
-    .get()
+  return getDocs(sources_ref)
     .then((sources_snapshot) => {
       const user_sources = sources_snapshot.docs.map((doc) => ({
         primary_id: doc.id,
