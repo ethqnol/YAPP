@@ -1,11 +1,13 @@
 ---
 import { app } from "../firebase/server";
 import { getAuth, type DecodedIdToken } from "firebase-admin/auth";
-import Layout from "../layouts/Layout.astro";
+import Layout from "../layouts/ClassLayout.astro";
+import type DatabaseUsers from "../lib/user_database";
+import Setting from "../components/Setting.svelte";
+import { getFirestore } from "firebase-admin/firestore";
 
 const auth = getAuth(app);
 
-/* Check current session */
 if (!Astro.cookies.has("__session")) {
   return Astro.redirect("/signin");
 }
@@ -14,7 +16,7 @@ const session_cookie = Astro.cookies.get("__session")?.value;
 if (!session_cookie) {
   return Astro.redirect("/signin");
 }
-//let user : null |
+
 const decodedCookie: null | DecodedIdToken = await auth
   .verifySessionCookie(session_cookie, true)
   .then((decodedToken) => {
@@ -22,7 +24,6 @@ const decodedCookie: null | DecodedIdToken = await auth
   })
   .catch((error) => {
     console.log(error);
-    //Astro.cookies.delete("__session");
     return null;
   });
 
@@ -32,76 +33,111 @@ if (!decodedCookie) {
 
 const user = await auth.getUser(decodedCookie.uid);
 
+let db = getFirestore(app);
+let user_ref = db.collection("Students").doc(user.uid);
+let user_snapshot = await user_ref.get();
+let user_data = {primary_id: user_snapshot.id, user: user_snapshot.data()} as DatabaseUsers;
+
+const joke = await fetch("https://official-joke-api.appspot.com/jokes/programming/random")
+  .then(response => response.json())
+  .then(data => data[0].setup + " " + data[0].punchline)
+  .catch(() => "JavaScript is a garbage language. Thats why this joke didn't render");
 ---
 
 <Layout title="Dashboard">
   <div id="container">
     <div id="board">
-      <h1>Welcome, <span>{user.displayName}</span></h1>
-      <img src={user.photoURL} id="profile-pic" alt="Profile Picture" />
-      <p>Have a great day!</p>
-      <form action="/api/auth/signout">
-        <button type="submit">Sign Out</button>
-      </form>
-      <br />
-      <form action="/">
-        <button type="submit">Back to Home</button>
-      </form>
+
+      <div id="profile-section">
+        <img src={user.photoURL} id="profile-pic" alt="Profile Picture" />
+        <h1>{user.displayName}</h1>
+      </div>
+      
+      <div id="nav-buttons">
+        <button class="nav-button" type="submit" onclick="location.href='/api/auth/signout'">Sign Out</button>
+        <button class="nav-button" type="submit" onclick="location.href='/project/sources'">To Projects</button>
+        <button class="nav-button" type="submit" onclick="location.href='/'">Back to Home</button>
+      </div>
+      
+      <div id="joke-section">
+        <p>{joke}</p>
+      </div>
+      
+      <Setting {user_data} client:visible/>
     </div>
   </div>
 </Layout>
 
 <style>
-  html {
-    color: white;
-    font-family: Arial, sans-serif;
-    height: 100%;
-  }
-  #container {
+  body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--color-surface-mixed-100);
+    color: var(--text-color);
     display: flex;
     justify-content: center;
     align-items: center;
-    height: calc(100vh - var(--navbar-height));
+    height: 100vh;
   }
-  #board {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border: solid 2px rgba(255, 255, 255, 0.2);
-    padding: 2rem;
-    border-radius: 10px;
-    text-align: center;
-    width: 80%;
-    max-width: 500px;
-  }
-  h1 {
-    font-weight: 700;
-    font-size: 2rem;
-    margin-bottom: 1rem;
-  }
-  #profile-pic {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    margin: 1rem 0;
-  }
-  button {
-    transition: 0.2s;
-    cursor: pointer;
-    background-color: var(--color-surface-mixed-400);
-    border-radius: 0.5rem;
+
+  #container {
     width: 100%;
+    max-width: 600px;
+    padding: 2rem;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+    border-radius: 15px;
+    background-color: var(--color-surface-mixed-200);
+  }
+
+  #profile-section {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+
+  #profile-pic {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 2px solid var(--color-primary-200);
+    margin-right: 1rem;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--color-primary-200);
+  }
+
+  #nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+  }
+
+  .nav-button {
+    flex: 1;
+    margin: 0 0.5rem;
     padding: 0.8rem;
+    border-radius: 8px;
     border: none;
-    font-size: 1rem;
+    background-color: var(--color-surface-400);
     color: white;
-    margin-top: 0.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
   }
-  button:hover {
-    transform: scale(1.05);
-    background-color: #5460e0;
+
+  .nav-button:hover {
+    background-color: var(--color-primary-200);
   }
-  span {
-    color: #00ff7f;
-    font-weight: 700;
+
+  #joke-section {
+    background-color: var(--color-surface-300);
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    font-style: italic;
   }
 </style>
