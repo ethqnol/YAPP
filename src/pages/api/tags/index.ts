@@ -6,7 +6,7 @@ import { getFirestore } from "firebase/firestore";
 import "firebase/firestore";
 import type Tag from "../../../lib/tags.ts";
 import Hashids from 'hashids'
-import { updateDoc } from "firebase/firestore/lite";
+import { updateDoc } from "firebase/firestore";
 
 export const POST: APIRoute = async ({ request, cookies }) => {
   let user_tag: Tag = await request.json();

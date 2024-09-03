@@ -2,7 +2,7 @@
 import ProjectLayout from '../../../layouts/ProjectLayout.astro';
 import JoinClass from '../../../components/JoinClass.svelte';
 import { app } from "../../../firebase/client";
-import { collection, query, where, getDocs, getDoc, doc } from "firebase/firestore";
+import { getDoc, doc } from "firebase/firestore";
 import { getFirestore } from "firebase/firestore";
 import "firebase/firestore";
 import type DatabaseClass from '../../../lib/class_database';
@@ -20,7 +20,7 @@ const user_data = user_snapshot.data()!;
 let class_data : DatabaseClass | null = null;
 
 if (user_data.class_id != "") {
-  const class_snapshot = await getDoc(doc(user_data.class_id));
+    const class_snapshot = await getDoc(doc(db,"Class", user_data.class_id));
   if (class_snapshot.exists()) {
     is_in_class = true;
     class_data = {
