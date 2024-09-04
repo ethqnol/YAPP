@@ -7,46 +7,58 @@ export function parse_author(author: string): string[] {
 export function generate_citation(source: Source): string {
   let citation = '';
 
-  citation += format_authors(source.authors) + '. ';
+  // Format authors in "Last, First" format
+  const formatted_authors = source.authors.map(author => {
+    const [first_name, ...last_name] = author.split(' ');
+    return `${last_name.join(' ')}, ${first_name}`;
+  }).join(', ');
 
-  if (source.title) {
-    citation += source.title + '. ';
+  citation += formatted_authors + '. ';
+
+  if (source.title && source.title.toLowerCase() !== 'unknown') {
+    citation += `*${source.title}*. `;
   }
 
-  if (source.series) {
-    citation += source.series;
-    if (source.series_num) {
-      citation += ' ' + source.series_num;
+  if (source.series && source.series.toLowerCase() !== 'unknown') {
+    citation += `${source.series}`;
+    if (source.series_num && source.series_num != null) {
+      citation += ` ${source.series_num}`;
     }
     citation += '. ';
   }
 
-  if (source.edition) {
-    citation += source.edition + ' ed. ';
+  if (source.edition && source.edition != null) {
+    citation += `${source.edition} ed. `;
   }
 
-  if (source.volume) {
-    citation += 'vol. ' + source.volume + '. ';
+  if (source.volume && source.volume != null) {
+    citation += `vol. ${source.volume}. `;
   }
 
-  if (source.publishing_location) {
-    citation += source.publishing_location + ': ';
+  if (source.publishing_location && source.publishing_location.toLowerCase() !== 'unknown') {
+    citation += `${source.publishing_location}: `;
+  } else {
+    citation += 'np.: ';
   }
 
-  if (source.publishing_company) {
-    citation += source.publishing_company + ', ';
+  if (source.publishing_company && source.publishing_company.toLowerCase() !== 'unknown') {
+    citation += `${source.publishing_company}, `;
+  } else {
+    citation += 'np., ';
   }
 
-  if (source.publishing_year) {
-    citation += source.publishing_year + '. ';
+  if (source.publishing_year && source.publishing_year != null) {
+    citation += `${source.publishing_year}. `;
+  } else {
+    citation += 'n.d. ';
   }
 
-  if (source.isbn) {
-    citation += 'ISBN ' + source.isbn + '. ';
+  if (source.isbn && source.isbn.toLowerCase() !== 'unknown') {
+    citation += `ISBN ${source.isbn}. `;
   }
 
-  if (source.doi) {
-    citation += 'doi:' + source.doi + '. ';
+  if (source.doi && source.doi.toLowerCase() !== 'unknown') {
+    citation += `doi:${source.doi}. `;
   }
 
   citation = citation.trim();
@@ -57,6 +69,7 @@ export function generate_citation(source: Source): string {
 
   return citation;
 }
+
 
 export function generate_page_number(start: number, end: number): string {
   if (start == end) {

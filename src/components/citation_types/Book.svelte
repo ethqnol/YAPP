@@ -43,8 +43,8 @@
     async function upload_source() {
         source.authors = source_authors.filter((author) => author != "");
         if (source_id != "") {
-            let response = await fetch(`/api/sources/${source_id}`, {
-                method: "PUT",
+            let response = await fetch(`/api/sources/edit/${source_id}`, {
+                method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -81,10 +81,15 @@
 
     function add_author() {
         source_authors = [...source_authors, ""];
+
     }
 
     function subtract_author(index: number) {
-        source_authors = source_authors.splice(index, 1);
+        if (source_authors.length === 1) {
+            return;
+        }
+        source_authors.splice(index, 1);
+        source_authors = source_authors;
     }
 </script>
 

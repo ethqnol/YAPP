@@ -1,6 +1,7 @@
 import type { APIRoute } from "astro";
 import { app } from "../../../../firebase/client";
 import { doc, getDoc, deleteDoc } from "firebase/firestore";
+import type Source from "../../../../lib/source.ts";
 import { getFirestore } from "firebase/firestore";
 import "firebase/firestore";
 import get_user_session from "../../../../lib/auth.ts";
@@ -22,9 +23,9 @@ export const DELETE: APIRoute = async ({ params, cookies }) => {
 
   try {
     const db = getFirestore(app);
-    const sources_ref = doc(db, "Source", source_id);
+    const sources_ref = doc(db, "Sources", source_id);
     getDoc(sources_ref).then((doc) => {
-      if (doc.id == user.uid) {
+      if ((doc.data() as Source).student_id == user.uid) {
         deleteDoc(sources_ref);
       } else {
         return new Response("Not authorized to perform this action", {

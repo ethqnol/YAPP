@@ -1,14 +1,12 @@
 ---
-import ProjectLayout from "../../../../layouts/ProjectLayout.astro"
-import Book from "../../../../components/citation_types/Book.svelte"
+import ProjectLayout from "../../../../layouts/ProjectLayout.astro";
+import Book from "../../../../components/citation_types/Book.svelte";
 import type DatabaseSource from "../../../../lib/source_database";
 import { doc, getDoc } from "firebase/firestore";
 import { app } from "../../../../firebase/client";
 import { getFirestore } from "firebase/firestore";
 import "firebase/firestore";
 import type Source from "../../../../lib/source";
-
-
 
 const { id } = Astro.params;
 if (!id) {
@@ -26,25 +24,50 @@ let source: DatabaseSource = {
   primary_id: source_snapshot.id,
   source: source_snapshot.data() as Source,
 };
-
 ---
 
-
 <ProjectLayout title="Edit Source">
-    <Book data={source} client:visible/>
-    <button id="delete"> Delete </button>
+  <div class="edit-container">
+    <Book data={source} client:visible />
+    <button id="delete_button" data-id={`${id}`} class="delete-button">Delete</button>
+  </div>
+  
 </ProjectLayout>
 
 <script>
-const delete_button = document.getElementById("delete")!;
+  const delete_button = document.getElementById("delete_button")!;
+  const source_id = delete_button.getAttribute("data-id")!;
+  delete_button.addEventListener("click", async () => {
+    const response = await fetch(`/api/sources/delete/${source_id}`, {
+      method: "DELETE",
+    });
 
-delete_button.addEventListener("click", async () => {
-  const response = await fetch(`/api/sources/${Astro.params.id}`, {
-    method: "DELETE",
+    window.location.href = "/project/sources";
   });
-
-  return Astro.redirect("/sources");
-
-});
-
 </script>
+
+<style>
+  .edit-container {
+    padding: 1.5rem;
+    background-color: var(--color-surface-mixed-200);
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    margin: 5vh 15vw;
+  }
+
+  .delete-button {
+    margin-top: 1rem;
+    width: 100%;
+    padding: 0.75rem 1.5rem;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .delete-button:hover {
+    background-color: #8B0000;
+  }
+</style>

@@ -78,6 +78,7 @@
         }
     }
 
+
     function update_author(e: any, index: number) {
         source_authors = source_authors.map((author, i) =>
             i === index ? e.target.value : author,
@@ -86,10 +87,15 @@
 
     function add_author() {
         source_authors = [...source_authors, ""];
+
     }
 
     function subtract_author(index: number) {
-        source_authors = source_authors.splice(index, 1);
+        if (source_authors.length === 1) {
+            return;
+        }
+        source_authors.splice(index, 1);
+        source_authors = source_authors;
     }
 </script>
 
