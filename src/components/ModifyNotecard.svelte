@@ -2,10 +2,19 @@
     import type DatabaseNotecard from "../lib/notecard_database.ts";
     import Popup from "./Popup.svelte";
     import Loading from "./Loading.svelte";
+    import { Carta, MarkdownEditor } from 'carta-md';
+	//import 'carta-md/default.css';
+	import "./themes/theme.css"
     import type DatabaseSource from "../lib/source_database.ts";
+    import DOMPurify from 'isomorphic-dompurify';
     export let notecard: DatabaseNotecard | null = null;
     export let sources: DatabaseSource[] = [];
 
+    
+	const carta = new Carta({
+	    sanitizer: DOMPurify.sanitize,
+	});
+    
     let notecard_add = false;
     let notecard_success = false;
     let load = false;
@@ -62,6 +71,7 @@
             }
         }
     }
+    let value = "hello world"
 </script>
 
 {#if load}
@@ -100,7 +110,9 @@
         </div>
         <div class="main-body-info">
             <textarea class="quote-edit" placeholder="[Paste Quotation Here]" bind:value={quote} />
-            <textarea class="analysis-edit" placeholder="[Write Analysis Here]" bind:value={analysis}/>
+            <div class="analysis-edit">
+                <MarkdownEditor {carta} mode="tabs" bind:value={analysis} theme="github"/>
+            </div>
         </div>
         <div class="actions">
             <a href="/project/notecards" class="cancel-btn">Cancel</a>
@@ -110,17 +122,17 @@
 </div>
 
 <style>
-    :global(body) {
-        font-family: 'Inter', sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #1f1f1f;
-        color: #f5f5f5;
-    }
+   	:global(.carta-font-code) {
+		font-family: '...', monospace;
+		font-size: 1.1rem;
+		color: white;
+	}
+
+
 
     .page-body {
         position: relative;
-        padding: 20px;
+        padding: 20px;;
         max-width: 1200px;
         margin: 0 auto;
     }
@@ -137,7 +149,8 @@
         position: relative;
         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         margin-top: 20px;
-        background-color: var(--color-surface-mixed-300);
+        background-color: #28313e;
+        border: gray 2px solid;
         border-radius: 16px;
         overflow: hidden;
         color: #f5f5f5;
@@ -208,6 +221,9 @@
     .main-body-info {
         display: flex;
         height: 100%;
+        text-align: left;
+        width: 100%;
+        color: white;
     }
 
     textarea {
@@ -215,18 +231,21 @@
         font-size: 1rem;
         background-color: transparent;
         border: none;
-        height: 40vh;
+        height: 45vh;
         color: #f5f5f5;
         resize: none;
         outline: none;
     }
 
     .quote-edit {
-        flex: 2;
+        width: 50%;
+        height: 45vh;
         border-right: 2px solid var(--color-surface-mixed-500);
     }
 
     .analysis-edit {
+        width: 50%;
+        color: white;
         flex: 1;
     }
 
@@ -284,4 +303,5 @@
     ::-webkit-scrollbar-thumb:hover {
         background-color: var(--color-primary-500);
     }
+         
 </style>

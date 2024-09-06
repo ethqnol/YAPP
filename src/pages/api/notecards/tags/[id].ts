@@ -5,6 +5,7 @@ import { getFirestore } from "firebase/firestore";
 import "firebase/firestore";
 import get_user_session from "../../../../lib/auth.ts";
 import type Tag from "../../../../lib/tags.ts";
+import type Notecard from "../../../../lib/notecard.ts";
 
 
 export const POST: APIRoute = async ({ request, params, cookies }) => {
@@ -30,7 +31,7 @@ export const POST: APIRoute = async ({ request, params, cookies }) => {
     const db = getFirestore(app);
     const notecards_ref = doc(db, "Notecards", notecard_id);
     getDoc(notecards_ref).then((doc) => {
-      if (doc.id == user.uid) {
+      if ((doc.data() as Notecard).student_id == user.uid) {
         updateDoc(notecards_ref, { tags: tags })
       } else {
         return new Response("Not authorized to perform this action", {
