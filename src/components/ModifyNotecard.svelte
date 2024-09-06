@@ -93,7 +93,7 @@
             <input class="title-edit" placeholder="Title" type="text" bind:value={title}>
             <div class="source-info">
                 <div class="custom-select">
-                    <select name="" id="" bind:value={selected_source}>
+                    <select bind:value={selected_source}>
                         {#each sources as source}
                             <option value={source.primary_id}>
                                 {`${source.source.title}; ${source.source.full_citation.slice(0, 50) + (source.source.full_citation.length > 50 ? "..." : "")}`}
@@ -162,7 +162,7 @@
     }
 
     .title-edit {
-        width: 100%;
+        width: 97.5%;
         padding: 10px;
         font-size: 1.25rem;
         background-color: transparent;
@@ -193,7 +193,7 @@
         width: 100%;
         padding: 10px;
         border-radius: 4px;
-        background-color: #2c2c2c;
+        background-color: var(--color-surface-400);
         color: #f5f5f5;
         border: none;
         outline: none;
@@ -209,7 +209,7 @@
         color-scheme: dark !important;
         width: 40px;
         padding: 10px;
-        background-color: #2c2c2c;
+        background-color: var(--color-surface-400);
         border: none;
         border-radius: 4px;
         color: #f5f5f5;
