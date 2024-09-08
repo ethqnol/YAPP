@@ -1,12 +1,6 @@
 <script lang="ts">
     import Book from "./citation_types/Book.svelte";
-    import Case from "./citation_types/Case.svelte";
-    import Magazine from "./citation_types/Magazine.svelte";
-    import Journal from "./citation_types/Journal.svelte";
-    import Website from "./citation_types/Website.svelte";
-    import Letter from "./citation_types/Letter.svelte";
-    import Manuscript from "./citation_types/Manuscript.svelte";
-    import Newspaper from "./citation_types/Newspaper.svelte";
+
     
     import SourceSearch from "./SourceSearch.svelte";
     import Popup from "./Popup.svelte";
@@ -70,22 +64,6 @@
                 </div>
                 {#if Number(source_type) == 0}
                     <Book on:save={display_popup} />
-                {:else if Number(source_type) == 1}
-                    <Journal on:save={display_popup} />
-                {:else if Number(source_type) == 2}
-                    <Website on:save={display_popup} />
-                {:else if Number(source_type) == 3}
-                    <Newspaper on:save={display_popup} />
-                {:else if Number(source_type) == 4}
-                    <Letter on:save={display_popup} />
-                {:else if Number(source_type) == 5}
-                    <Case on:save={display_popup} />
-                {:else if Number(source_type) == 6}
-                    <Manuscript on:save={display_popup} />
-                {:else if Number(source_type) == 7}
-                    <Newspaper on:save={display_popup} />
-                {:else if Number(source_type) == 8}
-                    <Magazine on:save={display_popup} />
                 {:else}
                     <p>Unknown source type</p>
                 {/if}
