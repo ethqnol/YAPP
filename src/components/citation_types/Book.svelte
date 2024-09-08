@@ -32,6 +32,7 @@
               series_num: null,
               publishing_location: "",
               publishing_company: "",
+              collection_title: "",
               date: null,
               original_date: null,
               accessed: Date.now(),

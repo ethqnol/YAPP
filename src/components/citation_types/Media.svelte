@@ -7,7 +7,8 @@
 
     const dispatch = createEventDispatcher();
     
-    
+    //why the f*ck are there so many rules for citing media what the f*ck
+    //will ask about this later
     
     const source_added = () => {
         dispatch("save", true);
@@ -33,9 +34,9 @@
               publishing_location: "",
               publishing_company: "",
               date: null,
-              collection_title: "",
               original_date: null,
               accessed: Date.now(),
+              collection_title: "",
               context: "",
               number_of_volumes: null,
               history: "",

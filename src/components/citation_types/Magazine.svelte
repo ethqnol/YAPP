@@ -21,19 +21,19 @@
     let source: Source = data
         ? data.source
         : {
-              source_type: SourceType.WEBSITE,
+              source_type: SourceType.MAGAZINE,
               title: "",
               authors: [""],
               editors: [""],
               translators: [""],
               volume: null,
+              collection_title: "",
               edition: null,
               series: "",
               series_num: null,
               publishing_location: "",
               publishing_company: "",
               date: null,
-              collection_title: "",
               original_date: null,
               accessed: Date.now(),
               context: "",
@@ -106,11 +106,11 @@
 
 <form>
     <div class="form-group">
-        <label for="Title">Website Title</label>
+        <label for="Title">Article Title</label>
         <input
             id="Title"
             type="text"
-            placeholder="Website Title"
+            placeholder="Article Title"
             bind:value={source.title}
         />
     </div>
@@ -150,44 +150,36 @@
     </div>
     
     <div class="form-group">
-        <label for="Publisher">Website Name</label>
+        <label for="Publisher">Magazine Name</label>
         <input
             id="Publisher"
             type="text"
-            placeholder="Website Name"
-            bind:value={source.publishing_location}
-        />
-    </div>
-    
-    <div class="form-group">
-        <label for="Publisher">Website Publisher</label>
-        <input
-            id="Publisher"
-            type="text"
-            placeholder="Website Publisher"
+            placeholder="Magazine Name"
             bind:value={source.publishing_company}
         />
     </div>
 
     <div class="form-group">
-        <label for="Date">Date Published</label>
+        <label for="Date">Month</label>
         <input
             id="Date"
-            type="date"
-            placeholder="date"
-            bind:value={source.original_date}
+            type="number"
+            placeholder="Month"
+            bind:value={source.date}
         />
     </div>
     
+    
     <div class="form-group">
-            <label for="Date">Last Modified</label>
+            <label for="Date">Year</label>
             <input
                 id="Date"
-                type="date"
-                placeholder="date"
-                bind:value={source.date}
+                type="number"
+                placeholder="Year"
+                bind:value={source.original_date}
             />
         </div>
+    
     <div class="form-group">
         <label for="Date">Date Accessed</label>
         <input

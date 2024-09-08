@@ -21,7 +21,7 @@
     let source: Source = data
         ? data.source
         : {
-              source_type: SourceType.WEBSITE,
+              source_type: SourceType.BOOK,
               title: "",
               authors: [""],
               editors: [""],
@@ -32,8 +32,8 @@
               series_num: null,
               publishing_location: "",
               publishing_company: "",
-              date: null,
               collection_title: "",
+              date: null,
               original_date: null,
               accessed: Date.now(),
               context: "",
@@ -84,6 +84,11 @@
     
     
 
+    
+    
+    
+    
+
     function update_author(e: any, index: number) {
         source_authors = source_authors.map((author, i) =>
             i === index ? e.target.value : author,
@@ -106,11 +111,11 @@
 
 <form>
     <div class="form-group">
-        <label for="Title">Website Title</label>
+        <label for="Title">Title</label>
         <input
             id="Title"
             type="text"
-            placeholder="Website Title"
+            placeholder="Book Title"
             bind:value={source.title}
         />
     </div>
@@ -148,46 +153,80 @@
         {/each}
         <button type="button" on:click={add_author}>Add</button>
     </div>
+
     
     <div class="form-group">
-        <label for="Publisher">Website Name</label>
+        <label for="Series">Series</label>
         <input
-            id="Publisher"
+            id="Series"
             type="text"
-            placeholder="Website Name"
+            placeholder="Series Title"
+            bind:value={source.series}
+        />
+    </div>
+    <div class="form-group">
+        <label for="SeriesNum">Series Number</label>
+        <input
+            id="SeriesNum"
+            type="number"
+            placeholder="Series #"
+            bind:value={source.series_num}
+        />
+    </div>
+    <div class="form-group">
+        <label for="Volume">Volume</label>
+        <input
+            id="Volume"
+            type="number"
+            placeholder="Volume #"
+            bind:value={source.volume}
+        />
+    </div>
+    <div class="form-group">
+        <label for="Edition">Edition</label>
+        <input
+            id="Edition"
+            type="number"
+            placeholder="Edition #"
+            bind:value={source.edition}
+        />
+    </div>
+    <div class="form-group">
+        <label for="Publishing Location">Publication Location</label>
+        <input
+            id="Place"
+            type="text"
+            placeholder="Place"
             bind:value={source.publishing_location}
         />
     </div>
-    
     <div class="form-group">
-        <label for="Publisher">Website Publisher</label>
+        <label for="Publisher">Publisher</label>
         <input
             id="Publisher"
             type="text"
-            placeholder="Website Publisher"
+            placeholder="Publisher"
             bind:value={source.publishing_company}
         />
     </div>
-
     <div class="form-group">
-        <label for="Date">Date Published</label>
+        <label for="Date">Original Date</label>
         <input
             id="Date"
-            type="date"
-            placeholder="date"
+            type="number"
+            placeholder="Year"
             bind:value={source.original_date}
         />
     </div>
-    
     <div class="form-group">
-            <label for="Date">Last Modified</label>
-            <input
-                id="Date"
-                type="date"
-                placeholder="date"
-                bind:value={source.date}
-            />
-        </div>
+        <label for="Date">Date</label>
+        <input
+            id="Date"
+            type="number"
+            placeholder="Year"
+            bind:value={source.date}
+        />
+    </div>
     <div class="form-group">
         <label for="Date">Date Accessed</label>
         <input
@@ -198,11 +237,11 @@
         />
     </div>
     <div class="form-group">
-        <label for="URL">URL</label>
+        <label for="DOI">Identifier (DOI or URL)</label>
         <input
-            id="URL or DOI"
+            id="DOI"
             type="text"
-            placeholder="URL"
+            placeholder="DOI or URL"
             bind:value={source.identifier}
         />
     </div>

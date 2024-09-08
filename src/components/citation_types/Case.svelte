@@ -24,6 +24,7 @@
               source_type: SourceType.CASE,
               title: "",
               authors: [""],
+              collection_title: "",
               editors: [""],
               translators: [""],
               volume: null,

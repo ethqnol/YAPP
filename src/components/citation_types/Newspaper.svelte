@@ -35,6 +35,7 @@
               date: null,
               original_date: null,
               accessed: Date.now(),
+              collection_title: "",
               context: "",
               number_of_volumes: null,
               history: "",

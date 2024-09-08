@@ -21,7 +21,7 @@
     let source: Source = data
         ? data.source
         : {
-              source_type: SourceType.DATASET,
+              source_type: SourceType.CONFERENCE_PAPER,
               title: "",
               authors: [""],
               editors: [""],
@@ -32,6 +32,7 @@
               series_num: null,
               publishing_location: "",
               publishing_company: "",
+              collection_title: "",
               date: null,
               original_date: null,
               accessed: Date.now(),
@@ -47,7 +48,6 @@
               pages: null,
           };
     let source_authors = source.authors;
-
 
     async function upload_source() {
         source.authors = source_authors.filter((author) => author != "");
@@ -83,7 +83,11 @@
     }
     
     
-  
+
+    
+    
+    
+    
 
     function update_author(e: any, index: number) {
         source_authors = source_authors.map((author, i) =>
@@ -107,11 +111,21 @@
 
 <form>
     <div class="form-group">
-        <label for="Title">Title</label>
+        <label for="Title">Paper Title</label>
         <input
             id="Title"
             type="text"
-            placeholder="Dataset Title (including edition if possible)"
+            placeholder="Paper Title"
+            bind:value={source.title}
+        />
+    </div>
+    
+    <div class="form-group">
+        <label for="Title">Conference Title</label>
+        <input
+            id="Title"
+            type="text"
+            placeholder="Format: Conference Title, Location, Date (year)"
             bind:value={source.title}
         />
     </div>
@@ -150,8 +164,20 @@
         <button type="button" on:click={add_author}>Add</button>
     </div>
 
+    
+
+    
     <div class="form-group">
-        <label for="Publisher">Publisher/Distributor</label>
+        <label for="Publishing Location">Publication Location</label>
+        <input
+            id="Place"
+            type="text"
+            placeholder="Place"
+            bind:value={source.publishing_location}
+        />
+    </div>
+    <div class="form-group">
+        <label for="Publisher">Publisher</label>
         <input
             id="Publisher"
             type="text"
@@ -160,9 +186,9 @@
         />
     </div>
     <div class="form-group">
-        <label for="Date">Year</label>
+        <label for="Date">Date (Year)</label>
         <input
-            id="Year"
+            id="Date"
             type="number"
             placeholder="Year"
             bind:value={source.date}
@@ -178,16 +204,16 @@
         />
     </div>
     <div class="form-group">
-        <label for="URL">URL or DOI</label>
+        <label for="DOI">Identifier (DOI or URL)</label>
         <input
-            id="URL"
+            id="DOI"
             type="text"
-            placeholder="URL or DOI"
+            placeholder="DOI or URL"
             bind:value={source.identifier}
         />
     </div>
-
-    <button id="ToggleManual" type="button" on:click={upload_source}>Auto-citation</button
+    <button id="ToggleManual" type="button" on:click={upload_source}
+        >Auto-citation</button
     >
 </form>
 

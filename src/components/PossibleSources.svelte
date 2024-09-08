@@ -112,6 +112,7 @@
             volume: null,
             number_of_volumes: null,
             edition: 1,
+            collection_title: "",
             publishing_location: publishing_city,
             publishing_company: publisher,
             date: parseInt(publish_year),

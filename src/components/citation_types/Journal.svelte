@@ -28,6 +28,7 @@
               translators: [""],
               volume: null,
               edition: null,
+              collection_title: "",
               series: "",
               series_num: null,
               publishing_location: "",

@@ -8,6 +8,7 @@ export default interface Source {
   footnote_short: string;
   student_id: string;
   title: string;
+  collection_title: string;
   authors: string[];
   editors: string[];
   translators: string[];

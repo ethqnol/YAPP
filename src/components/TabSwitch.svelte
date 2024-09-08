@@ -1,7 +1,7 @@
 <script lang="ts">
     import Book from "./citation_types/Book.svelte";
     import Case from "./citation_types/Case.svelte";
-    import Dataset from "./citation_types/Dataset.svelte";
+    import Magazine from "./citation_types/Magazine.svelte";
     import Journal from "./citation_types/Journal.svelte";
     import Website from "./citation_types/Website.svelte";
     import Letter from "./citation_types/Letter.svelte";
@@ -58,31 +58,34 @@
                 <div class="custom-select">
                     <select id="SourceType" bind:value={source_type}>
                         <option value="0">Book</option>
-                        <option value="1">Case</option>
-                        <option value="2">Dataset</option>
-                        <option value="3">Journal</option>
-                        <option value="4">Website</option>
-                        <option value="5">Letter</option>
+                        <option value="1">Journal</option>
+                        <option value="2">Website</option>
+                        <option value="3">Newspaper</option>
+                        <option value="4">Letter</option>
+                        <option value="5">Case</option>
                         <option value="6">Manuscript</option>
-                        <option value="7">Newspaper</option>
+                        <option value="7">Media</option>
+                        <option value="8">Magazine</option>
                     </select>
                 </div>
                 {#if Number(source_type) == 0}
                     <Book on:save={display_popup} />
                 {:else if Number(source_type) == 1}
-                    <Case on:save={display_popup} />
-                {:else if Number(source_type) == 2}
-                    <Dataset on:save={display_popup} />
-                {:else if Number(source_type) == 3}
                     <Journal on:save={display_popup} />
-                {:else if Number(source_type) == 4}
+                {:else if Number(source_type) == 2}
                     <Website on:save={display_popup} />
-                {:else if Number(source_type) == 5}
+                {:else if Number(source_type) == 3}
+                    <Newspaper on:save={display_popup} />
+                {:else if Number(source_type) == 4}
                     <Letter on:save={display_popup} />
+                {:else if Number(source_type) == 5}
+                    <Case on:save={display_popup} />
                 {:else if Number(source_type) == 6}
                     <Manuscript on:save={display_popup} />
                 {:else if Number(source_type) == 7}
                     <Newspaper on:save={display_popup} />
+                {:else if Number(source_type) == 8}
+                    <Magazine on:save={display_popup} />
                 {:else}
                     <p>Unknown source type</p>
                 {/if}
