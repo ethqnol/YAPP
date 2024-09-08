@@ -5,13 +5,10 @@
     export let data: DatabaseSource | null = null;
     import { createEventDispatcher } from "svelte";
 
-    // Done for now.
-    // Edition = Version,
-    // Publisher = Repository
-    // Place = Repo Location
-
     const dispatch = createEventDispatcher();
-
+    
+    
+    
     const source_added = () => {
         dispatch("save", true);
     };
@@ -24,32 +21,39 @@
     let source: Source = data
         ? data.source
         : {
-              source_type: SourceType.BOOK,
+              source_type: SourceType.DATASET,
               title: "",
               authors: [""],
+              editors: [""],
+              translators: [""],
               volume: null,
               edition: null,
               series: "",
               series_num: null,
               publishing_location: "",
               publishing_company: "",
-              publishing_year: null,
+              date: null,
+              original_date: null,
+              accessed: Date.now(),
+              context: "",
+              number_of_volumes: null,
+              history: "",
               isbn: "",
-              doi: "",
+              identifier: "",
               full_citation: "",
               footnote_long: "",
               footnote_short: "",
               student_id: "",
               pages: null,
-              url: "",
           };
     let source_authors = source.authors;
+
 
     async function upload_source() {
         source.authors = source_authors.filter((author) => author != "");
         if (source_id != "") {
-            let response = await fetch(`/api/sources/${source_id}`, {
-                method: "PUT",
+            let response = await fetch(`/api/sources/edit/${source_id}`, {
+                method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -77,7 +81,9 @@
             }
         }
     }
-
+    
+    
+  
 
     function update_author(e: any, index: number) {
         source_authors = source_authors.map((author, i) =>
@@ -105,7 +111,7 @@
         <input
             id="Title"
             type="text"
-            placeholder="Source Title"
+            placeholder="Dataset Title (including edition if possible)"
             bind:value={source.title}
         />
     </div>
@@ -145,52 +151,43 @@
     </div>
 
     <div class="form-group">
-        <label for="Edition">Version</label>
-        <input
-            id="Edition"
-            type="text"
-            placeholder="Version"
-            bind:value={source.edition}
-        />
-    </div>
-    <div class="form-group">
-        <label for="Place">Repo. Location</label>
-        <input
-            id="Place"
-            type="text"
-            placeholder="Repo. Location"
-            bind:value={source.publishing_location}
-        />
-    </div>
-    <div class="form-group">
-        <label for="Publisher">Repository</label>
+        <label for="Publisher">Publisher/Distributor</label>
         <input
             id="Publisher"
             type="text"
-            placeholder="Repository"
+            placeholder="Publisher"
             bind:value={source.publishing_company}
         />
     </div>
     <div class="form-group">
-        <label for="Date">Date</label>
+        <label for="Date">Year</label>
         <input
-            id="Date"
-            type="text"
-            placeholder="Date"
-            bind:value={source.publishing_year}
+            id="Year"
+            type="number"
+            placeholder="Year"
+            bind:value={source.date}
         />
     </div>
     <div class="form-group">
-        <label for="ISBN">ISBN</label>
+        <label for="Date">Date Accessed</label>
         <input
-            id="ISBN"
-            type="text"
-            placeholder="ISBN"
-            bind:value={source.isbn}
+            id="Date"
+            type="date"
+            placeholder="Year"
+            bind:value={source.accessed}
         />
     </div>
-    <button id="ToggleManual" type="button" on:click={upload_source}
-        >Auto-citation</button
+    <div class="form-group">
+        <label for="URL">URL or DOI</label>
+        <input
+            id="URL"
+            type="text"
+            placeholder="URL or DOI"
+            bind:value={source.identifier}
+        />
+    </div>
+
+    <button id="ToggleManual" type="button" on:click={upload_source}>Auto-citation</button
     >
 </form>
 
@@ -212,7 +209,7 @@
         color: var(--color-surface-mixed-600);
     }
 
-    input[type="text"] {
+    input {
         padding: 0.5rem;
         font-size: 1rem;
         color: #20232a;

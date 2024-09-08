@@ -5,10 +5,11 @@
     export let data: DatabaseSource | null = null;
     import { createEventDispatcher } from "svelte";
 
-    // Done for now.
-
     const dispatch = createEventDispatcher();
-
+    
+    //I have literally no f*cking clue how the hell to cite a letter plz help
+    //Left as Book for now
+    
     const source_added = () => {
         dispatch("save", true);
     };
@@ -21,32 +22,42 @@
     let source: Source = data
         ? data.source
         : {
-              source_type: SourceType.BOOK,
+              source_type: SourceType.LETTER,
               title: "",
               authors: [""],
+              editors: [""],
+              translators: [""],
               volume: null,
               edition: null,
               series: "",
               series_num: null,
               publishing_location: "",
               publishing_company: "",
-              publishing_year: null,
+              date: null,
+              original_date: null,
+              accessed: Date.now(),
+              context: "",
+              number_of_volumes: null,
+              history: "",
               isbn: "",
-              doi: "",
+              identifier: "",
               full_citation: "",
               footnote_long: "",
               footnote_short: "",
               student_id: "",
               pages: null,
-              url: "",
           };
     let source_authors = source.authors;
+    let source_editors = source.editors;
+    let source_translators = source.translators;
 
     async function upload_source() {
         source.authors = source_authors.filter((author) => author != "");
+        source.editors = source_editors.filter((editor) => editor != "");
+        source.translators = source_translators.filter((translator) => translator != "");
         if (source_id != "") {
-            let response = await fetch(`/api/sources/${source_id}`, {
-                method: "PUT",
+            let response = await fetch(`/api/sources/edit/${source_id}`, {
+                method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -74,6 +85,49 @@
             }
         }
     }
+    
+    
+    function update_editor(e: any, index: number) {
+        source_authors = source_authors.map((author, i) =>
+            i === index ? e.target.value : author,
+        );
+    }
+
+    function add_editor() {
+        source_authors = [...source_authors, ""];
+
+    }
+
+    function subtract_editor(index: number) {
+        if (source_authors.length === 1) {
+            return;
+        }
+        source_authors.splice(index, 1);
+        source_authors = source_authors;
+    }
+    
+    function update_translator(e: any, index: number) {
+        source_authors = source_authors.map((author, i) =>
+            i === index ? e.target.value : author,
+        );
+    }
+
+    function add_translator() {
+        source_authors = [...source_authors, ""];
+
+    }
+
+    function subtract_translator(index: number) {
+        if (source_authors.length === 1) {
+            return;
+        }
+        source_authors.splice(index, 1);
+        source_authors = source_authors;
+    }
+    
+    
+    
+    
 
     function update_author(e: any, index: number) {
         source_authors = source_authors.map((author, i) =>
@@ -139,7 +193,79 @@
         {/each}
         <button type="button" on:click={add_author}>Add</button>
     </div>
+    
+    <div class="form-group">
+        <label for="Editor">Editor(s)</label>
+        {#each source_editors as editor, i}
+            <div class="author-input">
+                <input
+                    id="Author-{i}"
+                    type="text"
+                    placeholder="Author Name"
+                    bind:value={source_editors[i]}
+                    on:input={(e) => update_editor(e, i)}
+                />
+                <button type="button" on:click={() => subtract_editor(i)}
+                    ><svg
+                        class="w-[48px] h-[48px] text-gray-800 dark:text-white"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="36"
+                        height="36"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M7.757 12h8.486M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                        />
+                    </svg>
+                </button>
+            </div>
+        {/each}
+        <button type="button" on:click={add_editor}>Add</button>
+    </div>
 
+    
+    <div class="form-group">
+        <label for="Translator">Translator(s)</label>
+        {#each source_translators as author, i}
+            <div class="author-input">
+                <input
+                    id="Author-{i}"
+                    type="text"
+                    placeholder="Author Name"
+                    bind:value={source_translators[i]}
+                    on:input={(e) => update_translator(e, i)}
+                />
+                <button type="button" on:click={() => subtract_translator(i)}
+                    ><svg
+                        class="w-[48px] h-[48px] text-gray-800 dark:text-white"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="36"
+                        height="36"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M7.757 12h8.486M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                        />
+                    </svg>
+                </button>
+            </div>
+        {/each}
+        <button type="button" on:click={add_translator}>Add</button>
+    </div>
+
+    
     <div class="form-group">
         <label for="Series">Series</label>
         <input
@@ -150,12 +276,84 @@
         />
     </div>
     <div class="form-group">
+        <label for="SeriesNum">Series Number</label>
+        <input
+            id="SeriesNum"
+            type="number"
+            placeholder="Series #"
+            bind:value={source.series_num}
+        />
+    </div>
+    <div class="form-group">
+        <label for="Volume">Volume</label>
+        <input
+            id="Volume"
+            type="number"
+            placeholder="Volume #"
+            bind:value={source.volume}
+        />
+    </div>
+    <div class="form-group">
+        <label for="Edition">Edition</label>
+        <input
+            id="Edition"
+            type="number"
+            placeholder="Edition #"
+            bind:value={source.edition}
+        />
+    </div>
+    <div class="form-group">
+        <label for="Publishing Location">Publication Location</label>
+        <input
+            id="Place"
+            type="text"
+            placeholder="Place"
+            bind:value={source.publishing_location}
+        />
+    </div>
+    <div class="form-group">
+        <label for="Publisher">Publisher</label>
+        <input
+            id="Publisher"
+            type="text"
+            placeholder="Publisher"
+            bind:value={source.publishing_company}
+        />
+    </div>
+    <div class="form-group">
+        <label for="Date">Original Date</label>
+        <input
+            id="Date"
+            type="number"
+            placeholder="Year"
+            bind:value={source.original_date}
+        />
+    </div>
+    <div class="form-group">
         <label for="Date">Date</label>
         <input
             id="Date"
+            type="number"
+            placeholder="Year"
+            bind:value={source.date}
+        />
+    </div>
+    <div class="form-group">
+        <label for="Date">Date Accessed</label>
+        <input
+            id="Date"
+            type="date"
+            placeholder="Year"
+            bind:value={source.accessed}
+        />
+    </div>
+    <div class="form-group">
+        <label for="DOI">Identifier (DOI or URL)</label>
+        <input
+            id="DOI"
             type="text"
-            placeholder="Date"
-            bind:value={source.publishing_year}
+            placeholder="DOI or URL"
+            bind:value={source.identifier}
         />
     </div>
     <button id="ToggleManual" type="button" on:click={upload_source}
@@ -181,7 +379,7 @@
         color: var(--color-surface-mixed-600);
     }
 
-    input[type="text"] {
+    input {
         padding: 0.5rem;
         font-size: 1rem;
         color: #20232a;

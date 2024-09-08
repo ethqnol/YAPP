@@ -5,69 +5,73 @@ export function parse_author(author: string): string[] {
 }
 
 export function generate_citation(source: Source): string {
-  let citation = '';
+  //the whole logic has gone to absolute sh*t. will fix later
+  //going to reimplement later. foobar for now
+  
+  return "foobar"
+  // let citation = '';
 
-  // Format authors in "Last, First" format
-  const formatted_authors = source.authors.map(author => {
-    const [first_name, ...last_name] = author.split(' ');
-    return `${last_name.join(' ')}, ${first_name}`;
-  }).join(', ');
+  // // Format authors in "Last, First" format
+  // const formatted_authors = source.authors.map(author => {
+  //   const [first_name, ...last_name] = author.split(' ');
+  //   return `${last_name.join(' ')}, ${first_name}`;
+  // }).join(', ');
 
-  citation += formatted_authors + '. ';
+  // citation += formatted_authors + '. ';
 
-  if (source.title && source.title.toLowerCase() !== 'unknown') {
-    citation += `*${source.title}*. `;
-  }
+  // if (source.title && source.title.toLowerCase() !== 'unknown') {
+  //   citation += `*${source.title}*. `;
+  // }
 
-  if (source.series && source.series.toLowerCase() !== 'unknown') {
-    citation += `${source.series}`;
-    if (source.series_num && source.series_num != null) {
-      citation += ` ${source.series_num}`;
-    }
-    citation += '. ';
-  }
+  // if (source.series && source.series.toLowerCase() !== 'unknown') {
+  //   citation += `${source.series}`;
+  //   if (source.series_num && source.series_num != null) {
+  //     citation += ` ${source.series_num}`;
+  //   }
+  //   citation += '. ';
+  // }
 
-  if (source.edition && source.edition != null) {
-    citation += `${source.edition} ed. `;
-  }
+  // if (source.edition && source.edition != null) {
+  //   citation += `${source.edition} ed. `;
+  // }
 
-  if (source.volume && source.volume != null) {
-    citation += `vol. ${source.volume}. `;
-  }
+  // if (source.volume && source.volume != null) {
+  //   citation += `vol. ${source.volume}. `;
+  // }
 
-  if (source.publishing_location && source.publishing_location.toLowerCase() !== 'unknown') {
-    citation += `${source.publishing_location}: `;
-  } else {
-    citation += 'np.: ';
-  }
+  // if (source.publishing_location && source.publishing_location.toLowerCase() !== 'unknown') {
+  //   citation += `${source.publishing_location}: `;
+  // } else {
+  //   citation += 'np.: ';
+  // }
 
-  if (source.publishing_company && source.publishing_company.toLowerCase() !== 'unknown') {
-    citation += `${source.publishing_company}, `;
-  } else {
-    citation += 'np., ';
-  }
+  // if (source.publishing_company && source.publishing_company.toLowerCase() !== 'unknown') {
+  //   citation += `${source.publishing_company}, `;
+  // } else {
+  //   citation += 'np., ';
+  // }
 
-  if (source.publishing_year && source.publishing_year != null) {
-    citation += `${source.publishing_year}. `;
-  } else {
-    citation += 'n.d. ';
-  }
+  // if (source.publishing_year && source.publishing_year != null) {
+  //   citation += `${source.publishing_year}. `;
+  // } else {
+  //   citation += 'n.d. ';
+  // }
 
-  if (source.isbn && source.isbn.toLowerCase() !== 'unknown') {
-    citation += `ISBN ${source.isbn}. `;
-  }
+  // if (source.isbn && source.isbn.toLowerCase() !== 'unknown') {
+  //   citation += `ISBN ${source.isbn}. `;
+  // }
 
-  if (source.doi && source.doi.toLowerCase() !== 'unknown') {
-    citation += `doi:${source.doi}. `;
-  }
+  // if (source.doi && source.doi.toLowerCase() !== 'unknown') {
+  //   citation += `doi:${source.doi}. `;
+  // }
 
-  citation = citation.trim();
+  // citation = citation.trim();
 
-  if (!citation.endsWith('.')) {
-    citation += '.';
-  }
+  // if (!citation.endsWith('.')) {
+  //   citation += '.';
+  // }
 
-  return citation;
+  // return citation;
 }
 
 
@@ -89,13 +93,14 @@ function format_authors(authors: string[]): string {
 
 
 export function generate_long_footnote(source: Source): string {
-  console.log(source)
   let authors = source.authors.join(', ');
   let edition = source.edition ? `, ${source.edition} ed.` : '';
   let volume = source.volume ? `, vol. ${source.volume}` : '';
   let series = source.series ? `, ${source.series} ${source.series_num}` : '';
-  let year = source.publishing_year ? ` (${source.publishing_year})` : '';
-  let url = source.url ? `, ${source.url}` : '';
+  
+  //Need to reimplement dates
+  let year = source.date ? ` (${new Date(source.date).getFullYear()})` : '';
+  let url = source.identifier ? `, ${source.identifier}` : '';
 
   let footnote = `${authors}, *${source.title}*${edition}${volume}${series} (${source.publishing_location}: ${source.publishing_company}${year})${url}.`;
   return footnote;

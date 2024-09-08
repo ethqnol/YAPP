@@ -5,10 +5,10 @@
     export let data: DatabaseSource | null = null;
     import { createEventDispatcher } from "svelte";
 
-    // Done for now.
-
     const dispatch = createEventDispatcher();
-
+    
+    
+    
     const source_added = () => {
         dispatch("save", true);
     };
@@ -21,32 +21,38 @@
     let source: Source = data
         ? data.source
         : {
-              source_type: SourceType.BOOK,
+              source_type: SourceType.WEBSITE,
               title: "",
               authors: [""],
+              editors: [""],
+              translators: [""],
               volume: null,
               edition: null,
               series: "",
               series_num: null,
               publishing_location: "",
               publishing_company: "",
-              publishing_year: null,
+              date: null,
+              original_date: null,
+              accessed: Date.now(),
+              context: "",
+              number_of_volumes: null,
+              history: "",
               isbn: "",
-              doi: "",
+              identifier: "",
               full_citation: "",
               footnote_long: "",
               footnote_short: "",
               student_id: "",
               pages: null,
-              url: "",
           };
     let source_authors = source.authors;
 
     async function upload_source() {
         source.authors = source_authors.filter((author) => author != "");
         if (source_id != "") {
-            let response = await fetch(`/api/sources/${source_id}`, {
-                method: "PUT",
+            let response = await fetch(`/api/sources/edit/${source_id}`, {
+                method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -74,6 +80,8 @@
             }
         }
     }
+    
+    
 
     function update_author(e: any, index: number) {
         source_authors = source_authors.map((author, i) =>
@@ -97,11 +105,11 @@
 
 <form>
     <div class="form-group">
-        <label for="Title">Title</label>
+        <label for="Title">Website Title</label>
         <input
             id="Title"
             type="text"
-            placeholder="Source Title"
+            placeholder="Website Title"
             bind:value={source.title}
         />
     </div>
@@ -139,31 +147,62 @@
         {/each}
         <button type="button" on:click={add_author}>Add</button>
     </div>
+    
     <div class="form-group">
-        <label for="Place">Place</label>
-        <input
-            id="Place"
-            type="text"
-            placeholder="Place"
-            bind:value={source.publishing_location}
-        />
-    </div>
-    <div class="form-group">
-        <label for="Publisher">Publisher</label>
+        <label for="Publisher">Website Name</label>
         <input
             id="Publisher"
             type="text"
-            placeholder="Publisher"
+            placeholder="Website Name"
+            bind:value={source.publishing_location}
+        />
+    </div>
+    
+    <div class="form-group">
+        <label for="Publisher">Website Publisher</label>
+        <input
+            id="Publisher"
+            type="text"
+            placeholder="Website Publisher"
             bind:value={source.publishing_company}
         />
     </div>
+
     <div class="form-group">
-        <label for="Date">Date</label>
+        <label for="Date">Date Published</label>
         <input
             id="Date"
+            type="date"
+            placeholder="date"
+            bind:value={source.original_date}
+        />
+    </div>
+    
+    <div class="form-group">
+            <label for="Date">Last Modified</label>
+            <input
+                id="Date"
+                type="date"
+                placeholder="date"
+                bind:value={source.date}
+            />
+        </div>
+    <div class="form-group">
+        <label for="Date">Date Accessed</label>
+        <input
+            id="Date"
+            type="date"
+            placeholder="Year"
+            bind:value={source.accessed}
+        />
+    </div>
+    <div class="form-group">
+        <label for="URL">URL</label>
+        <input
+            id="URL or DOI"
             type="text"
-            placeholder="Date"
-            bind:value={source.publishing_year}
+            placeholder="URL"
+            bind:value={source.identifier}
         />
     </div>
     <button id="ToggleManual" type="button" on:click={upload_source}
@@ -189,7 +228,7 @@
         color: var(--color-surface-mixed-600);
     }
 
-    input[type="text"] {
+    input {
         padding: 0.5rem;
         font-size: 1rem;
         color: #20232a;

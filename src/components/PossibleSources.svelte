@@ -5,6 +5,7 @@
     import { createEventDispatcher } from "svelte";
     export let data: any;
     let author: string;
+    let editor: string;
     let isbn: string;
     let publisher: string;
     let publish_year: string;
@@ -45,7 +46,7 @@
         }
     } else {
         if (data.editor) {
-            author = data.editor
+            editor = data.editor
                 .map((author: any) => `${author.given} ${author.family}`)
                 .join(",");
         }
@@ -104,21 +105,27 @@
             source_type: SourceType.BOOK,
             title: data.title,
             authors: author.split(","),
+            editors: [],
+            translators: [],
             series: "",
             series_num: null,
             volume: null,
+            number_of_volumes: null,
             edition: 1,
             publishing_location: publishing_city,
             publishing_company: publisher,
-            publishing_year: parseInt(publish_year),
-            doi: "",
+            date: parseInt(publish_year),
+            original_date: null,
+            accessed: null,
+            identifier: "",
             isbn: isbn,
             full_citation: "",
             student_id: "",
             footnote_long: "",
             footnote_short: "",
             pages: null,
-            url: "",
+            context: "",
+            history: "",
         };
 
         const res = await fetch("/api/sources/add", {

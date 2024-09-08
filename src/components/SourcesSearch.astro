@@ -55,7 +55,7 @@ if (search_query == "") {
       <tr>
         <td>{source.source.title}</td>
         <td>{source.source.authors[0]}</td>
-        <td>{source.source.publishing_year}</td>
+        <td>{source.source.date ? new Date(source.source.date).getFullYear() : "Unknown"}</td>
         <td set:html={marked(source.source.full_citation)}></td>
         <td>
           <a href={`sources/edit/${source.primary_id}`}><svg class="w-[36px] h-[36px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" viewBox="0 0 24 24">

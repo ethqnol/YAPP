@@ -4,11 +4,10 @@ enum SourceType {
   WEBSITE = 2,
   NEWSPAPER = 3,
   LETTER = 4,
-  INTERVIEW = 5,
-  DATASET = 6,
-  CASE = 7,
-  MANUSCRIPT = 8,
-  VIDEO = 9
+  DATASET = 5,
+  CASE = 6,
+  MANUSCRIPT = 7,
+  VIDEO = 8
 }
 
 export default SourceType;
