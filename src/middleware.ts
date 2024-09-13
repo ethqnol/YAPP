@@ -8,7 +8,7 @@ export const onRequest =  defineMiddleware(async (context, next) => {
   if(url_path == "signin" || url_path == "404") return next();
   
   context.locals.url_path = context.url.pathname;
-  if (url_path === 'project' || url_path === 'classroom' || url_path=="account") {
+  if (url_path === 'project' || url_path === 'classroom' || url_path=='account') {
     const user = await get_user_session(context.cookies);
     if(!user) {
       return Response.redirect(new URL("/signin", context.url));
