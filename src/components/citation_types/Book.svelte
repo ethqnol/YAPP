@@ -3,6 +3,7 @@
     import type DatabaseSource from "../../lib/source_database";
     import SourceType from "../../lib/source_type";
     export let data: DatabaseSource | null = null;
+    import type {Book} from "../../lib/specific_sources/book";
     import { createEventDispatcher } from "svelte";
 
     const dispatch = createEventDispatcher();
@@ -18,43 +19,38 @@
     };
 
     let source_id: string = data ? data.primary_id : "";
-    let source: Source = data
-        ? data.source
+    let source: Source & { source_specific: Book } = data
+        ? data.source as Source & { source_specific: Book }
         : {
-              source_type: SourceType.BOOK,
+            source_type: SourceType.BOOK,
+            full_citation: "",
+            footnote_long: "",
+            footnote_short: "",
+            student_id: "",
+            access_date: new Date().getTime(),
+            source_specific: {
               title: "",
               authors: [""],
               editors: [""],
               translators: [""],
               volume: null,
+              number_of_volumes: null,
               edition: null,
-              series: "",
-              series_num: null,
+              publisher: "",
               publishing_location: "",
-              publishing_company: "",
-              collection_title: "",
               date: null,
               original_date: null,
-              accessed: Date.now(),
-              context: "",
-              number_of_volumes: null,
-              history: "",
-              isbn: "",
               identifier: "",
-              full_citation: "",
-              footnote_long: "",
-              footnote_short: "",
-              student_id: "",
-              pages: null,
+            } as Book
           };
-    let source_authors = source.authors;
-    let source_editors = source.editors;
-    let source_translators = source.translators;
+    let source_authors = (source.source_specific as Book).authors;
+    let source_editors = (source.source_specific as Book).editors;
+    let source_translators = (source.source_specific as Book).translators;
 
     async function upload_source() {
-        source.authors = source_authors.filter((author) => author != "");
-        source.editors = source_editors.filter((editor) => editor != "");
-        source.translators = source_translators.filter((translator) => translator != "");
+        (source.source_specific as Book).authors = source_authors.filter((author) => author != "");
+        (source.source_specific as Book).editors = source_editors.filter((editor) => editor != "");
+        (source.source_specific as Book).translators = source_translators.filter((translator) => translator != "");
         if (source_id != "") {
             let response = await fetch(`/api/sources/edit/${source_id}`, {
                 method: "POST",
@@ -156,7 +152,7 @@
             id="Title"
             type="text"
             placeholder="Book Title"
-            bind:value={source.title}
+            bind:value={source.source_specific.title}
         />
     </div>
     <div class="form-group">
@@ -264,78 +260,66 @@
         {/each}
         <button type="button" on:click={add_translator}>Add</button>
     </div>
-
     
     <div class="form-group">
-        <label for="Series">Series</label>
-        <input
-            id="Series"
-            type="text"
-            placeholder="Series Title"
-            bind:value={source.series}
-        />
-    </div>
-    <div class="form-group">
-        <label for="SeriesNum">Series Number</label>
-        <input
-            id="SeriesNum"
-            type="number"
-            placeholder="Series #"
-            bind:value={source.series_num}
-        />
-    </div>
-    <div class="form-group">
-        <label for="Volume">Volume</label>
+        <label for="volume">Volume</label>
         <input
             id="Volume"
             type="number"
-            placeholder="Volume #"
-            bind:value={source.volume}
+            placeholder="Volume"
+            bind:value={source.source_specific.volume}
+        />
+    
+    </div>
+    
+    <div class="form-group">
+        <label for="Volumes"># of Volumes</label>
+        <input
+            id="Volumes"
+            type="text"
+            placeholder="# Volumes"
+            bind:value={source.source_specific.number_of_volumes}
         />
     </div>
+    
     <div class="form-group">
         <label for="Edition">Edition</label>
         <input
             id="Edition"
             type="number"
-            placeholder="Edition #"
-            bind:value={source.edition}
+            placeholder="Edition"
+            bind:value={source.source_specific.edition}
         />
     </div>
-    <div class="form-group">
-        <label for="Publishing Location">Publication Location</label>
-        <input
-            id="Place"
-            type="text"
-            placeholder="Place"
-            bind:value={source.publishing_location}
-        />
-    </div>
+    
     <div class="form-group">
         <label for="Publisher">Publisher</label>
         <input
             id="Publisher"
             type="text"
             placeholder="Publisher"
-            bind:value={source.publishing_company}
+            bind:value={source.source_specific.publisher}
         />
+        
     </div>
+    
     <div class="form-group">
-        <label for="Date">Original Date</label>
+        <label for="Publishing Location">Publication Location</label>
         <input
-            id="Date"
-            type="number"
-            placeholder="Year"
-            bind:value={source.original_date}
+            id="Place"
+            type="text"
+            placeholder="Place"
+            bind:value={source.source_specific.publishing_location}
         />
     </div>
+    
     <div class="form-group">
         <label for="Date">Date</label>
         <input
             id="Date"
             type="number"
             placeholder="Year"
-            bind:value={source.date}
+            bind:value={source.source_specific.date}
         />
     </div>
     <div class="form-group">
@@ -344,7 +328,7 @@
             id="Date"
             type="date"
             placeholder="Year"
-            bind:value={source.accessed}
+            bind:value={source.access_date}
         />
     </div>
     <div class="form-group">
@@ -353,7 +337,7 @@
             id="DOI"
             type="text"
             placeholder="DOI or URL"
-            bind:value={source.identifier}
+            bind:value={source.source_specific.identifier}
         />
     </div>
     <button id="ToggleManual" type="button" on:click={upload_source}

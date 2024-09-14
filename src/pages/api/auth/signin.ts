@@ -23,10 +23,15 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
       { status: 401 }
     );
   }
+  
+  const now = new Date();
+    
+  const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
 
+  const ms_day_change = tomorrow.getTime() - now.getTime();
   //session length
   const session_cookie = await auth.createSessionCookie(id_token, {
-    expiresIn: parseInt(import.meta.env.SESSION_LEN),
+    expiresIn: ms_day_change,
   });
   const decoded_cookie = await auth.verifySessionCookie(session_cookie);
   const user_auth_info = await auth.getUser(decoded_cookie.uid);
