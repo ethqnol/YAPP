@@ -22,7 +22,6 @@
         const response = await fetch(`https://api.crossref.org/works/${doi}`);
         const unwrapped = await response.json();
         let data = unwrapped.message;
-        //console.log(data)
         return data;
     }
 

@@ -18,9 +18,8 @@ const user_snapshot = await getDoc(doc(db, "Students", user.uid));
 const user_data = user_snapshot.data()!;
 
 let class_data : DatabaseClass | null = null;
-
 if (user_data.class_id != "") {
-    const class_snapshot = await getDoc(doc(db,"Class", user_data.class_id));
+  const class_snapshot = await getDoc(doc(db,"Class", user_data.class_id));
   if (class_snapshot.exists()) {
     is_in_class = true;
     class_data = {
@@ -33,7 +32,6 @@ if (user_data.class_id != "") {
 } else {
   is_in_class = false;
 }
-console.log(is_in_class, class_data)
 
 ---
 

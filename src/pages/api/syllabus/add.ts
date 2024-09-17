@@ -40,7 +40,6 @@ export const POST: APIRoute = async ({ request, cookies, redirect }) => {
     await getDocs(query(collection(db, "Students"), where("class_id", "==", class_id)))
       .then((querySnapshot) => {
         querySnapshot.forEach((document) => {
-          console.log(document.data())
           batch.set(doc(todo_ref), {
             student_id: document.id,
             name: task.name,

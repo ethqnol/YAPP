@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro";
 import { app } from "../../../../firebase/client";
-import { doc, getDoc, deleteDoc } from "firebase/firestore";
+import { doc, getDoc, deleteDoc, writeBatch, collection, getDocs, query, where } from "firebase/firestore";
 import type Source from "../../../../lib/source.ts";
 import { getFirestore } from "firebase/firestore";
 import "firebase/firestore";
@@ -23,10 +23,18 @@ export const DELETE: APIRoute = async ({ params, cookies }) => {
 
   try {
     const db = getFirestore(app);
+    let batch = writeBatch(db);
     const sources_ref = doc(db, "Sources", source_id);
+    const notecards_ref = getDocs(query(collection(db, "Notecards"), where("source_id", "==", source_id)))
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          batch.delete(doc.ref);
+        });
+      });
     getDoc(sources_ref).then((doc) => {
       if ((doc.data() as Source).student_id == user.uid) {
-        deleteDoc(sources_ref);
+        batch.delete(sources_ref);
+        batch.commit();
       } else {
         return new Response("Not authorized to perform this action", {
           status: 403,

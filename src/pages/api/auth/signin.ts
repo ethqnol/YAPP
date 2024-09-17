@@ -54,7 +54,7 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
         query_snapshot.docs[0].ref.get().then(doc => {
           let user = doc.data() as User;
           max_streak = user.max_streak;
-          if (Number(user.last_login) - date >= 24 * 3600000) {
+          if (Number(user.last_login) - date >= 12 * 3600000) {
             current_streak = 1;
           } else {
             current_streak = user.streak + 1;

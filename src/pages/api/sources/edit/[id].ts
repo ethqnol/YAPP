@@ -30,7 +30,6 @@ export const POST: APIRoute = async ({ params, request, cookies }) => {
     const db = getFirestore(app);
     const sources_ref = doc(db, "Sources", params.id);
     getDoc(sources_ref).then((doc) => {
-      console.log(doc.data())
       if ((doc.data() as Source).student_id == user.uid) {
         source.full_citation = generate_citation(source);
         updateDoc(sources_ref, { ...source });
