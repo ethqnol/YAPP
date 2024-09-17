@@ -26,17 +26,21 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
   
   const now = new Date();
     
-  const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+  let tmrw = new Date();
+  tmrw.setHours(24,0,0,0);
+  const ms_day_change = tmrw.getTime() - now.getTime();
 
-  const ms_day_change = tomorrow.getTime() - now.getTime();
-  //session length
+  const MIN_SESSION_DURATION = 300000; // 5 minutes in milliseconds
+  const MAX_SESSION_DURATION = 1209600000; // 14 days in milliseconds
+  
+  // Ensure the session duration is within the allowed range
+  const session_length = Math.min(Math.max(Math.floor(ms_day_change), MIN_SESSION_DURATION), MAX_SESSION_DURATION);
   const session_cookie = await auth.createSessionCookie(id_token, {
-    expiresIn: ms_day_change,
+    expiresIn: Math.round(ms_day_change / 60000) * 60000,
   });
   const decoded_cookie = await auth.verifySessionCookie(session_cookie);
   const user_auth_info = await auth.getUser(decoded_cookie.uid);
   const db = getFirestore(app);
-
 
 
   db.collection("Users")
