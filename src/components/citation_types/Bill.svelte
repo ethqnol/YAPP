@@ -22,7 +22,7 @@
     let source: Source & { source_specific: Bill } = data
         ? data.source as Source & { source_specific: Bill }
         : {
-            source_type: SourceType.Bill,
+            source_type: SourceType.BILL,
             full_citation: "",
             footnote_long: "",
             footnote_short: "",
