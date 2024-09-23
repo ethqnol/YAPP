@@ -84,41 +84,41 @@
     
     
     function update_editor(e: any, index: number) {
-        source_authors = source_authors.map((author, i) =>
-            i === index ? e.target.value : author,
+        source_editors = source_editors.map((editor, i) =>
+            i === index ? e.target.value : editor,
         );
     }
 
     function add_editor() {
-        source_authors = [...source_authors, ""];
+        source_editors = [...source_editors, ""];
 
     }
 
     function subtract_editor(index: number) {
-        if (source_authors.length === 1) {
+        if (source_editors.length === 1) {
             return;
         }
-        source_authors.splice(index, 1);
-        source_authors = source_authors;
+        source_editors.splice(index, 1);
+        source_editors = source_editors;
     }
     
     function update_translator(e: any, index: number) {
-        source_authors = source_authors.map((author, i) =>
-            i === index ? e.target.value : author,
+        source_translators = source_translators.map((translator, i) =>
+            i === index ? e.target.value : translator,
         );
     }
 
     function add_translator() {
-        source_authors = [...source_authors, ""];
+        source_translators = [...source_translators, ""];
 
     }
 
     function subtract_translator(index: number) {
-        if (source_authors.length === 1) {
+        if (source_translators.length === 1) {
             return;
         }
-        source_authors.splice(index, 1);
-        source_authors = source_authors;
+        source_translators.splice(index, 1);
+        source_translators = source_translators;
     }
     
     
