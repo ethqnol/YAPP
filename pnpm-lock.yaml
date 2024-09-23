@@ -4739,6 +4739,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+
+  '@astrojs/node@8.3.4(astro@4.15.6(@types/node@22.5.5)(rollup@4.21.3)(sass-embedded@1.78.0)(typescript@5.6.2))':
+    dependencies:
+      astro: 4.15.6(@types/node@22.5.5)(rollup@4.21.3)(sass-embedded@1.78.0)(typescript@5.6.2)
   '@astrojs/node@8.3.4(astro@4.15.8(@types/node@22.5.5)(rollup@4.22.4)(sass-embedded@1.79.3)(typescript@5.6.2))':
     dependencies:
       astro: 4.15.8(@types/node@22.5.5)(rollup@4.22.4)(sass-embedded@1.79.3)(typescript@5.6.2)
