@@ -9856,6 +9856,7 @@ snapshots:
     optionalDependencies:
       vite: 5.4.7(@types/node@22.5.5)(sass-embedded@1.79.3)
 
+
   volar-service-css@0.0.61(@volar/language-service@2.4.5):
     dependencies:
       vscode-css-languageservice: 6.3.1
