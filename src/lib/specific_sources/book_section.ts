@@ -1,5 +1,5 @@
 export interface BookSection {
-  title: string;
+  section_title: string;
   book_title: string;
   authors: string[];
   editors: string[];

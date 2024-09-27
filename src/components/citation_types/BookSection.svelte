@@ -3,7 +3,7 @@
     import type DatabaseSource from "../../lib/source_database";
     import SourceType from "../../lib/source_type";
     export let data: DatabaseSource | null = null;
-    import type {Book} from "../../lib/specific_sources/book";
+    import type {BookSection} from "../../lib/specific_sources/book_section";
     import { createEventDispatcher } from "svelte";
 
     const dispatch = createEventDispatcher();
@@ -19,17 +19,18 @@
     };
 
     let source_id: string = data ? data.primary_id : "";
-    let source: Source & { source_specific: Book } = data
-        ? data.source as Source & { source_specific: Book }
+    let source: Source & { source_specific: BookSection } = data
+        ? data.source as Source & { source_specific: BookSection }
         : {
-            source_type: SourceType.BOOK,
+            source_type: SourceType.BOOK_SECTION,
             full_citation: "",
             footnote_long: "",
             footnote_short: "",
             student_id: "",
             access_date: new Date().getTime(),
             source_specific: {
-              title: "",
+              section_title: "",
+              book_title: "",
               authors: [""],
               editors: [""],
               translators: [""],
@@ -41,16 +42,16 @@
               date: null,
               original_date: null,
               identifier: "",
-            } as Book
+            } as BookSection
           };
-    let source_authors = (source.source_specific as Book).authors;
-    let source_editors = (source.source_specific as Book).editors;
-    let source_translators = (source.source_specific as Book).translators;
+    let source_authors = (source.source_specific as BookSection).authors;
+    let source_editors = (source.source_specific as BookSection).editors;
+    let source_translators = (source.source_specific as BookSection).translators;
 
     async function upload_source() {
-        (source.source_specific as Book).authors = source_authors.filter((author) => author != "");
-        (source.source_specific as Book).editors = source_editors.filter((editor) => editor != "");
-        (source.source_specific as Book).translators = source_translators.filter((translator) => translator != "");
+        (source.source_specific as BookSection).authors = source_authors.filter((author) => author != "");
+        (source.source_specific as BookSection).editors = source_editors.filter((editor) => editor != "");
+        (source.source_specific as BookSection).translators = source_translators.filter((translator) => translator != "");
         if (source_id != "") {
             let response = await fetch(`/api/sources/edit/${source_id}`, {
                 method: "POST",
@@ -147,12 +148,21 @@
 
 <form>
     <div class="form-group">
-        <label for="Title">Title</label>
+        <label for="Title">Section/Chapter Title</label>
+        <input
+            id="Title"
+            type="text"
+            placeholder="Section/Chapter Title"
+            bind:value={source.source_specific.section_title}
+        />
+    </div>
+    <div class="form-group">
+        <label for="Title">Book Title</label>
         <input
             id="Title"
             type="text"
             placeholder="Book Title"
-            bind:value={source.source_specific.title}
+            bind:value={source.source_specific.book_title}
         />
     </div>
     <div class="form-group">
