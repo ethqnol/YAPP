@@ -331,6 +331,7 @@
         display: flex;
         align-items: center;
     }
+    
     #add-task-form button .icon {
         margin-right: 10px;
     }
