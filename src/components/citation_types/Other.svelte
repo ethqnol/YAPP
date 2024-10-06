@@ -128,27 +128,4 @@
     button:hover {
         background-color: #21a1f1;
     }
-
-    .author-input {
-        width: 100%;
-        display: flex;
-        padding: 0;
-    }
-
-    .author-input button {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 0.2rem;
-        flex: 1;
-        background-color: var(--color-primary-200);
-    }
-
-    .author-input input {
-        width: 100%;
-    }
-
-    .author-input button:hover {
-        background-color: var(--color-primary-100);
-    }
 </style>
