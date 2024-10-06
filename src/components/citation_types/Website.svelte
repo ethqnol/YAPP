@@ -3,7 +3,7 @@
     import type DatabaseSource from "../../lib/source_database";
     import SourceType from "../../lib/source_type";
     export let data: DatabaseSource | null = null;
-    import type {Newspaper} from "../../lib/specific_sources/newspaper";
+    import type {Website} from "../../lib/specific_sources/website.ts";
     import { createEventDispatcher } from "svelte";
 
     const dispatch = createEventDispatcher();
@@ -19,10 +19,10 @@
     };
 
     let source_id: string = data ? data.primary_id : "";
-    let source: Source & { source_specific: Newspaper } = data
-        ? data.source as Source & { source_specific: Newspaper }
+    let source: Source & { source_specific: Website } = data
+        ? data.source as Source & { source_specific: Website }
         : {
-            source_type: SourceType.NEWSPAPER,
+            source_type: SourceType.WEBSITE,
             full_citation: "",
             footnote_long: "",
             footnote_short: "",
@@ -31,17 +31,16 @@
             source_specific: {
               title: "",
               authors: [""],
-              publication: "",
-              place: "",
+              publisher: "",
+              website_title: "",
               date: null,
-              identifier: "",
-              edition: null
-            } as Newspaper
+              url: "",
+            } as Website
           };
-    let source_authors = (source.source_specific as Newspaper).authors;
+    let source_authors = (source.source_specific as Website).authors;
 
     async function upload_source() {
-        (source.source_specific as Newspaper).authors = source_authors.filter((author) => author != "");
+        (source.source_specific as Website).authors = source_authors.filter((author) => author != "");
 
         if (source_id != "") {
             let response = await fetch(`/api/sources/edit/${source_id}`, {
@@ -73,10 +72,6 @@
             }
         }
     }
-    
-    
-    
-    
 
     function update_author(e: any, index: number) {
         source_authors = source_authors.map((author, i) =>
@@ -143,67 +138,44 @@
         <button type="button" on:click={add_author}>Add</button>
     </div>
 
-    <div class="form-group">
-        <label for="date">Date</label>
-        <input
-            id="date"
-            type="number"
-            placeholder="Date"
-            bind:value={source.source_specific.date}
-        />
-    
-    </div>
     
     <div class="form-group">
-        <label for="edition">Edition</label>
+        <label for="Publisher">Publisher</label>
         <input
-            id="edition"
+            id="Publisher"
             type="text"
-            placeholder="Edition"
-            bind:value={source.source_specific.edition}
-        />
-    </div>
-    
-    <div class="form-group">
-        <label for="section">Section</label>
-        <input
-            id="section"
-            type="text"
-            placeholder="Section"
-            bind:value={source.source_specific.section}
-        />
-    </div>
-
-    <div class="form-group">
-        <label for="Publication">Publication</label>
-        <input
-            id="Publication"
-            type="text"
-            placeholder="Publication"
-            bind:value={source.source_specific.publication}
+            placeholder="Publisher"
+            bind:value={source.source_specific.publisher}
         />
         
     </div>
     
     <div class="form-group">
-        <label for="Publishing Location">Publication Location</label>
+        <label for="Website-Title">Website Title</label>
         <input
-            id="Place"
+            id="Website-Title"
             type="text"
-            placeholder="Place"
-            bind:value={source.source_specific.place}
+            placeholder="Website Title"
+            bind:value={source.source_specific.website_title}
         />
     </div>
     
-
-
     <div class="form-group">
-        <label for="DOI">Identifier</label>
+        <label for="Date">Date</label>
         <input
-            id="DOI"
+            id="Date"
+            type="number"
+            placeholder="Year"
+            bind:value={source.source_specific.date}
+        />
+    </div>
+    <div class="form-group">
+        <label for="URL">URL</label>
+        <input
+            id="URL"
             type="text"
-            placeholder="DOI or URL"
-            bind:value={source.source_specific.identifier}
+            placeholder="URL"
+            bind:value={source.source_specific.url}
         />
     </div>
     <button id="ToggleManual" type="button" on:click={upload_source}
@@ -257,5 +229,28 @@
 
     button:hover {
         background-color: #21a1f1;
+    }
+
+    .author-input {
+        width: 100%;
+        display: flex;
+        padding: 0;
+    }
+
+    .author-input button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0.2rem;
+        flex: 1;
+        background-color: var(--color-primary-200);
+    }
+
+    .author-input input {
+        width: 100%;
+    }
+
+    .author-input button:hover {
+        background-color: var(--color-primary-100);
     }
 </style>

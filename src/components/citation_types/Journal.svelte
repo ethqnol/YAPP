@@ -3,7 +3,7 @@
     import type DatabaseSource from "../../lib/source_database";
     import SourceType from "../../lib/source_type";
     export let data: DatabaseSource | null = null;
-    import type {Newspaper} from "../../lib/specific_sources/newspaper";
+    import type {Journal} from "../../lib/specific_sources/journal";
     import { createEventDispatcher } from "svelte";
 
     const dispatch = createEventDispatcher();
@@ -19,10 +19,10 @@
     };
 
     let source_id: string = data ? data.primary_id : "";
-    let source: Source & { source_specific: Newspaper } = data
-        ? data.source as Source & { source_specific: Newspaper }
+    let source: Source & { source_specific: Journal } = data
+        ? data.source as Source & { source_specific: Journal }
         : {
-            source_type: SourceType.NEWSPAPER,
+            source_type: SourceType.JOURNAL,
             full_citation: "",
             footnote_long: "",
             footnote_short: "",
@@ -31,18 +31,18 @@
             source_specific: {
               title: "",
               authors: [""],
+              volume: null,
+              issue: null,
               publication: "",
-              place: "",
-              date: null,
+              date_month: null,
+              date_year: null,
               identifier: "",
-              edition: null
-            } as Newspaper
+            } as Journal
           };
-    let source_authors = (source.source_specific as Newspaper).authors;
+    let source_authors = (source.source_specific as Journal).authors;
 
     async function upload_source() {
-        (source.source_specific as Newspaper).authors = source_authors.filter((author) => author != "");
-
+        (source.source_specific as Journal).authors = source_authors.filter((author) => author != "");
         if (source_id != "") {
             let response = await fetch(`/api/sources/edit/${source_id}`, {
                 method: "POST",
@@ -73,10 +73,6 @@
             }
         }
     }
-    
-    
-    
-    
 
     function update_author(e: any, index: number) {
         source_authors = source_authors.map((author, i) =>
@@ -142,38 +138,27 @@
         {/each}
         <button type="button" on:click={add_author}>Add</button>
     </div>
-
+    
     <div class="form-group">
-        <label for="date">Date</label>
+        <label for="volume">Volume</label>
         <input
-            id="date"
+            id="Volume"
             type="number"
-            placeholder="Date"
-            bind:value={source.source_specific.date}
-        />
-    
-    </div>
-    
-    <div class="form-group">
-        <label for="edition">Edition</label>
-        <input
-            id="edition"
-            type="text"
-            placeholder="Edition"
-            bind:value={source.source_specific.edition}
+            placeholder="Volume"
+            bind:value={source.source_specific.volume}
         />
     </div>
     
     <div class="form-group">
-        <label for="section">Section</label>
+        <label for="issue">Issue</label>
         <input
-            id="section"
+            id="issue"
             type="text"
-            placeholder="Section"
-            bind:value={source.source_specific.section}
+            placeholder="Issue"
+            bind:value={source.source_specific.issue}
         />
     </div>
-
+    
     <div class="form-group">
         <label for="Publication">Publication</label>
         <input
@@ -185,20 +170,27 @@
         
     </div>
     
+    
     <div class="form-group">
-        <label for="Publishing Location">Publication Location</label>
+        <label for="Date-Month">Date Month</label>
         <input
-            id="Place"
-            type="text"
-            placeholder="Place"
-            bind:value={source.source_specific.place}
+            id="Date-Month"
+            type="number"
+            placeholder="Date Month"
+            bind:value={source.source_specific.date_month}
         />
     </div>
-    
-
-
     <div class="form-group">
-        <label for="DOI">Identifier</label>
+        <label for="Date-Year">Date Year</label>
+        <input
+            id="Date-year"
+            type="number"
+            placeholder="Date Year"
+            bind:value={source.source_specific.date_year}
+        />
+    </div>
+    <div class="form-group">
+        <label for="DOI">Identifier (DOI or URL)</label>
         <input
             id="DOI"
             type="text"
@@ -257,5 +249,28 @@
 
     button:hover {
         background-color: #21a1f1;
+    }
+
+    .author-input {
+        width: 100%;
+        display: flex;
+        padding: 0;
+    }
+
+    .author-input button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0.2rem;
+        flex: 1;
+        background-color: var(--color-primary-200);
+    }
+
+    .author-input input {
+        width: 100%;
+    }
+
+    .author-input button:hover {
+        background-color: var(--color-primary-100);
     }
 </style>
