@@ -13,29 +13,16 @@
 
         return data;
     }
-    function is_doi(doi: string): boolean {
-        const doiRegex = /^10.\d{4,9}[-._;()/:A-Z0-9]+$/i;
-        return doiRegex.test(doi);
-    }
 
-    async function doi_search(doi: string) {
-        const response = await fetch(`https://api.crossref.org/works/${doi}`);
-        const unwrapped = await response.json();
-        let data = unwrapped.message;
-        return data;
-    }
+
 
     async function handle_search() {
         loading = true;
         query_sent = true;
         book_input = book_input.trim();
-        if (is_doi(book_input)) {
-            book_data = [await doi_search(book_input)];
-            loading = false;
-        } else {
-            book_data = await search_book(book_input);
-            loading = false;
-        }
+        book_data = await search_book(book_input);
+        console.log(book_data)
+        loading = false;
     }
 </script>
 
@@ -54,11 +41,13 @@
             <input
                 type="text"
                 id="book_input"
-                placeholder="Enter an ISBN, DOI, or arXiv ID"
+                placeholder="Enter an ISBN or Book Title"
                 bind:value={book_input}
             />
+            
             <button on:click={handle_search}> Search </button>
         </form>
+        <span><i>DOI and ArXiv support coming soon...</i></span>
     </div>
 
     <div id="searchResults">
@@ -118,6 +107,7 @@
     .dot:nth-child(2) {
         animation-delay: 0.1s;
     }
+    
 
     .dot:nth-child(3) {
         animation-delay: 0.2s;
@@ -142,6 +132,12 @@
         justify-content: center;
         gap: 0.5rem;
         overflow-x: hidden;
+    }
+    
+    span {
+        color: white;
+        font-size: 0.8rem;
+        opacity: 0.5;
     }
 
     .FormGroup {

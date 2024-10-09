@@ -1,10 +1,17 @@
 <script lang="ts">
     import Book from "./citation_types/Book.svelte";
-
+    import Bill from "./citation_types/Bill.svelte";
+    import BookSection from "./citation_types/BookSection.svelte";
+    import Interview from "./citation_types/Interview.svelte";
+    import Journal from "./citation_types/Journal.svelte";
+    import Website from "./citation_types/Website.svelte";
+    import Newspaper from "./citation_types/Newspaper.svelte";
+    import Case from "./citation_types/Case.svelte";
+    
     
     import SourceSearch from "./SourceSearch.svelte";
     import Popup from "./Popup.svelte";
-    let source_type: string = "0";
+    let source_type: string = "1";
     let source_add_requested = false;
     let source_add_success = false;
     $: active_manual = true;
@@ -51,19 +58,55 @@
                 <label for="SourceType">Source Type</label>
                 <div class="custom-select">
                     <select id="SourceType" bind:value={source_type}>
-                        <option value="0">Book</option>
-                        <option value="1">Journal</option>
-                        <option value="2">Website</option>
-                        <option value="3">Newspaper</option>
-                        <option value="4">Letter</option>
-                        <option value="5">Case</option>
-                        <option value="6">Manuscript</option>
-                        <option value="7">Media</option>
-                        <option value="8">Magazine</option>
+                        <option value="0">Bill</option>
+                        <option value="1">Book</option>
+                        <option value="2">BookSection</option>
+                        <option value="3">Case</option>
+                        <option value="4">Conference Paper</option>
+                        <option value="5">Interview</option>
+                        <option value="6">Journal</option>
+                        <option value="7">Magazine</option>
+                        <option value="8">Media</option>
+                        <option value="9">Newspaper</option>
+                        <option value="10">Website</option>
+                        <option value="11"> Other</option>
                     </select>
                 </div>
                 {#if Number(source_type) == 0}
+                    <Bill on:save={display_popup} />
+                {:else if Number(source_type) == 1}    
                     <Book on:save={display_popup} />
+                    
+                {:else if Number(source_type) == 2}
+                    <BookSection on:save={display_popup} />
+                    
+                {:else if Number(source_type) == 3}
+                    <Case on:save={display_popup} />
+                    
+                {:else if Number(source_type) == 4}
+                    <p> unimplemented </p>
+                    <!-- <ConferencePaper on:save={display_popup} /> -->
+                {:else if Number(source_type) == 5}
+                    <Interview on:save={display_popup} />
+                    
+                {:else if Number(source_type) == 6}
+                    <Journal on:save={display_popup} />
+                    
+                {:else if Number(source_type) == 7}
+                    <p> unimplemented </p>
+                    <!-- <Magazine on:save={display_popup} /> -->
+                {:else if Number(source_type) == 8}
+                    <p> unimplemented </p>
+                    <!-- <Media on:save={display_popup} /> -->
+                {:else if Number(source_type) == 9}
+                    <Newspaper on:save={display_popup} />
+                    
+                {:else if Number(source_type) == 10}
+                    <Website on:save={display_popup} />
+                    
+                {:else if Number(source_type) == 11}
+                    <p> unimplemented </p>
+                    <!-- <Other on:save={display_popup} /> -->
                 {:else}
                     <p>Unknown source type</p>
                 {/if}

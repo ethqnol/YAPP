@@ -1,6 +1,7 @@
 <script lang="ts">
     import type Source from "../lib/source";
     import SourceType from "../lib/source_type";
+    import Book from "./citation_types/Book.svelte";
     import Loading from "./Loading.svelte";
     import { createEventDispatcher } from "svelte";
     export let data: any;
@@ -14,77 +15,36 @@
     const dispatch = createEventDispatcher();
 
     let expanded = false;
-    if (!data.DOI) {
-        if (data.author_name) {
-            author = data.author_name.join(" ");
-        } else {
-            author = "Unknown";
-        }
-
-        if (data.isbn) {
-            isbn = data.isbn[0];
-        } else {
-            isbn = "Unknown";
-        }
-
-        if (data.publish_place) {
-            publishing_city = data.publish_place[0];
-        } else {
-            publishing_city = "Unknown";
-        }
-
-        if (data.publish_date) {
-            publish_year = data.publish_year[0];
-        } else {
-            publish_year = "Unknown";
-        }
-
-        if (data.publisher) {
-            publisher = data.publisher[0];
-        } else {
-            publisher = "Unknown";
-        }
+    if (data.author_name) {
+        author = data.author_name.join(", ");
     } else {
-        if (data.editor) {
-            editor = data.editor
-                .map((author: any) => `${author.given} ${author.family}`)
-                .join(",");
-        }
-
-        if (data.author) {
-            author = data.author
-                .map((author: any) => `${author.given} ${author.family}`)
-                .join(",");
-        }
-
-        if (!data.author && !data.editor) {
-            author = "Unknown";
-        }
-
-        if (data.ISBN) {
-            isbn = data.ISBN[0];
-        } else {
-            isbn = "Unknown";
-        }
-
-        if (data.publish_place) {
-            publishing_city = data.publish_place[0];
-        } else {
-            publishing_city = "Unknown";
-        }
-
-        if (data.published) {
-            publish_year = data.published["date-parts"][0][0];
-        } else {
-            publish_year = "Unknown";
-        }
-
-        if (data.publisher) {
-            publisher = data.publisher;
-        } else {
-            publisher = "Unknown";
-        }
+        author = "Unknown";
     }
+
+    if (data.isbn) {
+        isbn = data.isbn[0];
+    } else {
+        isbn = "Unknown";
+    }
+
+    if (data.publish_place) {
+        publishing_city = data.publish_place[0];
+    } else {
+        publishing_city = "Unknown";
+    }
+
+    if (data.publish_date) {
+        publish_year = data.publish_year[0];
+    } else {
+        publish_year = "Unknown";
+    }
+
+    if (data.publisher) {
+        publisher = data.publisher[0];
+    } else {
+        publisher = "Unknown";
+    }
+    
 
     let loading = false;
     function expand() {
@@ -102,31 +62,26 @@
     async function generate_citation() {
         loading = true;
         let source: Source = {
-            source_type: SourceType.BOOK,
-            title: data.title,
-            authors: author.split(","),
-            editors: [],
-            translators: [],
-            series: "",
-            series_num: null,
+          source_type: SourceType.BOOK,
+          full_citation: "",
+          footnote_long: "",
+          footnote_short: "",
+          student_id: "",
+          access_date: new Date().getTime(),
+          source_specific: {
+            title: "",
+            authors: data.author_name,
+            editors: [""],
+            translators: [""],
             volume: null,
             number_of_volumes: null,
-            edition: 1,
-            collection_title: "",
-            publishing_location: publishing_city,
-            publishing_company: publisher,
-            date: parseInt(publish_year),
+            edition: null,
+            publisher: data.publisher[0] ? data.publisher[0] : "",
+            publishing_location: data.publish_place[0] ? data.publish_place[0] : "",
+            date: data.publish_year ? data.publish_year[0] : null,
             original_date: null,
-            accessed: null,
             identifier: "",
-            isbn: isbn,
-            full_citation: "",
-            student_id: "",
-            footnote_long: "",
-            footnote_short: "",
-            pages: null,
-            context: "",
-            history: "",
+          } as Book
         };
 
         const res = await fetch("/api/sources/add", {
