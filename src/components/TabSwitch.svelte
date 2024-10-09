@@ -7,6 +7,9 @@
     import Website from "./citation_types/Website.svelte";
     import Newspaper from "./citation_types/Newspaper.svelte";
     import Case from "./citation_types/Case.svelte";
+    import ConferencePaper from "./citation_types/ConferencePaper.svelte";
+    import Magazine from "./citation_types/Magazine.svelte";
+    import Media from "./citation_types/Media.svelte";
     
     
     import SourceSearch from "./SourceSearch.svelte";
@@ -84,8 +87,8 @@
                     <Case on:save={display_popup} />
                     
                 {:else if Number(source_type) == 4}
-                    <p> unimplemented </p>
-                    <!-- <ConferencePaper on:save={display_popup} /> -->
+                    <ConferencePaper on:save={display_popup} />
+                    
                 {:else if Number(source_type) == 5}
                     <Interview on:save={display_popup} />
                     
@@ -93,11 +96,11 @@
                     <Journal on:save={display_popup} />
                     
                 {:else if Number(source_type) == 7}
-                    <p> unimplemented </p>
-                    <!-- <Magazine on:save={display_popup} /> -->
+                    <Magazine on:save={display_popup} />
+                    
                 {:else if Number(source_type) == 8}
-                    <p> unimplemented </p>
-                    <!-- <Media on:save={display_popup} /> -->
+                    <Media on:save={display_popup} />
+                    
                 {:else if Number(source_type) == 9}
                     <Newspaper on:save={display_popup} />
                     
