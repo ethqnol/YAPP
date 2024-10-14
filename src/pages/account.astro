@@ -64,13 +64,14 @@ const joke = await fetch("https://official-joke-api.appspot.com/jokes/programmin
     padding: 2rem;
     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
     border-radius: 15px;
-    background-color: var(--color-surface-mixed-200);
+    background-color: var(--color-surface-mixed-200);s
   }
 
   #profile-section {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
   }
 
   #profile-pic {
@@ -90,7 +91,7 @@ const joke = await fetch("https://official-joke-api.appspot.com/jokes/programmin
   #nav-buttons {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
   }
 
   .nav-button {
@@ -115,7 +116,7 @@ const joke = await fetch("https://official-joke-api.appspot.com/jokes/programmin
     background-color: var(--color-surface-300);
     padding: 1rem;
     border-radius: 8px;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     font-style: italic;
   }
 </style>
