@@ -6,7 +6,7 @@
     let error = "";
 
     // Function to handle deleting a student
-    const deleteStudent = (primary_id: string) => {
+    const delete_student = (primary_id: string) => {
         students = students.filter(
             (student) => student.primary_id !== primary_id,
         );
@@ -58,7 +58,7 @@
                     <td
                         ><button
                             class="delete-button"
-                            on:click={() => deleteStudent(student.primary_id)}
+                            on:click={() => delete_student(student.primary_id)}
                             >Delete</button
                         ></td
                     >
