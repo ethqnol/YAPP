@@ -14,13 +14,23 @@ export const POST: APIRoute = async ({ params, request, cookies }) => {
   if (!user) {
     return new Response("Unauthorized", { status: 403 });
   }
-  if (!notecard || !notecard.quote) {
+  
+  
+  if (!notecard || !notecard.quote || !notecard.source_id ||!notecard.title) {
     return new Response("Missing required fields", {
       status: 400,
     });
   }
+  
+  if(typeof notecard.quote != "string") return new Response("Missing required fields", { status: 400});
+  if(typeof notecard.source_id != "string") return new Response("Missing required fields", { status: 400});
+  if(typeof notecard.analysis != "string") return new Response("Missing required fields", { status: 400});
+  if(typeof notecard.title != "string") return new Response("Missing required fields", { status: 400});
+  if(typeof notecard.start_page != "number") return new Response("Missing required fields", { status: 400});
+  if(typeof notecard.end_page != "number") return new Response("Missing required fields", { status: 400});
+  if(!Array.isArray(notecard.tags)) return new Response("Missing required fields", { status: 400});
+  
   notecard.student_id = user.uid;
-
   if (!params.id) {
     return new Response("Cannot find notecard", {
       status: 404,

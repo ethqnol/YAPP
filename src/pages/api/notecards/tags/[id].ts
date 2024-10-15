@@ -19,6 +19,13 @@ export const POST: APIRoute = async ({ request, params, cookies }) => {
       status: 400,
     });
   }
+  
+  if (!Array.isArray(tags)) {
+    return new Response("Missing required fields", {
+      status: 400,
+    });
+  }
+  
   let notecard_id: string | undefined = params.id;
 
   if (!notecard_id) {
