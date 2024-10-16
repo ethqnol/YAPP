@@ -5,16 +5,12 @@ enum SourceType {
   NEWSPAPER = 3,
   LETTER = 4,
   CASE = 5,
-  MANUSCRIPT = 6,
-  MEDIA = 7,
-  MAGAZINE = 8,
-  ARTWORK = 9,
-  BILL = 10,
-  BOOK_SECTION = 11,
-  CONFERENCE_PAPER = 12,
-  INTERVIEW = 13,
-  DOCUMENT = 14,
-  STANDARD = 15,
+  MEDIA = 6,
+  MAGAZINE = 7,
+  BILL = 8,
+  BOOK_SECTION = 9,
+  CONFERENCE_PAPER = 10,
+  INTERVIEW = 11,
 }
 
 export default SourceType;
