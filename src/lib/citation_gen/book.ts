@@ -20,11 +20,11 @@ export default function generate_book_citation(source: Source): string {
   full_citation += (source.source_specific as Book).edition ? (source.source_specific as Book).edition + ". " : ""; 
   full_citation += (source.source_specific as Book).volume ? "vol. " + (source.source_specific as Book).volume + ". " : "";
   full_citation += (source.source_specific as Book).number_of_volumes ?  (source.source_specific as Book).number_of_volumes + " vols." : "";
-  full_citation += (source.source_specific as Book).publishing_location ? (source.source_specific as Book).publishing_location + ": " : "";
-  full_citation += (source.source_specific as Book).publisher ? (source.source_specific as Book).publisher + ", " : "";
-  full_citation += (source.source_specific as Book).publisher ? (source.source_specific as Book).publisher + ", " : "";
+  full_citation += (source.source_specific as Book).publishing_location != "" ? (source.source_specific as Book).publishing_location + ": " : "";
+  full_citation += (source.source_specific as Book).publisher != "" ? (source.source_specific as Book).publisher + ", " : "";
+  full_citation += (source.source_specific as Book).publisher != "" ? (source.source_specific as Book).publisher + ", " : "";
   full_citation += (source.source_specific as Book).date ? (source.source_specific as Book).date + ". " : "";
-  full_citation += (source.source_specific as Book).identifier ? (source.source_specific as Book).identifier + ". " : "";
+  full_citation += (source.source_specific as Book).identifier != "" ? (source.source_specific as Book).identifier + ". " : "";
   
   return full_citation;
 }
