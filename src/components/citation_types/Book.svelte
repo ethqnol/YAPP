@@ -31,8 +31,6 @@
             source_specific: {
               title: "",
               authors: [""],
-              editors: [""],
-              translators: [""],
               volume: null,
               number_of_volumes: null,
               edition: null,
@@ -44,13 +42,9 @@
             } as Book
           };
     let source_authors = (source.source_specific as Book).authors;
-    let source_editors = (source.source_specific as Book).editors;
-    let source_translators = (source.source_specific as Book).translators;
 
     async function upload_source() {
         (source.source_specific as Book).authors = source_authors.filter((author) => author != "");
-        (source.source_specific as Book).editors = source_editors.filter((editor) => editor != "");
-        (source.source_specific as Book).translators = source_translators.filter((translator) => translator != "");
         if (source_id != "") {
             let response = await fetch(`/api/sources/edit/${source_id}`, {
                 method: "POST",
@@ -82,48 +76,7 @@
         }
     }
     
-    
-    function update_editor(e: any, index: number) {
-        source_editors = source_editors.map((editor, i) =>
-            i === index ? e.target.value : editor,
-        );
-    }
 
-    function add_editor() {
-        source_editors = [...source_editors, ""];
-
-    }
-
-    function subtract_editor(index: number) {
-        if (source_editors.length === 1) {
-            return;
-        }
-        source_editors.splice(index, 1);
-        source_editors = source_editors;
-    }
-    
-    function update_translator(e: any, index: number) {
-        source_translators = source_translators.map((translator, i) =>
-            i === index ? e.target.value : translator,
-        );
-    }
-
-    function add_translator() {
-        source_translators = [...source_translators, ""];
-
-    }
-
-    function subtract_translator(index: number) {
-        if (source_translators.length === 1) {
-            return;
-        }
-        source_translators.splice(index, 1);
-        source_translators = source_translators;
-    }
-    
-    
-    
-    
 
     function update_author(e: any, index: number) {
         source_authors = source_authors.map((author, i) =>
@@ -188,77 +141,6 @@
             </div>
         {/each}
         <button type="button" on:click={add_author}>Add</button>
-    </div>
-    
-    <div class="form-group">
-        <label for="Editor">Editor(s)</label>
-        {#each source_editors as editor, i}
-            <div class="author-input">
-                <input
-                    id="Author-{i}"
-                    type="text"
-                    placeholder="Author Name"
-                    bind:value={source_editors[i]}
-                    on:input={(e) => update_editor(e, i)}
-                />
-                <button type="button" on:click={() => subtract_editor(i)}
-                    ><svg
-                        class="w-[48px] h-[48px] text-gray-800 dark:text-white"
-                        aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="36"
-                        height="36"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            stroke="currentColor"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M7.757 12h8.486M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                        />
-                    </svg>
-                </button>
-            </div>
-        {/each}
-        <button type="button" on:click={add_editor}>Add</button>
-    </div>
-
-    
-    <div class="form-group">
-        <label for="Translator">Translator(s)</label>
-        {#each source_translators as author, i}
-            <div class="author-input">
-                <input
-                    id="Author-{i}"
-                    type="text"
-                    placeholder="Author Name"
-                    bind:value={source_translators[i]}
-                    on:input={(e) => update_translator(e, i)}
-                />
-                <button type="button" on:click={() => subtract_translator(i)}
-                    ><svg
-                        class="w-[48px] h-[48px] text-gray-800 dark:text-white"
-                        aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="36"
-                        height="36"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            stroke="currentColor"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M7.757 12h8.486M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                        />
-                    </svg>
-                </button>
-            </div>
-        {/each}
-        <button type="button" on:click={add_translator}>Add</button>
     </div>
     
     <div class="form-group">

@@ -1,7 +1,7 @@
 <script lang="ts">
     import type Source from "../lib/source";
     import SourceType from "../lib/source_type";
-    import Book from "./citation_types/Book.svelte";
+    import type { Book } from "../lib/specific_sources/book.ts";
     import Loading from "./Loading.svelte";
     import { createEventDispatcher } from "svelte";
     export let data: any;
@@ -71,8 +71,6 @@
           source_specific: {
             title: "",
             authors: data.author_name,
-            editors: [""],
-            translators: [""],
             volume: null,
             number_of_volumes: null,
             edition: null,
