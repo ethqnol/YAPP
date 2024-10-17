@@ -3,6 +3,7 @@ export interface ConferencePaper {
   authors: string[];
   date: number | null;
   proceedings_title: string;
+  pages: string;
   conference_name: string;
   place: string;
   publisher: string;
