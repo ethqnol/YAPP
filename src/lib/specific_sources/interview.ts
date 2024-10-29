@@ -1,7 +1,6 @@
 export interface Interview {
   title: string;
-  interviewees: string[];
-  interviewers: string[];
+  authors: string[];
   date: number | null;
   medium: string;
   identifier: string;
