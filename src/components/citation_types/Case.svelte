@@ -37,6 +37,7 @@
                 reporter_volume: null,
                 first_page: null,
                 history: "",
+                decided: "",
                 identifier:""
             } as Case
           };

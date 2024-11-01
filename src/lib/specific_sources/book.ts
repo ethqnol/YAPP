@@ -1,8 +1,6 @@
 export interface Book {
   title: string;
   authors: string[];
-  editors: string[];
-  translators: string[];
   volume: number | null;
   number_of_volumes: number | null;
   edition: number | null;

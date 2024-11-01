@@ -1,77 +1,50 @@
 import type Source from "./source";
+import SourceType from "./source_type";
+import generate_bill_citation from "./citation_gen/bill";
+import generate_book_citation from "./citation_gen/book";
+import generate_book_section_citation from "./citation_gen/book_section";
+import generate_case_citation from "./citation_gen/case";
+import generate_conference_paper_citation from "./citation_gen/conference_paper";
+import generate_interview_citation from "./citation_gen/interview";
+import generate_journal_citation from "./citation_gen/journal";
+import generate_magazine_citation from "./citation_gen/magazine";
+import generate_media_citation from "./citation_gen/media";
+import generate_newspaper_citation from "./citation_gen/newspaper";
+import generate_website_citation from "./citation_gen/website";
+import generate_other_citation from "./citation_gen/other";
+
 
 export function parse_author(author: string): string[] {
   return author.split(" ");
 }
 
 export function generate_citation(source: Source): string {
-  //the whole logic has gone to absolute sh*t. will fix later
-  //going to reimplement later. foobar for now
-  
-  return "foobar"
-  // let citation = '';
-
-  // // Format authors in "Last, First" format
-  // const formatted_authors = source.authors.map(author => {
-  //   const [first_name, ...last_name] = author.split(' ');
-  //   return `${last_name.join(' ')}, ${first_name}`;
-  // }).join(', ');
-
-  // citation += formatted_authors + '. ';
-
-  // if (source.title && source.title.toLowerCase() !== 'unknown') {
-  //   citation += `*${source.title}*. `;
-  // }
-
-  // if (source.series && source.series.toLowerCase() !== 'unknown') {
-  //   citation += `${source.series}`;
-  //   if (source.series_num && source.series_num != null) {
-  //     citation += ` ${source.series_num}`;
-  //   }
-  //   citation += '. ';
-  // }
-
-  // if (source.edition && source.edition != null) {
-  //   citation += `${source.edition} ed. `;
-  // }
-
-  // if (source.volume && source.volume != null) {
-  //   citation += `vol. ${source.volume}. `;
-  // }
-
-  // if (source.publishing_location && source.publishing_location.toLowerCase() !== 'unknown') {
-  //   citation += `${source.publishing_location}: `;
-  // } else {
-  //   citation += 'np.: ';
-  // }
-
-  // if (source.publishing_company && source.publishing_company.toLowerCase() !== 'unknown') {
-  //   citation += `${source.publishing_company}, `;
-  // } else {
-  //   citation += 'np., ';
-  // }
-
-  // if (source.publishing_year && source.publishing_year != null) {
-  //   citation += `${source.publishing_year}. `;
-  // } else {
-  //   citation += 'n.d. ';
-  // }
-
-  // if (source.isbn && source.isbn.toLowerCase() !== 'unknown') {
-  //   citation += `ISBN ${source.isbn}. `;
-  // }
-
-  // if (source.doi && source.doi.toLowerCase() !== 'unknown') {
-  //   citation += `doi:${source.doi}. `;
-  // }
-
-  // citation = citation.trim();
-
-  // if (!citation.endsWith('.')) {
-  //   citation += '.';
-  // }
-
-  // return citation;
+  switch (source.source_type) {
+    case SourceType.BILL:
+      return generate_bill_citation(source);
+    case SourceType.BOOK:
+      return generate_book_citation(source);
+    case SourceType.BOOK_SECTION:
+      return generate_book_section_citation(source);
+    case SourceType.CASE:
+      return generate_case_citation(source);
+    case SourceType.CONFERENCE_PAPER:
+      return generate_conference_paper_citation(source);
+    case SourceType.INTERVIEW:
+      return generate_interview_citation(source);
+    case SourceType.JOURNAL:
+      return generate_journal_citation(source);
+    case SourceType.MAGAZINE:
+      return generate_magazine_citation(source);
+    case SourceType.MEDIA:
+      return generate_media_citation(source);
+    case SourceType.NEWSPAPER:
+      return generate_newspaper_citation(source);
+    case SourceType.WEBSITE:
+      return generate_website_citation(source);
+    default: 
+      return generate_other_citation(source);
+  }
 }
 
 
@@ -93,23 +66,23 @@ function format_authors(authors: string[]): string {
 
 
 export function generate_long_footnote(source: Source): string {
-  let authors = source.authors.join(', ');
-  let edition = source.edition ? `, ${source.edition} ed.` : '';
-  let volume = source.volume ? `, vol. ${source.volume}` : '';
-  let series = source.series ? `, ${source.series} ${source.series_num}` : '';
+  // let authors = source.authors.join(', ');
+  // let edition = source.edition ? `, ${source.edition} ed.` : '';
+  // let volume = source.volume ? `, vol. ${source.volume}` : '';
+  // let series = source.series ? `, ${source.series} ${source.series_num}` : '';
   
-  //Need to reimplement dates
-  let year = source.date ? ` (${new Date(source.date).getFullYear()})` : '';
-  let url = source.identifier ? `, ${source.identifier}` : '';
+  // //Need to reimplement dates
+  // let year = source.date ? ` (${new Date(source.date).getFullYear()})` : '';
+  // let url = source.identifier ? `, ${source.identifier}` : '';
 
-  let footnote = `${authors}, *${source.title}*${edition}${volume}${series} (${source.publishing_location}: ${source.publishing_company}${year})${url}.`;
-  return footnote;
+  // let footnote = `${authors}, *${source.title}*${edition}${volume}${series} (${source.publishing_location}: ${source.publishing_company}${year})${url}.`;
+  // return footnote;
 }
 
 export function generate_short_footnote(source: Source): string {
-  let authors = source.authors.join(', ');
-  let short_title = source.title.split(' ').slice(0, 4).join(' ') + (source.title.split(' ').length > 4 ? '...' : '');
+  // let authors = source.authors.join(', ');
+  // let short_title = source.title.split(' ').slice(0, 4).join(' ') + (source.title.split(' ').length > 4 ? '...' : '');
 
-  let footnote = `${authors}, *${short_title}* `;
-  return footnote;
+  // let footnote = `${authors}, *${short_title}* `;
+  // return footnote;
 }

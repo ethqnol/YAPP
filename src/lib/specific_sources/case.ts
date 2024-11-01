@@ -7,5 +7,6 @@ export interface Case {
   reporter_volume: number | null;
   first_page: number | null;
   history: string;
+  decided: string;
   identifier: string;
 }

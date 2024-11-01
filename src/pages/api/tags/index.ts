@@ -33,12 +33,11 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     const db = getFirestore(app);
     const tags_ref = doc(db, "Tags", user.uid);
     getDoc(tags_ref).then((doc) => {
-      if (!doc.exists) {
+      if (!(doc.exists())) {
         setDoc(tags_ref, { tags: [user_tag] });
         return new Response("tag added successfully", { status: 200 })
       } else {
-        let current_tags_snapshot = doc;
-        let current_tags: Tag[] = current_tags_snapshot.data()!.tags;
+        let current_tags: Tag[] = doc.data()!.tags;
         current_tags.push(user_tag)
         updateDoc(tags_ref, {
           tags: current_tags,
