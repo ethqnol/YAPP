@@ -3,9 +3,9 @@ import type { Bill } from "../specific_sources/bill";
 
 export default function generate_bill_citation(source: Source): string {
   let full_citation = "";
-  
+  let bill = source.source_specific as Bill;
   let formatted_sponsors : string[] = [];
-  (source.source_specific as Bill).sponsors.forEach((sponsor, index) => {
+  bill.sponsors.forEach((sponsor, index) => {
     let sponsor_format = ""
     if (index == 0) {
       let sponsor_name = sponsor.trim().split(" ")[0];
@@ -17,11 +17,11 @@ export default function generate_bill_citation(source: Source): string {
     formatted_sponsors.push(sponsor_format);
   });
   full_citation += formatted_sponsors.join(", ") + ". ";
-  full_citation += (source.source_specific as Bill).title;
-  full_citation += (source.source_specific as Bill).bill_number != "" ? ", Pub. L. No. " + (source.source_specific as Bill).bill_number : "";
-  full_citation += (source.source_specific as Bill).section != null ? ", § " + (source.source_specific as Bill).section : "";
-  full_citation += (source.source_specific as Bill).code_volume != null ? ", " + (source.source_specific as Bill).code_volume  : "";
-  full_citation += (source.source_specific as Bill).code != "" ? ", " + (source.source_specific as Bill).code : "";
-  full_citation += (source.source_specific as Bill).identifier != "" ? ". " + (source.source_specific as Bill).identifier + "." : ".";
+  full_citation += bill.title;
+  full_citation += bill.bill_number != "" ? ", Pub. L. No. " + bill.bill_number : "";
+  full_citation += bill.section != null ? ", § " + bill.section : "";
+  full_citation += bill.code_volume != null ? ", " + bill.code_volume  : "";
+  full_citation += bill.code != "" ? ", " + bill.code : "";
+  full_citation += bill.identifier != "" ? ". " + bill.identifier + "." : ".";
   return full_citation;
 }

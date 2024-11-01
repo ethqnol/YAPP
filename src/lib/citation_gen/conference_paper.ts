@@ -1,5 +1,5 @@
 import type Source from "../source";
-import type { ConferencePaper } from "../specific_sources/conference_paper"; }
+import type { ConferencePaper } from "../specific_sources/conference_paper"; 
 
 export default function generate_conference_paper_citation(source: Source): string {
   let full_citation = "";
@@ -27,4 +27,5 @@ export default function generate_conference_paper_citation(source: Source): stri
   
   full_citation += (source.source_specific as ConferencePaper).conference_name ? " " + (source.source_specific as ConferencePaper).conference_name + "." : "";
   
+  return full_citation
 }
